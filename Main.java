@@ -5,7 +5,7 @@ class Main {
     JPanel panel;
 
     void createWindow() {
-        frame = new JFrame("Test");
+        frame = new JFrame("Defender");
         frame.setSize(800, 600);
         frame.setVisible(true);
     }
