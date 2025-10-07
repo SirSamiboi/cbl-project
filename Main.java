@@ -6,7 +6,7 @@ class Main {
 
     void createWindow() {
         frame = new JFrame("Test");
-        frame.setSize(400, 400);
+        frame.setSize(800, 600);
         frame.setVisible(true);
     }
 
