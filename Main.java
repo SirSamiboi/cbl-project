@@ -4,6 +4,9 @@ class Main {
     JFrame frame;
     JPanel panel;
 
+    /**
+     * Creates the window for the game.
+     */
     void createWindow() {
         frame = new JFrame("Defender");
         frame.setSize(800, 600);
