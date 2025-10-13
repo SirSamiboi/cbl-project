@@ -35,15 +35,6 @@ class Main {
 }
 
 
-
-/*
- * MY PHONE RESETTED TO FACTORY DEFAULTS AND I ALMOST LOST ACCESS TO MY whatsapp
- * I am doing my best to recover it, but google is being google, all 2-factor was tied up on,
- * well, the phone. 
- * 
- * Help ._.
- */
-
 // class Main {
 //     JFrame frame;
 //     JPanel panel;
