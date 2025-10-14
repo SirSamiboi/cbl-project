@@ -19,7 +19,15 @@ class GamePanel extends JPanel implements MouseListener {
     private int lastClickX = -1;
     private int lastClickY = -1;
 
-    private ArrayList<Tower> towerList = new ArrayList<>();
+    public ArrayList<Tower> towerList = new ArrayList<>();
+    public ArrayList<Enemy> enemyList = new ArrayList<>();
+    public byte[][] perWaveEnemyTypes = {
+        {0, 0},
+        {0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+    };
 
     /**
      * The panel element which contains all game elements shown on-screen.

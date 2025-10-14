@@ -1,6 +1,9 @@
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.util.*;
 import javax.imageio.ImageIO;
+
 
 /**
  * Class that stores all enemies interractions and stores data about the instance
@@ -8,43 +11,19 @@ import javax.imageio.ImageIO;
  */
 
 public class Enemy {
-    private int posX;
-    private int posY;
-    private byte type; // 0 - standard, 1 - tank etc.
-    private int speed; // displacement per frame? in pixels?
-    private int hp; // amount of lives the enemy has.
-    private int distanceTraveled; // used to determine, how far did the enemy travel
-    // private boolean ground; 
+    protected int posX;
+    protected int posY;
+    protected byte type; // 0 - standard, 1 - tank etc.
+    protected int speed; // displacement per frame? in pixels?
+    protected int hp; // amount of lives the enemy has.
+    protected int distanceTraveled; // used to determine, how far did the enemy travel
+    // protected boolean ground; 
     // used to determine if the troop is a ground troop, or a flying troop.
 
-    private BufferedImage image; // Enemy texture.
-    private int timer; // Counts up by 1 every frame
-    private int timerLimit; // Number of frames between each attack
+    protected BufferedImage image; // Enemy texture.
+    protected int timer; // Counts up by 1 every frame
+    protected int timerLimit; // Number of frames between each attack
 
-    /**
-     * Constructor.
-     */
-
-    public Enemy(int posX, int posY, byte type) {
-        this.posX = posX;
-        this.posY = posY;
-        this.type = type;
-
-        switch (type) {
-            case 0: //default enemy, goblin
-                try {
-                    image = ImageIO.read(new File("assets/goblin.png"));
-                }
-                catch (Exception e) {
-                    System.out.println("The texture is not texturing");
-                    System.out.println(e);
-                    image = null;
-                }
-                break;
-            default:
-                System.out.println("The enemy type is not typing.");
-        }
-    }
     
     public BufferedImage getImage() {
         return image;
@@ -74,7 +53,44 @@ public class Enemy {
         return type;
     }
 
+    /**
+     * Substracts the tower's damage from the Enemy's HP.
+     * @param damage
+     *     The (positive integer) damage that the enemy must take.
+     */
+
     public void dealDamage(int damage) {
-        
+        this.hp -= damage;
     }
+
+    /**
+     * Removes the Enemy object from the ArrayList of all enemies.
+     * TODO: Plays the death animation
+     * TODO?: Realocates memory(deletes the object entirely)?
+     */
+
+    public void die(ArrayList<Enemy> enemyList) {
+        enemyList.remove(this);
+        try{
+            this.image = ImageIO.read(new File("assets/Explosion_5.png"));
+        } catch (IOException e) {
+            
+        }
+        //TODO: play the death animation, relocate memory.
+    }
+
+
+    /**
+     * Handles the enemy's actions over the next tick.
+     * @param enemyList
+     *     Global list where all alive enemies are stored.
+     */
+    public void tick(ArrayList<Enemy> enemyList) {
+        if (this.hp <= 0) {
+            this.die(enemyList);
+            return;
+        }
+    }
+
+
 }

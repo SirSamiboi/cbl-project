@@ -1,3 +1,8 @@
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
+import javax.imageio.ImageIO;
+
 /**
  * Class that saves the data of a goblin.
  */
@@ -15,5 +20,11 @@ public class Goblin extends Enemy {
         hp = 15;
         speed = 10;
         distanceTraveled = 0;
+        try {
+            image = ImageIO.read(new File("assets/goblin.png"));
+        } catch (IOException e) {
+            System.out.println("Couldn't load the Goblin texture");
+            image = null;
+        }
     }
 }
