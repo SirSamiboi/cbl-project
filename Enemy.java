@@ -1,7 +1,5 @@
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.util.function.ToDoubleBiFunction;
 import javax.imageio.ImageIO;
 
 /**
@@ -74,5 +72,9 @@ public class Enemy {
 
     public int getType() {
         return type;
+    }
+
+    public void dealDamage(int damage) {
+        
     }
 }

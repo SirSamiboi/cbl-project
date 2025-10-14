@@ -8,14 +8,14 @@ import javax.imageio.ImageIO;
  * Class used for handling all tower interactions.
  */
 public class Tower {
-    private int posX;
-    private int posY;
-    private int damage;
-    private int range;
-    private int level;
-    private BufferedImage image;
-    private int timer; // Counts up by 1 every frame
-    private int timerLimit; // Number of frames between each attack
+    protected int posX;
+    protected int posY;
+    protected int damage;
+    protected int range;
+    protected int level;
+    protected int timer;
+    protected int cooldown;
+    protected BufferedImage image;
 
     /**
      * Constructor.
@@ -23,7 +23,7 @@ public class Tower {
     public Tower(int posX, int posY) {
         this.posX = posX;
         this.posY = posY;
-        this.timer = 0;
+        this.level = 0;
 
         try {
             image = ImageIO.read(new File("assets/tower0.png"));
@@ -59,14 +59,4 @@ public class Tower {
     BufferedImage getImage() {
         return image;
     }
-
-
-
 }
-
-/**
- * Basic tower type.
- */
-// class BasicTower extends Tower {
-
-// }

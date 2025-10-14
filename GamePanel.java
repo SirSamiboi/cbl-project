@@ -19,9 +19,6 @@ class GamePanel extends JPanel implements MouseListener {
     private int lastClickX = -1;
     private int lastClickY = -1;
 
-    //private Tower[] towerList = new Tower[100];
-    // 100 is arbitrary, real max is decided by following variable:
-    //private int maxTowers = 8;
     private ArrayList<Tower> towerList = new ArrayList<>();
 
     /**
