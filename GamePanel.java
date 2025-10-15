@@ -60,6 +60,13 @@ class GamePanel extends JPanel implements MouseListener {
         towerList.add(new Tower(80, 576));
         towerList.add(new Tower(432, 576));
         towerList.add(new Tower(656, 448));
+
+
+        //TEST!!! ADD ENEMY TO THE LIST
+        enemyList.add(new Goblin(20, 125));
+        System.out.println(enemyList.get(0).posX);
+        System.out.println(enemyList.get(0).posY);
+        //END TEST
     }
 
     /**
@@ -67,6 +74,10 @@ class GamePanel extends JPanel implements MouseListener {
      */
     public void updateGame() {
         // Enter game logic here
+        for (Enemy enemy : enemyList) {
+            enemy.tick(enemyList);
+  
+        }
 
         // Logic for cyan ball testing
         elementX += dx;
@@ -101,6 +112,13 @@ class GamePanel extends JPanel implements MouseListener {
                 g2d.drawImage(tower.getImage(), tower.getPosX() - 29, tower.getPosY() - 29,
                     62, 62, this);
             }
+        }
+        
+        // Draw all enemies
+
+        for (Enemy enemy : enemyList) {
+            g2d.drawImage(enemy.getImage(), enemy.getPosX() - 40, enemy.getPosY() - 40,
+                 80, 80, this);
         }
 
         // Draw other elements

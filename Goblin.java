@@ -1,6 +1,6 @@
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+// import java.util.*;
 import javax.imageio.ImageIO;
 
 /**
@@ -17,8 +17,10 @@ public class Goblin extends Enemy {
      */
 
     public Goblin(int posX, int posY) {
+        this.posX = posX;
+        this.posY = posY;
         hp = 15;
-        speed = 10;
+        speed = 5;
         distanceTraveled = 0;
         try {
             image = ImageIO.read(new File("assets/goblin.png"));

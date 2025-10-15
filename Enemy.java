@@ -70,13 +70,52 @@ public class Enemy {
      */
 
     public void die(ArrayList<Enemy> enemyList) {
+        this.speed = 0;
         enemyList.remove(this);
-        try{
+        try {
             this.image = ImageIO.read(new File("assets/Explosion_5.png"));
         } catch (IOException e) {
-            
+            System.out.println("Couldn't load the death texture");
+            System.out.println(e);
+            image = null;
         }
         //TODO: play the death animation, relocate memory.
+    }
+
+    /**
+     * Handles the enemy's movement along the path.
+     * 
+     * Yes, it is butt-ugly.
+     * No, I do not know, how to make it better.
+     * 
+     * Also, it updates this.distanceTraveled to keep the distance this enemy passed
+     */
+
+    public void move() {
+        if (this.posX < 600 && this.posY < 160) { // first horisontal stretch
+            this.posX += this.speed;
+        } else if (this.posX >= 600 && this.posY < 190) { // first turn
+            this.posX += this.speed;
+            this.posY += this.speed;
+        } else if (this.posX >= 600 && this.posY < 264) { // first vertical stretch
+            this.posY += this.speed;
+        } else if (this.posX >= 600 && this.posY >= 264 && this.posY <= 330) { // second turn
+            this.posX -= this.speed;
+            this.posY += this.speed;
+        } else if (this.posX > 200 && this.posY <= 340) {
+            this.posX -= this.speed;
+        } else if (this.posX <= 200 && this.posY <= 364) { // third turn
+            this.posX -= this.speed;
+            this.posY += this.speed;
+        } else if (this.posX <= 160 && this.posY >= 364) { // second vertical stretch
+            this.posY += this.speed;
+        } else if (this.posX <= 228) { // fourth turn //// Ooooh, ma gaaad
+            this.posX += this.speed;
+            this.posY += this.speed;
+        } else { // last horisontal stretch
+            this.posX += this.speed;
+        }
+        this.distanceTraveled += this.speed;
     }
 
 
@@ -90,6 +129,7 @@ public class Enemy {
             this.die(enemyList);
             return;
         }
+        move();
     }
 
 
