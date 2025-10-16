@@ -47,13 +47,13 @@ class GamePanel extends JPanel implements MouseListener {
         this.setBackground(Color.WHITE);
 
         // Placing towers
-        towerList.add(new BasicTower(144, 224));
+        towerList.add(new Tower(144, 224));
         towerList.add(new BasicTower(336, 192));
         towerList.add(new BasicTower(528, 224));
-        towerList.add(new BasicTower(720, 160));
-        towerList.add(new BasicTower(272, 416));
+        towerList.add(new Tower(720, 160));
+        towerList.add(new Tower(272, 416));
         towerList.add(new BasicTower(80, 576));
-        towerList.add(new BasicTower(432, 576));
+        towerList.add(new Tower(432, 576));
         towerList.add(new BasicTower(656, 448));
 
 
@@ -121,6 +121,12 @@ class GamePanel extends JPanel implements MouseListener {
             g2d.drawImage(mapImage, 0, 0, getWidth(), getHeight(), this);
         }
         
+        // Draw all enemies
+        for (Enemy enemy : enemyList) {
+            g2d.drawImage(enemy.getImage(), enemy.getPosX() - 40, enemy.getPosY() - 40,
+                 80, 80, this);
+        }
+
         // Draw all towers
         for (Tower tower : towerList) {
             g2d.drawImage(tower.getImage(), tower.getImageX(), tower.getImageY(),
@@ -130,12 +136,6 @@ class GamePanel extends JPanel implements MouseListener {
         // Draw range visuals
         for (Tower tower : towerList) {
 
-        }
-        
-        // Draw all enemies
-        for (Enemy enemy : enemyList) {
-            g2d.drawImage(enemy.getImage(), enemy.getPosX() - 40, enemy.getPosY() - 40,
-                 80, 80, this);
         }
 
         // Draw round number label (not functional)
