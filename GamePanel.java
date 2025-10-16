@@ -10,11 +10,6 @@ import javax.swing.*;
 
 class GamePanel extends JPanel implements MouseListener {
     private BufferedImage mapImage;
-    
-    // Variables for cyan ball testing
-    private int elementX = 50;
-    private int elementY = 50;
-    private int dx = 2;
 
     private int lastClickX = -1;
     private int lastClickY = -1;
@@ -52,18 +47,22 @@ class GamePanel extends JPanel implements MouseListener {
         this.setBackground(Color.WHITE);
 
         // Placing towers
-        towerList.add(new Tower(144, 224));
-        towerList.add(new Tower(336, 192));
-        towerList.add(new Tower(528, 224));
-        towerList.add(new Tower(720, 160));
-        towerList.add(new Tower(272, 416));
-        towerList.add(new Tower(80, 576));
-        towerList.add(new Tower(432, 576));
-        towerList.add(new Tower(656, 448));
+        towerList.add(new BasicTower(144, 224));
+        towerList.add(new BasicTower(336, 192));
+        towerList.add(new BasicTower(528, 224));
+        towerList.add(new BasicTower(720, 160));
+        towerList.add(new BasicTower(272, 416));
+        towerList.add(new BasicTower(80, 576));
+        towerList.add(new BasicTower(432, 576));
+        towerList.add(new BasicTower(656, 448));
 
 
         //TEST!!! ADD ENEMY TO THE LIST
         enemyList.add(new Goblin(20, 125));
+        enemyList.add(new Goblin(-80, 125));
+        enemyList.add(new Goblin(-180, 125));
+        enemyList.add(new Goblin(-200, 125));
+        enemyList.add(new Goblin(-220, 125));
         System.out.println(enemyList.get(0).posX);
         System.out.println(enemyList.get(0).posY);
         //END TEST
@@ -73,16 +72,23 @@ class GamePanel extends JPanel implements MouseListener {
      * Game update logic, called by Timer.
      */
     public void updateGame() {
-        // Enter game logic here
-        for (Enemy enemy : enemyList) {
-            enemy.tick(enemyList);
-  
+        // Process ticks for towers
+        for (Tower tower : towerList) {
+            tower.tick(enemyList);
         }
 
-        // Logic for cyan ball testing
-        elementX += dx;
-        if (elementX > getWidth() - 50 || elementX < 0) {
-            dx = -dx;
+        // Process ticks for enemies
+        for (Enemy enemy : enemyList) {
+            System.out.println(enemy.getHp());
+            enemy.tick(enemyList);
+        }
+
+        // Remove any defeated enemies from enemyList
+        for (int i = 0; i < enemyList.size(); i++) {
+            if (enemyList.get(i) == null) {
+                enemyList.remove(i);
+                i -= 1;
+            }
         }
 
         // Renders next frame
@@ -98,36 +104,35 @@ class GamePanel extends JPanel implements MouseListener {
 
         Graphics2D g2d = (Graphics2D) g;
 
+        // Rendering hints, if program gets optimised
+        // g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+        //     RenderingHints.VALUE_ANTIALIAS_ON);
+        // g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+        //     RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+        
         // Draw map image
         if (mapImage != null) {
             g2d.drawImage(mapImage, 0, 0, getWidth(), getHeight(), this);
         }
-
+        
         // Draw all towers
         for (Tower tower : towerList) {
-            if (tower.getLevel() == 0) {
-                g2d.drawImage(tower.getImage(), tower.getPosX() - 29, tower.getPosY() - 29,
-                    62, 62, this);
-            } else { // Useless for now, will adjust later
-                g2d.drawImage(tower.getImage(), tower.getPosX() - 29, tower.getPosY() - 29,
-                    62, 62, this);
-            }
+            g2d.drawImage(tower.getImage(), tower.getImageX(), tower.getImageY(),
+                tower.getImageWidth(), tower.getImageHeight(), this);
+        }
+
+        // Draw range visuals
+        for (Tower tower : towerList) {
+
         }
         
         // Draw all enemies
-
         for (Enemy enemy : enemyList) {
             g2d.drawImage(enemy.getImage(), enemy.getPosX() - 40, enemy.getPosY() - 40,
                  80, 80, this);
         }
 
-        // Draw other elements
-
-        // Draw for cyan ball testing
-        g2d.setColor(Color.CYAN);
-        g2d.fillOval(elementX, elementY, 50, 50); // Draw a 50x50 circle
-        
-        // Draw round indicator
+        // Draw round number label (not functional)
         g2d.setColor(Color.WHITE);
         g2d.setFont(new Font("Arial", Font.BOLD, 20));
         g2d.drawString("Round 1/10", 10, 20);

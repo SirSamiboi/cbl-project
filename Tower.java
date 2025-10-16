@@ -1,6 +1,7 @@
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 
@@ -16,6 +17,10 @@ public class Tower {
     protected int timer;
     protected int cooldown;
     protected BufferedImage image;
+    protected int imageWidth;
+    protected int imageHeight;
+    protected int imageOffsetX;
+    protected int imageOffsetY;
 
     /**
      * Constructor.
@@ -24,6 +29,10 @@ public class Tower {
         this.posX = posX;
         this.posY = posY;
         this.level = 0;
+        this.imageWidth = 62;
+        this.imageHeight = 62;
+        this.imageOffsetX = 2;
+        this.imageOffsetY = 2;
 
         try {
             image = ImageIO.read(new File("assets/tower0.png"));
@@ -59,4 +68,24 @@ public class Tower {
     BufferedImage getImage() {
         return image;
     }
+
+    int getImageWidth() {
+        return imageWidth;
+    }
+
+    int getImageHeight() {
+        return imageHeight;
+    }
+
+    // Returns the x position of the tower's image
+    int getImageX() {
+        return posX - imageWidth / 2 + imageOffsetX;
+    }
+
+    // Returns the y position of the tower's image
+    int getImageY() {
+        return posY - imageHeight / 2 + imageOffsetY;
+    }
+
+    public void tick(ArrayList<Enemy> enemyList) { }
 }

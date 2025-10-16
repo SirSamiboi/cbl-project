@@ -72,6 +72,8 @@ public class Enemy {
     public void die(ArrayList<Enemy> enemyList) {
         this.speed = 0;
         enemyList.remove(this);
+        enemyList.add(0, null); // Fills in the gap left by the enemy's deletion
+        
         try {
             this.image = ImageIO.read(new File("assets/Explosion_5.png"));
         } catch (IOException e) {

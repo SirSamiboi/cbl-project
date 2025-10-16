@@ -8,8 +8,13 @@ import javax.imageio.ImageIO;
  */
 class BasicTower extends Tower {
     private final int[] damageLevel = {2, 3, 4, 5}; // Index 0 holds damage dealt at level 1
-    private final int[] rangeLevel = {100, 150, 200, 250};
+    private final int[] rangeLevel = {150, 175, 200, 225};
     private final int[] cooldownLevel = {15, 12, 10, 8};
+    private final int[] imageWidthLevel = {62, 0, 0, 0};
+    private final int[] imageHeightLevel = {62, 0, 0, 0};
+    private final int[] imageOffsetXLevel = {2, 0, 0, 0};
+    private final int[] imageOffsetYLevel = {2, 0, 0, 0};
+    // Add arrays for image info (width, height, x/y offset) to be used when loading images
 
     /**
      * Constructor (indentical to Tower).
@@ -20,7 +25,13 @@ class BasicTower extends Tower {
         range = rangeLevel[0]; // Radius of attack area in pixels
         cooldown = cooldownLevel[0]; // Cooldown in ticks (33ms, 30 ticks = 1 second)
         timer = cooldown;
+        updateImage();
+    }
 
+    /**
+     * Loads the tower's image and relevant information to be used when it is drawn
+     */
+    private void updateImage() {
         try {
             // The formatting is not necessary since the level starts at 0; just for consistency
             String pathname = String.format("assets/tower0-%d.png", level);
@@ -31,12 +42,18 @@ class BasicTower extends Tower {
             System.out.println(e);
             image = null;
         }
+
+        imageWidth = imageWidthLevel[level];
+        imageHeight = imageHeightLevel[level];
+        imageOffsetX = imageOffsetXLevel[level];
+        imageOffsetY = imageOffsetYLevel[level];
     }
 
     /**
      * Handles the tower's actions over the next tick.
      */
-    void tick(ArrayList<Enemy> enemyList) {
+    @Override
+    public void tick(ArrayList<Enemy> enemyList) {
         // Check if the tower will attack this tick
         if (timer > 0) {
             timer -= 1;
@@ -66,6 +83,7 @@ class BasicTower extends Tower {
         timer = cooldown;
         // Damage logic occurs inside Enemy object
         enemyList.get(targetIndex).dealDamage(damage);
+        System.out.println("Dealt " + damage + " damage");
     }
 
     /**
