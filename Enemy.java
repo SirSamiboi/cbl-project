@@ -72,7 +72,6 @@ public class Enemy {
     public void die(ArrayList<Enemy> enemyList) {
         this.speed = 0;
         enemyList.remove(this);
-        enemyList.add(0, null); // Fills in the gap left by the enemy's deletion
         
         try {
             this.image = ImageIO.read(new File("assets/Explosion_5.png"));
@@ -89,31 +88,44 @@ public class Enemy {
      * 
      * Yes, it is butt-ugly.
      * No, I do not know, how to make it better.
+     * > I do :)
      * 
      * Also, it updates this.distanceTraveled to keep the distance this enemy passed
      */
 
     public void move() {
-        if (this.posX < 600 && this.posY < 160) { // first horisontal stretch
+        if (distanceTraveled <= 640 - 48) { // first horisontal stretch
             this.posX += this.speed;
-        } else if (this.posX >= 600 && this.posY < 190) { // first turn
-            this.posX += this.speed;
-            this.posY += this.speed;
-        } else if (this.posX >= 600 && this.posY < 264) { // first vertical stretch
-            this.posY += this.speed;
-        } else if (this.posX >= 600 && this.posY >= 264 && this.posY <= 330) { // second turn
-            this.posX -= this.speed;
-            this.posY += this.speed;
-        } else if (this.posX > 200 && this.posY <= 340) {
-            this.posX -= this.speed;
-        } else if (this.posX <= 200 && this.posY <= 364) { // third turn
-            this.posX -= this.speed;
-            this.posY += this.speed;
-        } else if (this.posX <= 160 && this.posY >= 364) { // second vertical stretch
-            this.posY += this.speed;
-        } else if (this.posX <= 228) { // fourth turn //// Ooooh, ma gaaad
+
+        } else if (distanceTraveled <= 640 + 48) { // first turn
             this.posX += this.speed;
             this.posY += this.speed;
+            this.distanceTraveled += this.speed;
+
+        } else if (distanceTraveled <= 640 + 192 - 48) { // first vertical stretch
+            this.posY += this.speed;
+
+        } else if (distanceTraveled <= 640 + 192 + 48) { // second turn
+            this.posX -= this.speed;
+            this.posY += this.speed;
+            this.distanceTraveled += this.speed;
+
+        } else if (distanceTraveled <= 640 + 192 + 480 - 48) {
+            this.posX -= this.speed;
+
+        } else if (distanceTraveled <= 640 + 192 + 480 + 48) { // third turn
+            this.posX -= this.speed;
+            this.posY += this.speed;
+            this.distanceTraveled += this.speed;
+
+        } else if (distanceTraveled <= 640 + 192 + 480 + 192 - 48) { // second vertical stretch
+            this.posY += this.speed;
+
+        } else if (distanceTraveled <= 640 + 192 + 480 + 192 + 48) { // fourth turn 
+            this.posX += this.speed;
+            this.posY += this.speed;
+            this.distanceTraveled += this.speed;
+
         } else { // last horisontal stretch
             this.posX += this.speed;
         }
@@ -127,12 +139,6 @@ public class Enemy {
      *     Global list where all alive enemies are stored.
      */
     public void tick(ArrayList<Enemy> enemyList) {
-        if (this.hp <= 0) {
-            this.die(enemyList);
-            return;
-        }
         move();
     }
-
-
 }

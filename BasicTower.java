@@ -29,7 +29,7 @@ class BasicTower extends Tower {
     }
 
     /**
-     * Loads the tower's image and relevant information to be used when it is drawn
+     * Loads the tower's image and relevant information to be used when it is drawn.
      */
     private void updateImage() {
         try {
@@ -67,9 +67,11 @@ class BasicTower extends Tower {
             Enemy enemy = enemyList.get(i);
             int enemyX = enemy.getPosX();
             int enemyY = enemy.getPosY();
+            int enemyHp = enemy.getHp();
             int enemyDistanceTraveled = enemy.getDistanceTraveled();
 
-            if (inRange(enemyX, enemyY) && enemyDistanceTraveled > longestDistanceTraveled) {
+            if (inRange(enemyX, enemyY) && enemyHp > 0
+                && enemyDistanceTraveled > longestDistanceTraveled) {
                 targetIndex = i;
                 longestDistanceTraveled = enemyDistanceTraveled;
             }

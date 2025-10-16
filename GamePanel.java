@@ -58,11 +58,9 @@ class GamePanel extends JPanel implements MouseListener {
 
 
         //TEST!!! ADD ENEMY TO THE LIST
-        enemyList.add(new Goblin(20, 125));
-        enemyList.add(new Goblin(-80, 125));
-        enemyList.add(new Goblin(-180, 125));
-        enemyList.add(new Goblin(-200, 125));
-        enemyList.add(new Goblin(-220, 125));
+        enemyList.add(new Goblin(0, 128));
+        enemyList.add(new Goblin(5, 128));
+        enemyList.add(new Goblin(-5, 128));
         System.out.println(enemyList.get(0).posX);
         System.out.println(enemyList.get(0).posY);
         //END TEST
@@ -78,24 +76,16 @@ class GamePanel extends JPanel implements MouseListener {
         }
 
         // Process ticks for enemies
-        
-        // ERROR OCCURS IN THIS FOR LOOP
-        try {
-            int i = 0;
-            for (Enemy enemy : enemyList) {
-                try {
-                    enemy.tick(enemyList);
-                    i += 1;
-                } catch (Exception e) {
-                    System.out.println(enemy);
-                    System.out.println(enemy.getHp());
-                    System.out.println(enemyList);
-                }
-            }
-            System.out.println(i);
 
-        } catch (Exception e) {
-            System.out.println(enemyList);
+        // ERROR OCCURS IN THIS FOR LOOP
+
+        for (int i = 0; i < enemyList.size(); i++) {
+            enemyList.get(i).tick(enemyList);
+
+            if (enemyList.get(i).getHp() <= 0) {
+                enemyList.get(i).die(enemyList);
+                i -= 1;
+            }
         }
 
         // Remove any defeated enemies from enemyList
