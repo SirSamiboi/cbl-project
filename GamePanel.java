@@ -78,15 +78,31 @@ class GamePanel extends JPanel implements MouseListener {
         }
 
         // Process ticks for enemies
-        for (Enemy enemy : enemyList) {
-            System.out.println(enemy.getHp());
-            enemy.tick(enemyList);
+        
+        // ERROR OCCURS IN THIS FOR LOOP
+        try {
+            int i = 0;
+            for (Enemy enemy : enemyList) {
+                try {
+                    enemy.tick(enemyList);
+                    i += 1;
+                } catch (Exception e) {
+                    System.out.println(enemy);
+                    System.out.println(enemy.getHp());
+                    System.out.println(enemyList);
+                }
+            }
+            System.out.println(i);
+
+        } catch (Exception e) {
+            System.out.println(enemyList);
         }
 
         // Remove any defeated enemies from enemyList
         for (int i = 0; i < enemyList.size(); i++) {
             if (enemyList.get(i) == null) {
                 enemyList.remove(i);
+                System.out.println("removed " + i);
                 i -= 1;
             }
         }
