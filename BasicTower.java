@@ -7,9 +7,9 @@ import javax.imageio.ImageIO;
  * Basic tower type.
  */
 class BasicTower extends Tower {
-    private final int[] damageLevel = {2, 3, 4, 5}; // Index 0 holds damage dealt at level 1
+    private final int[] damageLevel = {5, 7, 10, 15}; // Index 0 holds damage dealt at level 1
     private final int[] rangeLevel = {150, 175, 200, 225};
-    private final int[] cooldownLevel = {15, 12, 10, 8};
+    private final int[] cooldownLevel = {30, 20, 14, 10};
     private final int[] imageWidthLevel = {64, 64, 64, 64};
     private final int[] imageHeightLevel = {128, 128, 128, 128};
     private final int[] imageOffsetXLevel = {2, 2, 2, 2};
