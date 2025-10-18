@@ -107,4 +107,12 @@ public class Tower {
             }
         }
     }
+
+    /**
+     * Checks if the tower has been selected.
+     */
+    boolean isClicked(int lastClickX, int lastClickY) {
+        return (lastClickX >= getImageX() && lastClickX <= getImageX() + imageWidth
+            && lastClickY >= getImageY() && lastClickY <= getImageY() + imageHeight);
+    }
 }

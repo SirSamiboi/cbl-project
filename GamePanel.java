@@ -14,6 +14,8 @@ class GamePanel extends JPanel implements MouseListener {
     private int lastClickX = -1;
     private int lastClickY = -1;
 
+    private int selectedTower = -1; // -1 when nothing selected, otherwise index of tower in list
+    private UpgradeButton upgradeButton = new UpgradeButton();
     private int globalTimer = 0; // Counts the total number of ticks elapsed
     
     public ArrayList<Tower> towerList = new ArrayList<>();
@@ -98,7 +100,7 @@ class GamePanel extends JPanel implements MouseListener {
             case 210 -> towerList.get(7).levelUp(); // upgrade tower to level 2
             case 240 -> towerList.get(6).placeBasic(towerList); // place basic tower
             case 270 -> towerList.get(7).levelUp(); // do nothing
-            
+
             default -> { }
         }
 
@@ -199,6 +201,36 @@ class GamePanel extends JPanel implements MouseListener {
         lastClickY = e.getY();
         
         System.out.println("Click registered at: (" + lastClickX + ", " + lastClickY + ")");
+
+        boolean anySelected = false;
+        int i = 0;
+        do {
+            Tower tower = towerList.get(i);
+
+            if (tower.isClicked(lastClickX, lastClickY)) {
+                // If block runs when tower is clicked
+                if (selectedTower != i) {
+                    System.out.println("Tower " + i + " has been selected");
+                }
+
+                anySelected = true;
+                selectedTower = i;
+            }
+
+            i += 1;
+        } while (i < towerList.size() && !anySelected);
+
+        if (!anySelected) {
+            // If block runs when tower is deselected
+            if (selectedTower != -1 && !anySelected) {
+                System.out.println("Tower " + selectedTower + " has been deselected");
+            }
+
+            selectedTower = -1;
+        }
+
+        // Assigns the upgrade button to the selected tower
+        upgradeButton.assign(towerList, selectedTower);
     }
 
     /**
