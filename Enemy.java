@@ -140,7 +140,15 @@ public class Enemy {
      * @param enemyList
      *     Global list where all alive enemies are stored.
      */
-    public void tick(ArrayList<Enemy> enemyList) {
+    public void tick(ArrayList<Enemy> enemyList, Player player) {
         move();
+
+        if (this.posX >= 800) { // if it passed the entire track
+            player.setPlayerHp((player.getPlayerHp() - 1)); //deal 1 damage to the player
+            this.hp = 0;
+
+            System.out.println("Another one lost to The Zone");
+            System.out.println("Player HP: " + player.getPlayerHp());
+        }
     }
 }

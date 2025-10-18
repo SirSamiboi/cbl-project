@@ -9,6 +9,9 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 class GamePanel extends JPanel implements MouseListener {
+    Random random = new Random();
+    Player playerOne = new Player();
+
     private BufferedImage mapImage;
 
     private int lastClickX = -1;
@@ -20,13 +23,23 @@ class GamePanel extends JPanel implements MouseListener {
     
     public ArrayList<Tower> towerList = new ArrayList<>();
     public ArrayList<Enemy> enemyList = new ArrayList<>();
+
+    public int waveNumber = 0;
+    public int lengthOfTheWave;
     public byte[][] perWaveEnemyTypes = {
+        {},
         {0, 0},
         {0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
     };
+    private int waveEmptyTime; // This variable updates if the enemyList is empty
+    // All enemies are dead
+    private int waveDelayTime = 150; // 5 second delay before the next wave starts
+    private int nextWaveTime; // the time in ticks when the next wave should start
+    private ArrayList<Integer> enemySpawnTimes = new ArrayList<>();
+    private int enemiesSpawnedInTheWave;
 
     /**
      * The panel element which contains all game elements shown on-screen.
@@ -66,43 +79,72 @@ class GamePanel extends JPanel implements MouseListener {
      */
     public void updateGame() {
         //TEST: Place enemies at certain times
-        switch (globalTimer) {
-            case 0 -> enemyList.add(new Goblin(0, 128));
-            case 15 -> enemyList.add(new Goblin(0, 123));
-            case 30 -> enemyList.add(new Goblin(0, 133));
-            case 45 -> enemyList.add(new Goblin(0, 128));
 
-            case 75 -> enemyList.add(new Goblin(0, 128));
-            case 85 -> enemyList.add(new Goblin(0, 133));
-            case 95 -> enemyList.add(new Goblin(0, 123));
+        //Starting a new wave
+        if (enemyList.isEmpty() && globalTimer % 300 == 0) { // if all enemies are dead
+            enemySpawnTimes.clear(); // resets the spawn timings for the next wave.
+            waveNumber += 1; // moves the wave counter to the next wave
 
-            case 110 -> enemyList.add(new Goblin(0, 123));
-            case 112 -> enemyList.add(new Goblin(0, 128));
-            case 114 -> enemyList.add(new Goblin(0, 133));
-            case 116 -> enemyList.add(new Goblin(0, 123));
-            case 118 -> enemyList.add(new Goblin(0, 133));
-            case 120 -> enemyList.add(new Goblin(0, 128));
-            case 122 -> enemyList.add(new Goblin(0, 128));
-            case 124 -> enemyList.add(new Goblin(0, 123));
-            case 126 -> enemyList.add(new Goblin(0, 128));
-            case 128 -> enemyList.add(new Goblin(0, 133));
+            if (waveNumber > 5) {
+                System.out.println("All waves beat");
+                // TODO: Victory Screen
+            }
+            waveEmptyTime = globalTimer;
+            nextWaveTime = waveEmptyTime + waveDelayTime; // set the time, when the next wave starts
+            lengthOfTheWave = perWaveEnemyTypes[waveNumber].length;
+            enemiesSpawnedInTheWave = 0;
 
-            default -> { }
+            for (int i = 0; i < lengthOfTheWave; i++) {
+                enemySpawnTimes.add(nextWaveTime + i * 15); // setup the spawn times for all enemies of the next wave
+            }
         }
+
+        if (enemySpawnTimes.contains(globalTimer)) {
+            switch (perWaveEnemyTypes[waveNumber][enemiesSpawnedInTheWave]){
+                case (byte)0 -> enemyList.add(new Goblin(0, 125 + (random.nextInt(11) - 5)));
+                default -> { }
+            }
+            enemiesSpawnedInTheWave += 1;
+        }
+
+        
+        // switch (globalTimer) {
+        //     case 0 -> enemyList.add(new Goblin(0, 128));
+        //     case 15 -> enemyList.add(new Goblin(0, 123));
+        //     case 30 -> enemyList.add(new Goblin(0, 133));
+        //     case 45 -> enemyList.add(new Goblin(0, 128));
+
+        //     case 75 -> enemyList.add(new Goblin(0, 128));
+        //     case 85 -> enemyList.add(new Goblin(0, 133));
+        //     case 95 -> enemyList.add(new Goblin(0, 123));
+
+        //     case 110 -> enemyList.add(new Goblin(0, 123));
+        //     case 112 -> enemyList.add(new Goblin(0, 128));
+        //     case 114 -> enemyList.add(new Goblin(0, 133));
+        //     case 116 -> enemyList.add(new Goblin(0, 123));
+        //     case 118 -> enemyList.add(new Goblin(0, 133));
+        //     case 120 -> enemyList.add(new Goblin(0, 128));
+        //     case 122 -> enemyList.add(new Goblin(0, 128));
+        //     case 124 -> enemyList.add(new Goblin(0, 123));
+        //     case 126 -> enemyList.add(new Goblin(0, 128));
+        //     case 128 -> enemyList.add(new Goblin(0, 133));
+
+        //     default -> { }
+        // }
         // TEST: Place/upgrade towers at certain times
-        switch (globalTimer) {
-            case 30 -> towerList.get(0).levelUp(); // do nothing
-            case 60 -> towerList.get(1).placeBasic(towerList); // place basic tower
-            case 90 -> towerList.get(2).levelUp(); // upgrade tower to level 1
-            case 120 -> towerList.get(4).levelUp(); // upgrade tower to level 1
-            case 150 -> towerList.get(4).levelUp(); // upgrade tower to level 2
-            case 180 -> towerList.get(7).levelUp(); // upgrade tower to level 1
-            case 210 -> towerList.get(7).levelUp(); // upgrade tower to level 2
-            case 240 -> towerList.get(6).placeBasic(towerList); // place basic tower
-            case 270 -> towerList.get(7).levelUp(); // do nothing
+        // switch (globalTimer) {
+        //     case 30 -> towerList.get(0).levelUp(); // do nothing
+        //     case 60 -> towerList.get(1).placeBasic(towerList); // place basic tower
+        //     case 90 -> towerList.get(2).levelUp(); // upgrade tower to level 1
+        //     case 120 -> towerList.get(4).levelUp(); // upgrade tower to level 1
+        //     case 150 -> towerList.get(4).levelUp(); // upgrade tower to level 2
+        //     case 180 -> towerList.get(7).levelUp(); // upgrade tower to level 1
+        //     case 210 -> towerList.get(7).levelUp(); // upgrade tower to level 2
+        //     case 240 -> towerList.get(6).placeBasic(towerList); // place basic tower
+        //     case 270 -> towerList.get(7).levelUp(); // do nothing
 
-            default -> { }
-        }
+        //     default -> { }
+        // }
 
         // Process ticks for towers
         for (Tower tower : towerList) {
@@ -111,7 +153,7 @@ class GamePanel extends JPanel implements MouseListener {
 
         // Process ticks for enemies
         for (int i = 0; i < enemyList.size(); i++) {
-            enemyList.get(i).tick(enemyList);
+            enemyList.get(i).tick(enemyList, playerOne);
 
             if (enemyList.get(i).getHp() <= 0) {
                 enemyList.get(i).die(enemyList);
@@ -177,9 +219,12 @@ class GamePanel extends JPanel implements MouseListener {
         // Draw round number label (not functional)
         g2d.setColor(Color.WHITE);
         g2d.setFont(new Font("Arial", Font.BOLD, 20));
-        g2d.drawString("Round 1/10", 10, 20);
+        g2d.drawString(String.format("Wave %d / 5", waveNumber), 10, 20);
+        g2d.drawString(String.format("Player HP: %d", playerOne.getPlayerHp()), 10, 40);
+        g2d.drawString(String.format("Money™: %d", playerOne.getMoney()), 675, 20);
     }
 
+    
     /**
      * Called when the mouse button is pressed and released at the same location.
      */
