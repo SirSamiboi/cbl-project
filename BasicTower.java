@@ -23,6 +23,7 @@ class BasicTower extends Tower {
         super(posX, posY);
         damage = damageLevel[0]; // Damage dealt per hit
         range = rangeLevel[0]; // Radius of attack area in pixels
+        maxLevel = 2;
         cooldown = cooldownLevel[0]; // Cooldown in ticks (33ms, 30 ticks = 1 second)
         timer = cooldown;
         updateImage();
@@ -38,7 +39,7 @@ class BasicTower extends Tower {
             image = ImageIO.read(new File(pathname));
         
         } catch (IOException e) {
-            System.out.println("Womp womp");
+            System.out.println("ERROR: Level " + level + " tower image could not be loaded");
             System.out.println(e);
             image = null;
         }
@@ -47,6 +48,23 @@ class BasicTower extends Tower {
         imageHeight = imageHeightLevel[level];
         imageOffsetX = imageOffsetXLevel[level];
         imageOffsetY = imageOffsetYLevel[level];
+    }
+
+    /**
+     * Increases the level of a tower, and updates its statistics and image.
+     */
+    @Override
+    public void levelUp() {
+        if (level == maxLevel) {
+            return;
+        }
+
+        level++;
+
+        damage = damageLevel[level];
+        range = rangeLevel[level];
+        cooldown = cooldownLevel[level];
+        updateImage();
     }
 
     /**
@@ -85,7 +103,6 @@ class BasicTower extends Tower {
         timer = cooldown;
         // Damage logic occurs inside Enemy object
         enemyList.get(targetIndex).dealDamage(damage);
-        System.out.println("Dealt " + damage + " damage");
     }
 
     /**

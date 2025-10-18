@@ -14,6 +14,8 @@ class GamePanel extends JPanel implements MouseListener {
     private int lastClickX = -1;
     private int lastClickY = -1;
 
+    private int globalTimer = 0; // Counts the total number of ticks elapsed
+    
     public ArrayList<Tower> towerList = new ArrayList<>();
     public ArrayList<Enemy> enemyList = new ArrayList<>();
     public byte[][] perWaveEnemyTypes = {
@@ -34,7 +36,7 @@ class GamePanel extends JPanel implements MouseListener {
             mapImage = ImageIO.read(new File("assets/map1.png"));
             
         } catch (IOException e) {
-            System.out.println("Womp womp");
+            System.out.println("ERROR: Map image could not be loaded");
             System.out.println(e);
             mapImage = null;
         }
@@ -48,37 +50,55 @@ class GamePanel extends JPanel implements MouseListener {
 
         // Placing towers
         towerList.add(new Tower(144, 224));
-        towerList.add(new BasicTower(336, 192));
+        towerList.add(new Tower(336, 192));
         towerList.add(new BasicTower(528, 224));
         towerList.add(new Tower(720, 160));
-        towerList.add(new Tower(272, 416));
-        towerList.add(new BasicTower(80, 576));
+        towerList.add(new BasicTower(272, 416));
+        towerList.add(new Tower(80, 576));
         towerList.add(new Tower(432, 576));
         towerList.add(new BasicTower(656, 448));
-
-
-        //TEST!!! ADD ENEMY TO THE LIST
-        enemyList.add(new Goblin(0, 128));
-        enemyList.add(new Goblin(5, 128));
-        enemyList.add(new Goblin(-5, 128));
-        System.out.println(enemyList.get(0).posX);
-        System.out.println(enemyList.get(0).posY);
-        //END TEST
     }
 
     /**
      * Game update logic, called by Timer.
      */
     public void updateGame() {
+        //TEST: Place enemies at certain times
+        switch (globalTimer) {
+            case 0 -> enemyList.add(new Goblin(0, 128));
+            case 15 -> enemyList.add(new Goblin(0, 128));
+            case 30 -> enemyList.add(new Goblin(0, 128));
+            case 45 -> enemyList.add(new Goblin(0, 128));
+            case 75 -> enemyList.add(new Goblin(0, 128));
+            case 85 -> enemyList.add(new Goblin(0, 128));
+            case 95 -> enemyList.add(new Goblin(0, 128));
+            case 110 -> enemyList.add(new Goblin(0, 128));
+            case 115 -> enemyList.add(new Goblin(0, 128));
+            case 120 -> enemyList.add(new Goblin(0, 128));
+            case 125 -> enemyList.add(new Goblin(0, 128));
+            case 130 -> enemyList.add(new Goblin(0, 128));
+        }
+        // TEST: Place/upgrade towers at certain times
+        switch (globalTimer) {
+            case 30 -> towerList.get(0).levelUp(); // do nothing
+            case 60 -> towerList.get(1).placeBasic(towerList); // place basic tower
+            case 90 -> towerList.get(2).levelUp(); // upgrade tower to level 1
+            case 120 -> towerList.get(4).levelUp(); // upgrade tower to level 1
+            case 150 -> towerList.get(4).levelUp(); // upgrade tower to level 2
+            case 180 -> towerList.get(7).levelUp(); // upgrade tower to level 1
+            case 210 -> towerList.get(7).levelUp(); // upgrade tower to level 2
+            case 240 -> towerList.get(6).placeBasic(towerList); // place basic tower
+            case 270 -> towerList.get(7).levelUp(); // do nothing
+            default -> {
+            }
+        }
+
         // Process ticks for towers
         for (Tower tower : towerList) {
             tower.tick(enemyList);
         }
 
         // Process ticks for enemies
-
-        // ERROR OCCURS IN THIS FOR LOOP
-
         for (int i = 0; i < enemyList.size(); i++) {
             enemyList.get(i).tick(enemyList);
 
@@ -88,17 +108,11 @@ class GamePanel extends JPanel implements MouseListener {
             }
         }
 
-        // Remove any defeated enemies from enemyList
-        for (int i = 0; i < enemyList.size(); i++) {
-            if (enemyList.get(i) == null) {
-                enemyList.remove(i);
-                System.out.println("removed " + i);
-                i -= 1;
-            }
-        }
-
-        // Renders next frame
+        // Render next frame
         repaint();
+
+        // Increment global timer by 1
+        globalTimer++;
     }
 
     /**
@@ -120,7 +134,7 @@ class GamePanel extends JPanel implements MouseListener {
         if (mapImage != null) {
             g2d.drawImage(mapImage, 0, 0, getWidth(), getHeight(), this);
         }
-        
+
         // Draw all enemies
         for (Enemy enemy : enemyList) {
             g2d.drawImage(enemy.getImage(), enemy.getPosX() - 40, enemy.getPosY() - 40,
@@ -134,9 +148,20 @@ class GamePanel extends JPanel implements MouseListener {
         }
 
         // Draw range visuals
-        for (Tower tower : towerList) {
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setColor(Color.GRAY);
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+        g2d.setStroke(new BasicStroke(1));
 
+        for (Tower tower : towerList) {
+            int range = tower.getRange();
+            g2d.drawOval(tower.getPosX() - range, tower.getPosY() - range, range * 2, range * 2);
         }
+
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_OFF);
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
 
         // Draw round number label (not functional)
         g2d.setColor(Color.WHITE);

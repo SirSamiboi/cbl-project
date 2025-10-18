@@ -14,6 +14,7 @@ public class Tower {
     protected int damage;
     protected int range;
     protected int level;
+    protected int maxLevel;
     protected int timer;
     protected int cooldown;
     protected BufferedImage image;
@@ -38,7 +39,7 @@ public class Tower {
             image = ImageIO.read(new File("assets/tower0.png"));
         
         } catch (IOException e) {
-            System.out.println("Womp womp");
+            System.out.println("ERROR: Empty plot image could not be loaded");
             System.out.println(e);
             image = null;
         }
@@ -65,6 +66,10 @@ public class Tower {
         return level;
     }
 
+    int getMaxLevel() {
+        return maxLevel;
+    }
+
     BufferedImage getImage() {
         return image;
     }
@@ -87,5 +92,19 @@ public class Tower {
         return posY - imageHeight / 2 + imageOffsetY;
     }
 
-    public void tick(ArrayList<Enemy> enemyList) { }
+    void levelUp() { }
+
+    void tick(ArrayList<Enemy> enemyList) { }
+
+    /**
+     * Places a basic tower on this plot.
+     */
+    void placeBasic(ArrayList<Tower> towerList) {
+        for (int i = 0; i < towerList.size(); i++) {
+            Tower tower = towerList.get(i);
+            if (tower.getPosX() == posX && tower.getPosY() == posY) {
+                towerList.set(i, new BasicTower(posX, posY));
+            }
+        }
+    }
 }

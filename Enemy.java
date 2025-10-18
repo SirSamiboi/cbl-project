@@ -93,6 +93,8 @@ public class Enemy {
      * Also, it updates this.distanceTraveled to keep the distance this enemy passed
      */
 
+    // TODO: Replace += version with = version (always calculating final position)
+    // Reasoning: Enemies will be misaligned at high speeds
     public void move() {
         if (distanceTraveled <= 640 - 48) { // first horisontal stretch
             this.posX += this.speed;
