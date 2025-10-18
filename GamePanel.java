@@ -66,17 +66,26 @@ class GamePanel extends JPanel implements MouseListener {
         //TEST: Place enemies at certain times
         switch (globalTimer) {
             case 0 -> enemyList.add(new Goblin(0, 128));
-            case 15 -> enemyList.add(new Goblin(0, 128));
-            case 30 -> enemyList.add(new Goblin(0, 128));
+            case 15 -> enemyList.add(new Goblin(0, 123));
+            case 30 -> enemyList.add(new Goblin(0, 133));
             case 45 -> enemyList.add(new Goblin(0, 128));
+
             case 75 -> enemyList.add(new Goblin(0, 128));
-            case 85 -> enemyList.add(new Goblin(0, 128));
-            case 95 -> enemyList.add(new Goblin(0, 128));
-            case 110 -> enemyList.add(new Goblin(0, 128));
-            case 115 -> enemyList.add(new Goblin(0, 128));
+            case 85 -> enemyList.add(new Goblin(0, 133));
+            case 95 -> enemyList.add(new Goblin(0, 123));
+
+            case 110 -> enemyList.add(new Goblin(0, 123));
+            case 112 -> enemyList.add(new Goblin(0, 128));
+            case 114 -> enemyList.add(new Goblin(0, 133));
+            case 116 -> enemyList.add(new Goblin(0, 123));
+            case 118 -> enemyList.add(new Goblin(0, 133));
             case 120 -> enemyList.add(new Goblin(0, 128));
-            case 125 -> enemyList.add(new Goblin(0, 128));
-            case 130 -> enemyList.add(new Goblin(0, 128));
+            case 122 -> enemyList.add(new Goblin(0, 128));
+            case 124 -> enemyList.add(new Goblin(0, 123));
+            case 126 -> enemyList.add(new Goblin(0, 128));
+            case 128 -> enemyList.add(new Goblin(0, 133));
+
+            default -> { }
         }
         // TEST: Place/upgrade towers at certain times
         switch (globalTimer) {
@@ -89,8 +98,8 @@ class GamePanel extends JPanel implements MouseListener {
             case 210 -> towerList.get(7).levelUp(); // upgrade tower to level 2
             case 240 -> towerList.get(6).placeBasic(towerList); // place basic tower
             case 270 -> towerList.get(7).levelUp(); // do nothing
-            default -> {
-            }
+            
+            default -> { }
         }
 
         // Process ticks for towers

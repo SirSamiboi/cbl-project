@@ -16,8 +16,10 @@ class Main {
         frame.setVisible(true);
 
         // Setup game timer
-        // The game runs at a targeted 30 FPS, in practice this is 1000 / 33 = 30.3030... FPS
-        int delay = 1000 / 30;
+        // The game runs at a targeted 30 FPS
+        // In theory, 1000ms / 30FPS = 33ms per game tick is the target
+        // In practice, using 1000ms / 33ms = 30.3030... ms per tick is closer to 30FPS
+        int delay = 1000 / 33;
 
         Timer gameTimer = new Timer(delay, new ActionListener() {
             @Override
