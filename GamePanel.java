@@ -163,7 +163,7 @@ class GamePanel extends JPanel implements MouseListener {
                 RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setColor(Color.GRAY);
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
-        g2d.setStroke(new BasicStroke(1));
+        g2d.setStroke(new BasicStroke(2));
 
         for (Tower tower : towerList) {
             int range = tower.getRange();
@@ -204,6 +204,7 @@ class GamePanel extends JPanel implements MouseListener {
 
         boolean anySelected = false;
         int i = 0;
+
         do {
             Tower tower = towerList.get(i);
 
