@@ -156,7 +156,7 @@ class UpgradeButton {
      */
     boolean shouldDraw() {
         if (type == -1) {
-            return tower.getMaxLevel() != 0;
+            return tower.getMaxLevel() != 0 && tower.getLevel() < tower.getMaxLevel();
         } else {
             return tower.getMaxLevel() == 0;
         }
