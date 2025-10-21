@@ -24,21 +24,21 @@ class Main {
         int delay = 1000 / 33;
 
         Timer gameTimer = new Timer(delay, new ActionListener() {
-            @Override
             public int gameState = 0; // 0 for not started, 1 for in progress, 2 for win, 3 for loss.
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 switch (gameState) {
-                    case 0: // draw starting screen
+                    case 0: // draw the starting screen
                         
                         break;
-                    case 1: //draw game in progress tick
+                    case 1: //draw the game frame  
                         panel.updateGame();
                         break;
-                    case 2: // draw victory screen
+                    case 2: // draw the victory screen
 
                         break;
-                    case 3: //draw losing screen
+                    case 3: //draw the loss screen
 
                         break;
                     default:
