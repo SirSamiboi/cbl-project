@@ -20,6 +20,7 @@ public class Goblin extends Enemy {
         this.posY = posY;
         hp = 15;
         speed = 5;
+        money = 10;
         distanceTraveled = 0;
         try {
             image = ImageIO.read(new File("assets/goblin.png"));

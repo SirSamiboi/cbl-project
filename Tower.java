@@ -15,6 +15,7 @@ public class Tower {
     protected int range;
     protected int level;
     protected int maxLevel;
+    protected int upgradeCost;
     protected int timer;
     protected int cooldown;
     protected BufferedImage image;
@@ -30,6 +31,7 @@ public class Tower {
         this.posX = posX;
         this.posY = posY;
         this.level = 0;
+        this.maxLevel = 0;
         this.imageWidth = 62;
         this.imageHeight = 62;
         this.imageOffsetX = 2;
@@ -68,6 +70,10 @@ public class Tower {
 
     int getMaxLevel() {
         return maxLevel;
+    }
+
+    int getUpgradeCost() {
+        return upgradeCost;
     }
 
     BufferedImage getImage() {

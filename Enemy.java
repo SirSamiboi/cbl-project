@@ -14,8 +14,9 @@ public class Enemy {
     protected int posX;
     protected int posY;
     protected byte type; // 0 - standard, 1 - tank etc.
-    protected int speed; // displacement per frame? in pixels?
     protected int hp; // amount of lives the enemy has.
+    protected int speed; // displacement per frame? in pixels?
+    protected int money; // amount of money the enemy awards upon defeat
     protected int distanceTraveled; // used to determine, how far did the enemy travel
     // protected boolean ground; 
     // used to determine if the troop is a ground troop, or a flying troop.
@@ -29,16 +30,20 @@ public class Enemy {
         return image;
     }
 
+    public int getHp() {
+        return hp;
+    }
+
     public int getSpeed() {
         return speed;
     }
 
-    public int getDistanceTraveled() {
-        return distanceTraveled;
+    public int getMoney() {
+        return money;
     }
 
-    public int getHp() {
-        return hp;
+    public int getDistanceTraveled() {
+        return distanceTraveled;
     }
 
     public int getPosX() {
@@ -94,7 +99,7 @@ public class Enemy {
      */
 
     // TODO: Replace += version with = version (always calculating final position)
-    // Reasoning: Enemies will be misaligned at high speeds
+    // Reasoning: To avoid enemies being misaligned at high speeds
     public void move() {
         if (distanceTraveled <= 640 - 48) { // first horisontal stretch
             this.posX += this.speed;
