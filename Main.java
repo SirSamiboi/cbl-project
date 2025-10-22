@@ -5,6 +5,8 @@ import javax.swing.*;
 
 class Main {
     static void run() {
+        
+
         JFrame frame = new JFrame("Defender");
         GamePanel panel = new GamePanel();
         frame.add(panel);
@@ -22,9 +24,28 @@ class Main {
         int delay = 1000 / 33;
 
         Timer gameTimer = new Timer(delay, new ActionListener() {
+            public int gameState = 0; // 0 for not started, 1 for in progress, 2 for win, 3 for loss.
+
             @Override
             public void actionPerformed(ActionEvent e) {
-                panel.updateGame();
+                switch (gameState) {
+                    case 0: // draw the starting screen
+                        
+                        break;
+                    case 1: //draw the game frame  
+                        panel.updateGame();
+                        break;
+                    case 2: // draw the victory screen
+
+                        break;
+                    case 3: //draw the loss screen
+
+                        break;
+                    default:
+                        System.out.println("Womp Womp");
+                        System.out.println("Game State is not game stating");
+                }
+                
             }
         });
 
