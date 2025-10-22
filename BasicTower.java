@@ -75,7 +75,7 @@ class BasicTower extends Tower {
      * Handles the tower's actions over the next tick.
      */
     @Override
-    public void tick(ArrayList<Enemy> enemyList) {
+    public void tick(ArrayList<Enemy> enemyList, ArrayList<Animation> animationList) {
         // Check if the tower will attack this tick
         if (timer > 0) {
             timer -= 1;
@@ -104,9 +104,13 @@ class BasicTower extends Tower {
             return;
         }
 
+        Enemy targetEnemy = enemyList.get(targetIndex);
+
         timer = cooldown;
+        // Creates attack animation
+        animationList.add(new BasicAnimation(posX, posY - 52 - level * 6, targetEnemy, level));
         // Damage logic occurs inside Enemy object
-        enemyList.get(targetIndex).dealDamage(damage);
+        targetEnemy.dealDamage(damage);
     }
 
     /**

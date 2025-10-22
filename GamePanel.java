@@ -27,6 +27,7 @@ class GamePanel extends JPanel implements MouseListener {
         new UpgradeButton(-1, 0, 64),
         new UpgradeButton(0, 64, -32)
     };
+    public ArrayList<Animation> animationList = new ArrayList<>();
 
     public int waveNumber = 0;
     public int lengthOfTheWave;
@@ -115,7 +116,7 @@ class GamePanel extends JPanel implements MouseListener {
 
         // Process ticks for towers
         for (Tower tower : towerList) {
-            tower.tick(enemyList);
+            tower.tick(enemyList, animationList);
         }
 
         // Process ticks for enemies
@@ -126,6 +127,16 @@ class GamePanel extends JPanel implements MouseListener {
             if (enemy.getHp() <= 0) {
                 playerOne.setMoney(playerOne.getMoney() + enemy.getMoney());
                 enemy.die(enemyList);
+                i -= 1;
+            }
+        }
+
+        // Remove finished animations
+        for (int i = 0; i < animationList.size(); i++) {
+            Animation animation = animationList.get(i);
+            
+            if (animation.getTimer() >= animation.getDuration()) {
+                animationList.remove(animation);
                 i -= 1;
             }
         }
@@ -167,6 +178,21 @@ class GamePanel extends JPanel implements MouseListener {
         for (Tower tower : towerList) {
             g2d.drawImage(tower.getImage(), tower.getImageX(), tower.getImageY(),
                 tower.getImageWidth(), tower.getImageHeight(), this);
+        }
+
+        // Draw attack animations
+        for (int i = 0; i < animationList.size(); i++) {
+            int[] val = animationList.get(i).step();
+            // Basic tower attack (see BasicAnimation class for index values)
+            if (animationList.get(i).getId().substring(0, 1).equals("0")) {
+                g2d.setColor(new Color(val[6], val[7], val[8]));
+                g2d.setStroke(new BasicStroke(val[4]));
+                g2d.drawLine(val[0], val[1], val[2], val[3]);
+
+                g2d.setColor(new Color(192 + val[6] / 4, 192 + val[7] / 4, 192 + val[8] / 4));
+                g2d.setStroke(new BasicStroke(val[5]));
+                g2d.drawLine(val[0], val[1], val[2], val[3]);
+            }
         }
 
         if (selectedTower != -1) {
@@ -214,12 +240,12 @@ class GamePanel extends JPanel implements MouseListener {
             }
         }
 
-        // Draw round number label (not functional)
+        // Draw labels
         g2d.setColor(Color.WHITE);
         g2d.setFont(new Font("Arial", Font.BOLD, 20));
         g2d.drawString(String.format("Wave %d / 5", waveNumber), 10, 20);
         g2d.drawString(String.format("Player HP: %d", playerOne.getPlayerHp()), 10, 40);
-        g2d.drawString(String.format("Money™: %d", playerOne.getMoney()), 675, 20);
+        g2d.drawString(String.format("Money™: %d", playerOne.getMoney()), 650, 20);
     }
 
     

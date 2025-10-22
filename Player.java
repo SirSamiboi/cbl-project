@@ -1,6 +1,10 @@
+/**
+ * Handles the player's statistics.
+ */
+
 public class Player {
     private int playerHp = 10;
-    private int money = 50;
+    private int money = 5000;
 
     public int getMoney() {
         return money;

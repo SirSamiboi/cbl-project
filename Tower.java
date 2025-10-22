@@ -100,7 +100,7 @@ public class Tower {
 
     void levelUp() { }
 
-    void tick(ArrayList<Enemy> enemyList) { }
+    void tick(ArrayList<Enemy> enemyList, ArrayList<Animation> animationList) { }
 
     /**
      * Places a basic tower on this plot.
