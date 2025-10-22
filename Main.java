@@ -24,7 +24,7 @@ class Main {
         int delay = 1000 / 33;
 
         Timer gameTimer = new Timer(delay, new ActionListener() {
-            public int gameState = 0; // 0 for not started, 1 for in progress, 2 for win, 3 for loss.
+            public int gameState = 1; // 0 for not started, 1 for in progress, 2 for win, 3 for loss.
 
             @Override
             public void actionPerformed(ActionEvent e) {
