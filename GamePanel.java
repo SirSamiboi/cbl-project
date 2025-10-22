@@ -25,7 +25,8 @@ class GamePanel extends JPanel implements MouseListener {
     public ArrayList<Enemy> enemyList = new ArrayList<>();
     public UpgradeButton[] upgradeButtonList = {
         new UpgradeButton(-1, 0, 64),
-        new UpgradeButton(0, 64, -32)
+        new UpgradeButton(0, 68, -32),
+        new UpgradeButton(1, 76, 16)
     };
     public ArrayList<Animation> animationList = new ArrayList<>();
 
@@ -183,8 +184,20 @@ class GamePanel extends JPanel implements MouseListener {
         // Draw attack animations
         for (int i = 0; i < animationList.size(); i++) {
             int[] val = animationList.get(i).step();
+
             // Basic tower attack (see BasicAnimation class for index values)
             if (animationList.get(i).getId().substring(0, 1).equals("0")) {
+                g2d.setColor(new Color(val[6], val[7], val[8]));
+                g2d.setStroke(new BasicStroke(val[4]));
+                g2d.drawLine(val[0], val[1], val[2], val[3]);
+
+                g2d.setColor(new Color(192 + val[6] / 4, 192 + val[7] / 4, 192 + val[8] / 4));
+                g2d.setStroke(new BasicStroke(val[5]));
+                g2d.drawLine(val[0], val[1], val[2], val[3]);
+            
+            // Fireball tower attack (see FireballAnimation class for index values)
+            // Currently indentical to basic attack
+            } else if (animationList.get(i).getId().substring(0, 1).equals("1")) {
                 g2d.setColor(new Color(val[6], val[7], val[8]));
                 g2d.setStroke(new BasicStroke(val[4]));
                 g2d.drawLine(val[0], val[1], val[2], val[3]);

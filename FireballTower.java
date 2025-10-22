@@ -4,23 +4,25 @@ import java.util.*;
 import javax.imageio.ImageIO;
 
 /**
- * Basic tower type.
+ * Fireball tower type, which deals damage to a group of enemies.
  */
-class BasicTower extends Tower {
+class FireballTower extends Tower {
     // Note: Level 4 not implemented
-    private final int[] damageLevel = {5, 7, 10, 15}; // Index 0 holds damage dealt at level 1
-    private final int[] rangeLevel = {150, 175, 200, 225};
-    private final int[] cooldownLevel = {30, 20, 14, 10};
-    private final int[] upgradeCostLevel = {50, 100, 200};
+    private final int[] damageLevel = {8, 12, 16, 24}; // Index 0 holds damage dealt at level 1
+    private final int[] rangeLevel = {100, 125, 150, 175};
+    private final int[] cooldownLevel = {70, 60, 50, 40};
+    private final int[] upgradeCostLevel = {120, 200, 400};
     private final int[] imageWidthLevel = {64, 64, 64, 64};
     private final int[] imageHeightLevel = {128, 128, 128, 128};
     private final int[] imageOffsetXLevel = {2, 2, 2, 2};
     private final int[] imageOffsetYLevel = {-30, -30, -30, -30};
 
+    private int attackRadius = 32; // Size of the area in which the attack deals damage
+
     /**
      * Constructor.
      */
-    public BasicTower(int posX, int posY) {
+    public FireballTower(int posX, int posY) {
         super(posX, posY);
         damage = damageLevel[0]; // Damage dealt per hit
         range = rangeLevel[0]; // Radius of attack area in pixels
@@ -37,7 +39,7 @@ class BasicTower extends Tower {
     private void updateImage() {
         try {
             // The formatting is not necessary since the level starts at 0; just for consistency
-            String pathname = String.format("assets/tower0-%d.png", level);
+            String pathname = String.format("assets/tower1-%d.png", level);
             image = ImageIO.read(new File(pathname));
         
         } catch (IOException e) {
@@ -105,13 +107,22 @@ class BasicTower extends Tower {
         }
 
         Enemy targetEnemy = enemyList.get(targetIndex);
+        int targetX = enemyList.get(targetIndex).getPosX();
+        int targetY = enemyList.get(targetIndex).getPosY();
 
         timer = cooldown;
         // Create attack animation
         animationList.add(new BasicAnimation(posX, posY - 52 - level * 6, targetEnemy, level));
 
-        // Deal damage to target enemy
-        targetEnemy.dealDamage(damage);
+        // Deal damage to all enemies in area of attack
+        for (Enemy enemy : enemyList) {
+            int enemyX = enemy.getPosX();
+            int enemyY = enemy.getPosY();
+
+            if (inArea(enemyX, enemyY, targetX, targetY)) {
+                enemy.dealDamage(damage);
+            }
+        }
     }
 
     /**
@@ -122,5 +133,15 @@ class BasicTower extends Tower {
         double distanceY = Math.abs(enemyY - posY);
         double distance = Math.pow(Math.pow(distanceX, 2) + Math.pow(distanceY, 2), 0.5);
         return distance <= range;
+    }
+
+    /**
+     * Used by tick() to check if an enemy is within the area of effect of an attack.
+     */
+    boolean inArea(int enemyX, int enemyY, int targetX, int targetY) {
+        double distanceX = Math.abs(enemyX - targetX);
+        double distanceY = Math.abs(enemyY - targetY);
+        double distance = Math.pow(Math.pow(distanceX, 2) + Math.pow(distanceY, 2), 0.5);
+        return distance <= attackRadius;
     }
 }

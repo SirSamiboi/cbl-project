@@ -103,13 +103,25 @@ public class Tower {
     void tick(ArrayList<Enemy> enemyList, ArrayList<Animation> animationList) { }
 
     /**
-     * Places a basic tower on this plot.
+     * Places a basic tower on an empty plot.
      */
     void placeBasic(ArrayList<Tower> towerList) {
         for (int i = 0; i < towerList.size(); i++) {
             Tower tower = towerList.get(i);
             if (tower.getPosX() == posX && tower.getPosY() == posY) {
                 towerList.set(i, new BasicTower(posX, posY));
+            }
+        }
+    }
+
+    /**
+     * Places a fireball tower on an empty plot.
+     */
+    void placeFireball(ArrayList<Tower> towerList) {
+        for (int i = 0; i < towerList.size(); i++) {
+            Tower tower = towerList.get(i);
+            if (tower.getPosX() == posX && tower.getPosY() == posY) {
+                towerList.set(i, new FireballTower(posX, posY));
             }
         }
     }
