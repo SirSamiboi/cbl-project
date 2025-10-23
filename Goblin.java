@@ -19,7 +19,7 @@ public class Goblin extends Enemy {
         this.posX = posX;
         this.posY = posY;
         hp = 15;
-        speed = 5;
+        speed = 4;
         money = 10;
         distanceTraveled = 0;
         try {

@@ -5,20 +5,20 @@
 
 public class FireballAnimation extends Animation {
     // RGB color values for each tower level
-    private int[] outerRList = {255, 255, 255, 255};
-    private int[] outerGList = {196, 128, 0, 0};
-    private int[] outerBList = {0, 0, 0, 0};
+    private final int[] outerRList = {255, 255, 255, 255};
+    private final int[] outerGList = {196, 128, 0, 0};
+    private final int[] outerBList = {0, 0, 0, 0};
     
-    private int startX;
-    private int startY;
+    private final int startX;
+    private final int startY;
     private int endX;
     private int endY;
-    private Enemy targetEnemy;
+    private final Enemy targetEnemy;
     private int outerWidth;
     private int innerWidth;
-    private int outerR;
-    private int outerG;
-    private int outerB;
+    private final int outerR;
+    private final int outerG;
+    private final int outerB;
     private int circleSize;
 
     /**

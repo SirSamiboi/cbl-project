@@ -5,20 +5,20 @@
 
 public class BasicAnimation extends Animation {
     // RGB color values for each tower level
-    private int[] outerRList = {0, 255, 128};
-    private int[] outerGList = {255, 128, 255};
-    private int[] outerBList = {255, 0, 0};
+    private final int[] outerRList = {0, 255, 128, 255};
+    private final int[] outerGList = {255, 128, 255, 0};
+    private final int[] outerBList = {255, 0, 0, 212};
     
-    private int startX;
-    private int startY;
+    private final int startX;
+    private final int startY;
     private int endX;
     private int endY;
-    private Enemy targetEnemy;
+    private final Enemy targetEnemy;
     private int outerWidth;
     private int innerWidth;
-    private int outerR;
-    private int outerG;
-    private int outerB;
+    private final int outerR;
+    private final int outerG;
+    private final int outerB;
 
     /**
      * Constructor.

@@ -7,11 +7,10 @@ import javax.imageio.ImageIO;
  * Basic tower type.
  */
 class BasicTower extends Tower {
-    // Note: Level 4 not implemented
     private final int[] damageLevel = {5, 7, 10, 15}; // Index 0 holds damage dealt at level 1
-    private final int[] rangeLevel = {150, 175, 200, 225};
+    private final int[] rangeLevel = {140, 160, 180, 200};
     private final int[] cooldownLevel = {30, 20, 14, 10};
-    private final int[] upgradeCostLevel = {50, 100, 200};
+    private final int[] upgradeCostLevel = {50, 120, 300};
     private final int[] imageWidthLevel = {64, 64, 64, 64};
     private final int[] imageHeightLevel = {128, 128, 128, 128};
     private final int[] imageOffsetXLevel = {2, 2, 2, 2};
@@ -24,7 +23,7 @@ class BasicTower extends Tower {
         super(posX, posY);
         damage = damageLevel[0]; // Damage dealt per hit
         range = rangeLevel[0]; // Radius of attack area in pixels
-        maxLevel = 2;
+        maxLevel = 3;
         upgradeCost = upgradeCostLevel[0];
         cooldown = cooldownLevel[0]; // Cooldown in ticks (33ms, 30 ticks = 1 second)
         timer = 0;
@@ -108,7 +107,8 @@ class BasicTower extends Tower {
 
         timer = cooldown;
         // Create attack animation
-        animationList.add(new BasicAnimation(posX, posY - 52 - level * 6, targetEnemy, level));
+        animationList.add(new BasicAnimation(posX, posY - 53 - Math.min(level, 2) * 5,
+            targetEnemy, level));
 
         // Deal damage to target enemy
         targetEnemy.dealDamage(damage);

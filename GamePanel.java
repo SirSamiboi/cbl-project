@@ -211,10 +211,10 @@ class GamePanel extends JPanel implements MouseListener {
                     val[9] - 40, val[9] - 40);
                 g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
 
-                // Inner beam
-                g2d.setColor(new Color(128 + val[6] / 2, 128 + val[7] / 2, 128 + val[8] / 2));
-                g2d.setStroke(new BasicStroke(val[5]));
-                g2d.drawLine(val[0], val[1], val[2], val[3]);
+                // Inner beam (unused)
+                // g2d.setColor(new Color(val[6] * 7 / 8, val[7] * 7 / 8, val[8] * 7 / 8));
+                // g2d.setStroke(new BasicStroke(val[5]));
+                // g2d.drawLine(val[0], val[1], val[2], val[3]);
             }
         }
 

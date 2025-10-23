@@ -7,11 +7,10 @@ import javax.imageio.ImageIO;
  * Fireball tower type, which deals damage to a group of enemies.
  */
 class FireballTower extends Tower {
-    // Note: Level 4 not implemented
     private final int[] damageLevel = {8, 12, 16, 24}; // Index 0 holds damage dealt at level 1
-    private final int[] rangeLevel = {110, 130, 150, 170};
+    private final int[] rangeLevel = {120, 140, 160, 160};
     private final int[] cooldownLevel = {70, 60, 50, 40};
-    private final int[] upgradeCostLevel = {125, 200, 400};
+    private final int[] upgradeCostLevel = {125, 250, 450};
     private final int[] imageWidthLevel = {64, 64, 64, 64};
     private final int[] imageHeightLevel = {128, 128, 128, 128};
     private final int[] imageOffsetXLevel = {2, 2, 2, 2};
