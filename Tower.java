@@ -56,9 +56,9 @@ public class Tower {
         return posY;
     }
 
-    int getDamage() {
-        return damage;
-    }
+    // int getDamage() {
+    //     return damage;
+    // }
 
     int getRange() {
         return range;

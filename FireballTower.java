@@ -17,7 +17,7 @@ class FireballTower extends Tower {
     private final int[] imageOffsetXLevel = {0, 0, 0, 0};
     private final int[] imageOffsetYLevel = {-30, -30, -30, -30};
 
-    private int attackRadius = 80; // Radius of the area in which the attack deals damage
+    private final int attackRadius = 80; // Radius of the area in which the attack deals damage
 
     /**
      * Constructor.

@@ -19,8 +19,8 @@ class UpgradeButton {
     private final int offsetY; // y position relative to selected tower
     
     private final int[] widthList = {
-        64,
-        72,
+        56,
+        76,
         88
     };
 
@@ -60,21 +60,21 @@ class UpgradeButton {
         this.height = heightList[type + 1];
     }
     
-    int getPosX() {
-        return posX;
-    }
+    // int getPosX() {
+    //     return posX;
+    // }
 
-    int getPosY() {
-        return posY;
-    }
+    // int getPosY() {
+    //     return posY;
+    // }
 
-    int getTowerIndex() {
-        return towerIndex;
-    }
+    // int getTowerIndex() {
+    //     return towerIndex;
+    // }
 
-    Tower getTower() {
-        return tower;
-    }
+    // Tower getTower() {
+    //     return tower;
+    // }
 
     int getType() {
         return type;

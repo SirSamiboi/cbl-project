@@ -6,7 +6,7 @@
 public class DeathAnimation extends Animation {
     private final int posX;
     private final int posY;
-    private int money;
+    private final int money;
     private int size;
     private int opacity; // as %
 

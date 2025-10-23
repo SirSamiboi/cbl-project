@@ -99,8 +99,6 @@ public class Enemy {
 
     /**
      * Removes the Enemy object from the ArrayList of all enemies.
-     * TODO: Plays the death animation
-     * TODO?: Realocates memory(deletes the object entirely)?
      */
 
     public void die(ArrayList<Enemy> enemyList, ArrayList<Animation> animationList) {
@@ -110,17 +108,15 @@ public class Enemy {
     }
 
     /**
-     * Handles the enemy's movement along the path.
-     * 
-     * Yes, it is butt-ugly.
-     * No, I do not know, how to make it better.
-     * > I do :)
-     * 
-     * Also, it updates this.distanceTraveled to keep the distance this enemy passed
+     * Handles the enemy's movement along the path, and updates
+     * this.distanceTraveled to store the distance this enemy has travelled.
+     * We were thinking of replacing the += approach with a = approach instead,
+     * which would mean always calculating the final position of the enemy,
+     * as this would prevent enemies from being misaligned at high speeds,
+     * but this would cause an issue with the randomized enemy spawn positions
+     * and is not necessary for the enemies we have included in this game.
      */
 
-    // TODO: Replace += version with = version (always calculating final position)
-    // Reasoning: To avoid enemies being misaligned at high speeds
     public void move() {
         if (distanceTraveled <= 640 - 48) { // first horisontal stretch
             this.posX += this.speed;

@@ -36,7 +36,7 @@ class GamePanel extends JPanel implements MouseListener {
     public ArrayList<Animation> animationList = new ArrayList<>();
 
     public int waveNumber = 0;
-    public int lengthOfTheWave;
+    public int waveLength;
     // IDs of all enemies that will be spawned each wave
     public byte[][] perWaveEnemyTypes = {
         {},
@@ -47,19 +47,20 @@ class GamePanel extends JPanel implements MouseListener {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
     };
     // Timestamps of when enemies spawn each wave, relative to the last enemy, in ticks
+    // Index 0 is usually 0 because the first enemy spawns as soon as the wave begins
     public int[][] perWaveSpawnIntervals = {
         {},
-        {0, 30}, // Index 0 is 0 because the first enemy spawns as soon as the wave begins
-        {0, 15, 15, 15}, // For example, here a goblin enemy will spawn at 0, 15, 30, 45 ticks
+        {60, 30},
+        {0, 15, 15, 15}, // Here a goblin enemy will spawn at 0, 15, 30, 45 ticks
         {0, 10, 10, 10, 30, 10, 10, 10},
         {0, 24, 22, 20, 18, 16, 14, 12, 10, 8, 6, 4},
         {0, 15, 15, 15, 15, 15, 15, 15, 15, 15, 30, 10, 10, 10, 10, 10, 10, 10, 10, 10}
     };
     private int waveEmptyTime; // Timestamp of when a wave ended
-    private int waveDelayTime = 150; // 5 second delay before the next wave starts
+    private int waveDelayTime = 120; // 4 second delay before the next wave starts
     private int nextWaveTime; // Timestamp of when the next wave should start
     private ArrayList<Integer> enemySpawnTimes = new ArrayList<>();
-    private int enemiesSpawnedInTheWave;
+    private int waveEnemiesSpawned;
 
     /**
      * The panel element which contains all game elements shown on-screen.
@@ -99,7 +100,7 @@ class GamePanel extends JPanel implements MouseListener {
      */
     public void updateGame() {
         //Starting a new wave
-        if (enemyList.isEmpty() && enemiesSpawnedInTheWave == lengthOfTheWave) { // if all enemies are dead
+        if (enemyList.isEmpty() && waveEnemiesSpawned == waveLength) { // if all enemies are dead
             enemySpawnTimes.clear(); // resets the spawn timings for the next wave.
             waveNumber += 1; // moves the wave counter to the next wave
 
@@ -111,9 +112,8 @@ class GamePanel extends JPanel implements MouseListener {
             waveEmptyTime = globalTimer;
             // Sets the time at which the next wave will start
             nextWaveTime = waveEmptyTime + waveDelayTime;
-            lengthOfTheWave = perWaveEnemyTypes[waveNumber].length;
-            enemiesSpawnedInTheWave = 0;
-
+            waveLength = perWaveEnemyTypes[waveNumber].length;
+            waveEnemiesSpawned = 0;
             // Setup the spawn times for all enemies of the next wave
             int enemySpawnTime = nextWaveTime;
 
@@ -127,12 +127,14 @@ class GamePanel extends JPanel implements MouseListener {
         // Does not support multiple enemies spawning at once
         if (enemySpawnTimes.contains(globalTimer)) {
             // Spawns the enemy with the matching ID
-            switch (perWaveEnemyTypes[waveNumber][enemiesSpawnedInTheWave]) {
+            switch (perWaveEnemyTypes[waveNumber][waveEnemiesSpawned]) {
+
+
                 case (byte) 0 -> enemyList.add(new Goblin(0, 125 + (random.nextInt(11) - 5)));
 
                 default -> { }
             }
-            enemiesSpawnedInTheWave += 1;
+            waveEnemiesSpawned += 1;
         }
 
         // Process ticks for towers
@@ -178,12 +180,21 @@ class GamePanel extends JPanel implements MouseListener {
 
         Graphics2D g2d = (Graphics2D) g;
 
-        // Global antialiasing, disable if program underperforms
+        // Rendering hints
+        // Enable antialiasing
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
             RenderingHints.VALUE_ANTIALIAS_ON);
-        // g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-        //     RenderingHints.VALUE_INTERPOLATION_BICUBIC);
         
+        // Prioritise rendering speed
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+            RenderingHints.VALUE_RENDER_SPEED);
+
+        // Smoothen the pixel art, since the program does not truly run in 800x640 in practice
+        // This was discovered late into development, so to be completely honest,
+        // we did not consider it worth fixing
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+            RenderingHints.VALUE_INTERPOLATION_BILINEAR);     
+
         // Draw map image
         if (mapImage != null) {
             g2d.drawImage(mapImage, 0, 0, getWidth(), getHeight(), this);
@@ -195,11 +206,13 @@ class GamePanel extends JPanel implements MouseListener {
                  enemy.getImageWidth(), enemy.getImageHeight(), this);
         }
 
+    
         // Draw towers
         for (Tower tower : towerList) {
             g2d.drawImage(tower.getImage(), tower.getImageX(), tower.getImageY(),
                 tower.getImageWidth(), tower.getImageHeight(), this);
         }
+
 
         // Draw animations
         for (int i = 0; i < animationList.size(); i++) {
@@ -312,10 +325,10 @@ class GamePanel extends JPanel implements MouseListener {
 
         // Draw labels
         g2d.setColor(Color.WHITE);
-        g2d.setFont(new Font("Arial", Font.BOLD, 20));
-        g2d.drawString(String.format("Wave %d / 5", waveNumber), 10, 20);
-        g2d.drawString(String.format("Player HP: %d", playerOne.getPlayerHp()), 10, 40);
-        g2d.drawString(String.format("Gold: %d", playerOne.getMoney()), 675, 20);
+        g2d.setFont(new Font("Arial", Font.BOLD, 24));
+        g2d.drawString(String.format("Wave %d / 5", waveNumber), 10, 25);
+        g2d.drawString(String.format("Player HP: %d", playerOne.getPlayerHp()), 10, 50);
+        g2d.drawString(String.format("Gold: %d", playerOne.getMoney()), 665, 25);
     }
 
     

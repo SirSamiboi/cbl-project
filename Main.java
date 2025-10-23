@@ -34,21 +34,30 @@ class Main {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switch (gameState) {
-                    case 0: // draw the starting screen
-                        
-                        break;
-                    case 1: //draw the game frame  
+                    // draw the starting screen
+                    case 0 -> {
+
+                    }
+
+                    //draw the game frame
+                    case 1 -> {  
                         panel.updateGame();
-                        break;
-                    case 2: // draw the victory screen
+                    }
 
-                        break;
-                    case 3: //draw the loss screen
+                    // draw the victory screen
+                    case 2 -> {
 
-                        break;
-                    default:
+                    }
+
+                    //draw the loss screen
+                    case 3 -> {
+
+                    }
+
+                    default -> {
                         System.out.println("Womp Womp");
                         System.out.println("Game State is not game stating");
+                    }
                 }
                 
             }
