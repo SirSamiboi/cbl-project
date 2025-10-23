@@ -37,6 +37,7 @@ class GamePanel extends JPanel implements MouseListener {
 
     public int waveNumber = 0;
     public int lengthOfTheWave;
+    // IDs of all enemies that will be spawned each wave
     public byte[][] perWaveEnemyTypes = {
         {},
         {0, 0},
@@ -45,10 +46,18 @@ class GamePanel extends JPanel implements MouseListener {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
     };
-    private int waveEmptyTime; // This variable updates if the enemyList is empty
-    // All enemies are dead
+    // Timestamps of when enemies spawn each wave, relative to the last enemy, in ticks
+    public int[][] perWaveSpawnIntervals = {
+        {},
+        {0, 30}, // Index 0 is 0 because the first enemy spawns as soon as the wave begins
+        {0, 15, 15, 15}, // For example, here a goblin enemy will spawn at 0, 15, 30, 45 ticks
+        {0, 10, 10, 10, 30, 10, 10, 10},
+        {0, 24, 22, 20, 18, 16, 14, 12, 10, 8, 6, 4},
+        {0, 15, 15, 15, 15, 15, 15, 15, 15, 15, 30, 10, 10, 10, 10, 10, 10, 10, 10, 10}
+    };
+    private int waveEmptyTime; // Timestamp of when a wave ended
     private int waveDelayTime = 150; // 5 second delay before the next wave starts
-    private int nextWaveTime; // the time in ticks when the next wave should start
+    private int nextWaveTime; // Timestamp of when the next wave should start
     private ArrayList<Integer> enemySpawnTimes = new ArrayList<>();
     private int enemiesSpawnedInTheWave;
 
@@ -89,10 +98,8 @@ class GamePanel extends JPanel implements MouseListener {
      * Game update logic, called by Timer.
      */
     public void updateGame() {
-        //TEST: Place enemies at certain times
-
         //Starting a new wave
-        if (enemyList.isEmpty() && globalTimer % 300 == 0) { // if all enemies are dead
+        if (enemyList.isEmpty() && enemiesSpawnedInTheWave == lengthOfTheWave) { // if all enemies are dead
             enemySpawnTimes.clear(); // resets the spawn timings for the next wave.
             waveNumber += 1; // moves the wave counter to the next wave
 
@@ -102,19 +109,27 @@ class GamePanel extends JPanel implements MouseListener {
             }
 
             waveEmptyTime = globalTimer;
-            nextWaveTime = waveEmptyTime + waveDelayTime; // Set the time, when the next wave starts
+            // Sets the time at which the next wave will start
+            nextWaveTime = waveEmptyTime + waveDelayTime;
             lengthOfTheWave = perWaveEnemyTypes[waveNumber].length;
             enemiesSpawnedInTheWave = 0;
 
-            for (int i = 0; i < lengthOfTheWave; i++) {
-                // Setup the spawn times for all enemies of the next wave
-                enemySpawnTimes.add(nextWaveTime + i * 15);
+            // Setup the spawn times for all enemies of the next wave
+            int enemySpawnTime = nextWaveTime;
+
+            for (int enemySpawnDelay : perWaveSpawnIntervals[waveNumber]) {
+                enemySpawnTime += enemySpawnDelay;
+                enemySpawnTimes.add(enemySpawnTime);
             }
         }
 
+        // If block runs when an enemy is to be spawned
+        // Does not support multiple enemies spawning at once
         if (enemySpawnTimes.contains(globalTimer)) {
-            switch (perWaveEnemyTypes[waveNumber][enemiesSpawnedInTheWave]){
+            // Spawns the enemy with the matching ID
+            switch (perWaveEnemyTypes[waveNumber][enemiesSpawnedInTheWave]) {
                 case (byte) 0 -> enemyList.add(new Goblin(0, 125 + (random.nextInt(11) - 5)));
+
                 default -> { }
             }
             enemiesSpawnedInTheWave += 1;
@@ -192,7 +207,7 @@ class GamePanel extends JPanel implements MouseListener {
             
             switch (animationList.get(i).getId().substring(0, 1)) {
                 // Basic tower attack (see BasicAnimation class for index values)
-                case "0":
+                case "0" -> {
                     // Outer beam
                     g2d.setColor(new Color(val[6], val[7], val[8]));
                     g2d.setStroke(new BasicStroke(val[4]));
@@ -201,11 +216,10 @@ class GamePanel extends JPanel implements MouseListener {
                     g2d.setColor(new Color(192 + val[6] / 4, 192 + val[7] / 4, 192 + val[8] / 4));
                     g2d.setStroke(new BasicStroke(val[5]));
                     g2d.drawLine(val[0], val[1], val[2], val[3]);
-                    
-                    break;
+                }
 
                 // Fireball tower attack (see FireballAnimation)
-                case "1":
+                case "1" -> {
                     // Outer beam
                     g2d.setColor(new Color(val[6], val[7], val[8]));
                     g2d.setStroke(new BasicStroke(val[4]));
@@ -221,22 +235,19 @@ class GamePanel extends JPanel implements MouseListener {
                     // g2d.setColor(new Color(val[6] * 7 / 8, val[7] * 7 / 8, val[8] * 7 / 8));
                     // g2d.setStroke(new BasicStroke(val[5]));
                     // g2d.drawLine(val[0], val[1], val[2], val[3]);
-                    
-                    break;
+                }
                 
                 // Enemy death animation (see DeathAnimation)
-                case "X":
+                case "X" -> {
                     g2d.setColor(new Color(255, 255, 128));
                     g2d.setFont(new Font("Arial", Font.BOLD, val[3]));
                     g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
                             (float) val[4] / 100));
                     g2d.drawString("+" + val[2] + "G", val[0] - val[3], val[1] - val[3]);
                     g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+                }
 
-                    break;
-
-                default:
-                    break;
+                default -> { }
             }
         }
 
