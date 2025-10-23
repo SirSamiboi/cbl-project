@@ -29,9 +29,9 @@ class GamePanel extends JPanel implements MouseListener {
     public ArrayList<Tower> towerList = new ArrayList<>();
     public ArrayList<Enemy> enemyList = new ArrayList<>();
     public UpgradeButton[] upgradeButtonList = {
-        new UpgradeButton(-1, 0, 64),
-        new UpgradeButton(0, 68, -32),
-        new UpgradeButton(1, 76, 16)
+        new UpgradeButton(-1, 0, 56),
+        new UpgradeButton(0, 76, -24),
+        new UpgradeButton(1, 82, 16)
     };
     public ArrayList<Animation> animationList = new ArrayList<>();
 
