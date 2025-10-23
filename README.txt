@@ -1,3 +1,6 @@
+Welcome to Magic Defender!
+In this game, your goal is to ... (finish this later)
+
 Asset sources:
 
 craftpix.net via itch.io - 2D Tileset Pixel Art for TD Free Pack

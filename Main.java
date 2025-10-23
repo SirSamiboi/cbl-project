@@ -12,7 +12,7 @@ import javax.swing.*;
 
 class Main {
     static void run() {
-        JFrame frame = new JFrame("Defender");
+        JFrame frame = new JFrame("Magic Defender");
         GamePanel panel = new GamePanel();
         frame.add(panel);
 
