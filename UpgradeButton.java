@@ -1,11 +1,17 @@
 import java.awt.*;
 import java.util.*;
 
+/**
+ * Allows the player to interact with tower plots, to build a certain type of tower,
+ * and upgrade the tower currently on the selected plot, provided the player has enough
+ * money to perform their actions.
+ */
+
 class UpgradeButton {
     private int posX;
     private int posY;
-    private int towerIndex = -1;
-    private Tower tower;
+    private int towerIndex = -1; // Index of currently selected tower
+    private Tower tower; // Currently selected tower
     private final int type; // -1 for upgrades, otherwise tower type
     private final int width;
     private final int height;

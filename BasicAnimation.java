@@ -1,5 +1,5 @@
 /**
- * Attack animation values for basic towers.
+ * Animation values for a basic tower attack.
  * Consists of a thin bright beam layered on top of a thick solid beam.
  */
 

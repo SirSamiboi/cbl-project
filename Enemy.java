@@ -3,8 +3,7 @@ import java.util.*;
 
 
 /**
- * Class that stores all enemies interractions and stores data about the instance
- * enemy.
+ * Class that stores all enemies interactions and stores data about the instance enemy.
  */
 
 public class Enemy {

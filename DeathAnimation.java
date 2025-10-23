@@ -1,6 +1,6 @@
 /**
  * Animation for the death of an enemy.
- * Consists of a fading text pop-up showing the money earned by the enemy's defeat.
+ * Consists of a fading text pop-up which shows the money earned by the enemy's defeat.
  */
 
 public class DeathAnimation extends Animation {

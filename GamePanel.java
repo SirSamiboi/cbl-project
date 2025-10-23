@@ -8,9 +8,14 @@ import java.util.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+/**
+ * GamePanel is an extension of JPanel in which a game round is fully contained and controlled.
+ * This includes processing game logic, handling user input and updating the screen every tick.
+ */
+
 class GamePanel extends JPanel implements MouseListener {
     Random random = new Random();
-    Player playerOne = new Player();
+    Player playerOne = new Player(); // Used to store player statistics
 
     private BufferedImage mapImage;
 
@@ -227,7 +232,7 @@ class GamePanel extends JPanel implements MouseListener {
                             (float) val[4] / 100));
                     g2d.drawString("+" + val[2] + "G", val[0] - val[3], val[1] - val[3]);
                     g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
-                    
+
                     break;
 
                 default:

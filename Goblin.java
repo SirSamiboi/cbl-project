@@ -7,14 +7,10 @@ import javax.imageio.ImageIO;
  */
 
 public class Goblin extends Enemy {
+
     /**
      * Constructor for the Goblin class at the starting position.
-     * @param posX
-     *     Starting position X.
-     * @param posY
-     *     Starting position Y.
      */
-
     public Goblin(int posX, int posY) {
         this.posX = posX;
         this.posY = posY;

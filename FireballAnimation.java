@@ -1,5 +1,5 @@
 /**
- * Attack animation values for fireball towers.
+ * Animation values for a fireball tower attack.
  * Consists of a solid beam and a circular explosion effect.
  */
 

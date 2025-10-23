@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
-
 /**
- * Class used for handling all tower interactions.
+ * Class used for handling all tower variables and interactions.
  */
+
 public class Tower {
     protected int posX;
     protected int posY;
@@ -97,7 +97,7 @@ public class Tower {
     int getImageY() {
         return posY - imageHeight / 2 + imageOffsetY;
     }
-
+    
     void levelUp() { }
 
     void tick(ArrayList<Enemy> enemyList, ArrayList<Animation> animationList) { }
