@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 class BasicTower extends Tower {
     private final int[] damageLevel = {5, 7, 10, 15}; // Index 0 holds damage dealt at level 1
     private final int[] rangeLevel = {140, 160, 180, 200};
-    private final int[] cooldownLevel = {30, 20, 14, 10};
+    private final int[] cooldownLevel = {30, 20, 15, 12};
     private final int[] upgradeCostLevel = {50, 120, 300};
     private final int[] imageWidthLevel = {64, 64, 64, 64};
     private final int[] imageHeightLevel = {128, 128, 128, 128};
@@ -21,12 +21,12 @@ class BasicTower extends Tower {
      */
     public BasicTower(int posX, int posY) {
         super(posX, posY);
-        damage = damageLevel[0]; // Damage dealt per hit
-        range = rangeLevel[0]; // Radius of attack area in pixels
-        maxLevel = 3;
-        upgradeCost = upgradeCostLevel[0];
-        cooldown = cooldownLevel[0]; // Cooldown in ticks (33ms, 30 ticks = 1 second)
-        timer = 0;
+        this.damage = damageLevel[0]; // Damage dealt per hit
+        this.range = rangeLevel[0]; // Radius of attack area in pixels
+        this.maxLevel = 3;
+        this.upgradeCost = upgradeCostLevel[0];
+        this.cooldown = cooldownLevel[0]; // Cooldown in ticks (33ms, 30 ticks = 1 second)
+        this.timer = 0;
         updateImage();
     }
 

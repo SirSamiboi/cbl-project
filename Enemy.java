@@ -14,7 +14,9 @@ public class Enemy {
     protected int posX;
     protected int posY;
     protected byte type; // 0 - standard, 1 - tank etc.
-    protected int hp; // amount of lives the enemy has.
+    protected int hp; // amount of lives the enemy has
+    protected int maxHp; // initial amount of lives
+    protected int damage; // damage dealt by enemy upon reaching end of track
     protected int speed; // displacement per frame? in pixels?
     protected int money; // amount of money the enemy awards upon defeat
     protected int distanceTraveled; // used to determine, how far did the enemy travel
@@ -22,6 +24,11 @@ public class Enemy {
     // used to determine if the troop is a ground troop, or a flying troop.
 
     protected BufferedImage image; // Enemy texture.
+    protected int imageWidth;
+    protected int imageHeight;
+    protected int imageOffsetX;
+    protected int imageOffsetY;
+
     protected int timer; // Counts up by 1 every frame
     protected int timerLimit; // Number of frames between each attack
 
@@ -32,6 +39,14 @@ public class Enemy {
 
     public int getHp() {
         return hp;
+    }
+
+    public int getMaxHp() {
+        return maxHp;
+    }
+
+    public int getDamage() {
+        return damage;
     }
 
     public int getSpeed() {
@@ -56,6 +71,24 @@ public class Enemy {
 
     public int getType() {
         return type;
+    }
+
+    int getImageWidth() {
+        return imageWidth;
+    }
+
+    int getImageHeight() {
+        return imageHeight;
+    }
+
+    // Returns the x position of the tower's image
+    int getImageX() {
+        return posX - imageWidth / 2 + imageOffsetX;
+    }
+
+    // Returns the y position of the tower's image
+    int getImageY() {
+        return posY - imageHeight / 2 + imageOffsetY;
     }
 
     /**
@@ -83,7 +116,7 @@ public class Enemy {
         } catch (IOException e) {
             System.out.println("Couldn't load the death texture");
             System.out.println(e);
-            image = null;
+            this.image = null;
         }
         //TODO: play the death animation, relocate memory.
     }
@@ -149,7 +182,7 @@ public class Enemy {
         move();
 
         if (this.posX >= 800) { // if it passed the entire track
-            player.setPlayerHp((player.getPlayerHp() - 1)); //deal 1 damage to the player
+            player.setPlayerHp((player.getPlayerHp() - damage)); // Deal 1 damage to the player
             this.hp = 0;
 
             System.out.println("Another one lost to The Zone");

@@ -23,12 +23,12 @@ class FireballTower extends Tower {
      */
     public FireballTower(int posX, int posY) {
         super(posX, posY);
-        damage = damageLevel[0]; // Damage dealt per hit
-        range = rangeLevel[0]; // Radius of attack area in pixels
-        maxLevel = 3;
-        upgradeCost = upgradeCostLevel[0];
-        cooldown = cooldownLevel[0]; // Cooldown in ticks (33ms, 30 ticks = 1 second)
-        timer = 0;
+        this.damage = damageLevel[0]; // Damage dealt per hit
+        this.range = rangeLevel[0]; // Radius of attack area in pixels
+        this.maxLevel = 3;
+        this.upgradeCost = upgradeCostLevel[0];
+        this.cooldown = cooldownLevel[0]; // Cooldown in ticks (33ms, 30 ticks = 1 second)
+        this.timer = 0;
         updateImage();
     }
 

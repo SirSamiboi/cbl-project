@@ -5,8 +5,6 @@ import javax.swing.*;
 
 class Main {
     static void run() {
-        
-
         JFrame frame = new JFrame("Defender");
         GamePanel panel = new GamePanel();
         frame.add(panel);

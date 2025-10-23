@@ -54,12 +54,12 @@ class GamePanel extends JPanel implements MouseListener {
     public GamePanel() {
         // Load map image if possible
         try {
-            mapImage = ImageIO.read(new File("assets/map1.png"));
+            this.mapImage = ImageIO.read(new File("assets/map1.png"));
             
         } catch (IOException e) {
             System.out.println("ERROR: Map image could not be loaded");
             System.out.println(e);
-            mapImage = null;
+            this.mapImage = null;
         }
         
         // Register GamePanel to receive mouse events
@@ -171,8 +171,8 @@ class GamePanel extends JPanel implements MouseListener {
 
         // Draw all enemies
         for (Enemy enemy : enemyList) {
-            g2d.drawImage(enemy.getImage(), enemy.getPosX() - 40, enemy.getPosY() - 40,
-                 80, 80, this);
+            g2d.drawImage(enemy.getImage(), enemy.getImageX(), enemy.getImageY(),
+                 enemy.getImageWidth(), enemy.getImageHeight(), this);
         }
 
         // Draw all towers
@@ -218,6 +218,19 @@ class GamePanel extends JPanel implements MouseListener {
             }
         }
 
+        // Draw health bars
+        for (Enemy enemy : enemyList) {
+            g2d.setColor(Color.BLACK);
+            int posX = enemy.getPosX();
+            int posY = enemy.getPosY();
+            int width = enemy.getMaxHp();
+            g2d.fillRect(posX - width / 2, posY - enemy.getImageHeight(), width, 10);
+            g2d.setColor(Color.RED);
+            g2d.fillRect(posX - width / 2 + 2, posY - enemy.getImageHeight() + 2,
+                (width - 4) * enemy.getHp() / enemy.getMaxHp(), 6);
+        }
+
+        // These are drawn while a tower is selected
         if (selectedTower != -1) {
             Tower tower = towerList.get(selectedTower);
 

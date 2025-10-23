@@ -18,15 +18,22 @@ public class Goblin extends Enemy {
     public Goblin(int posX, int posY) {
         this.posX = posX;
         this.posY = posY;
-        hp = 15;
-        speed = 4;
-        money = 10;
-        distanceTraveled = 0;
+        this.imageWidth = 36;
+        this.imageHeight = 48;
+        this.imageOffsetX = 0;
+        this.imageOffsetY = 0;
+        this.maxHp = 15;
+        this.hp = maxHp;
+        this.damage = 1;
+        this.speed = 4;
+        this.money = 10;
+        this.distanceTraveled = 0;
+
         try {
-            image = ImageIO.read(new File("assets/goblin.png"));
+            this.image = ImageIO.read(new File("assets/goblin.png"));
         } catch (IOException e) {
             System.out.println("Couldn't load the Goblin texture");
-            image = null;
+            this.image = null;
         }
     }
 }

@@ -38,12 +38,12 @@ public class Tower {
         this.imageOffsetY = 2;
 
         try {
-            image = ImageIO.read(new File("assets/tower0.png"));
+            this.image = ImageIO.read(new File("assets/tower0.png"));
         
         } catch (IOException e) {
             System.out.println("ERROR: Empty plot image could not be loaded");
             System.out.println(e);
-            image = null;
+            this.image = null;
         }
     }
 
