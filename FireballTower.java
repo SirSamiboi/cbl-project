@@ -112,7 +112,7 @@ class FireballTower extends Tower {
 
         timer = cooldown;
         // Create attack animation
-        animationList.add(new FireballAnimation(posX, posY - 52 - level * 6, targetEnemy, level));
+        animationList.add(new FireballAnimation(posX, posY - 64, targetEnemy, level));
 
         // Deal damage to all enemies in area of attack
         for (Enemy enemy : enemyList) {

@@ -6,7 +6,7 @@
 public class FireballAnimation extends Animation {
     // RGB color values for each tower level
     private int[] outerRList = {255, 255, 255, 255};
-    private int[] outerGList = {192, 128, 64, 0};
+    private int[] outerGList = {196, 128, 0, 0};
     private int[] outerBList = {0, 0, 0, 0};
     
     private int startX;
@@ -43,12 +43,12 @@ public class FireballAnimation extends Animation {
     @Override
     int[] step() {
         if (timer < 5) {
-            outerWidth = 10;
+            outerWidth = 6;
         } else {
-            outerWidth = (int) (10 * (1 - Math.pow((double) (timer - 5) / 10, 3)));
+            outerWidth = (int) (6 * (1 - Math.pow((double) (timer - 5) / 10, 3)));
         }
-        innerWidth = Math.max(0, outerWidth - 5);
-        circleSize = (int) (160 * (1 - Math.pow((double) timer / 15, 3)));
+        innerWidth = Math.max(0, outerWidth - 3);
+        circleSize = (int) (150 * (1 - Math.pow((double) timer / 15, 3)));
 
         endX = targetEnemy.getPosX();
         endY = targetEnemy.getPosY();
