@@ -303,7 +303,24 @@ class GamePanel extends JPanel implements MouseListener {
                     int ubW = ub.getWidth();
                     int ubH = ub.getHeight();
 
-                    g2d.setColor(ub.getColor());
+                    // Button will be transparent if tower cannot be built
+                    if (ub.getType() != -1
+                        && playerOne.getMoney() < ub.getBuildCost()) {
+                        g2d.setColor(ub.getColor());
+                        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+                            0.5f));
+
+                    // Button will be transparent and grayed out if upgrade cannot be bought
+                    } else if (playerOne.getMoney() < tower.getUpgradeCost()) {
+                        g2d.setColor(Color.GRAY);
+                        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+                            0.5f));
+
+                    } else {
+                        g2d.setColor(ub.getColor());
+                        
+                    }
+
                     g2d.fillRect(ubX, ubY, ubW, ubH);
                     
                     g2d.setColor(Color.BLACK);
@@ -319,6 +336,8 @@ class GamePanel extends JPanel implements MouseListener {
                         g2d.drawString("Cost: " + ub.getBuildCost(),
                             ubX + 4, ubY + ubH / 2 + 12);
                     }
+
+                    g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
                 }
             }
         }
