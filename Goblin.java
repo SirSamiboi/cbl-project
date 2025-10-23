@@ -19,7 +19,7 @@ public class Goblin extends Enemy {
         this.posX = posX;
         this.posY = posY;
         this.imageWidth = 36;
-        this.imageHeight = 48;
+        this.imageHeight = 47;
         this.imageOffsetX = 0;
         this.imageOffsetY = 0;
         this.maxHp = 15;

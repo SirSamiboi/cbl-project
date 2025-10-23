@@ -1,6 +1,6 @@
 /**
  * Attack animation values for basic towers.
- * The animation consists of a colored border
+ * Consists of a thin bright beam layered on top of a thick solid beam.
  */
 
 public class BasicAnimation extends Animation {

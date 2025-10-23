@@ -1,8 +1,5 @@
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
-import javax.imageio.ImageIO;
 
 
 /**
@@ -107,18 +104,10 @@ public class Enemy {
      * TODO?: Realocates memory(deletes the object entirely)?
      */
 
-    public void die(ArrayList<Enemy> enemyList) {
+    public void die(ArrayList<Enemy> enemyList, ArrayList<Animation> animationList) {
         this.speed = 0;
+        animationList.add(new DeathAnimation(posX, posY, money));
         enemyList.remove(this);
-        
-        try {
-            this.image = ImageIO.read(new File("assets/Explosion_5.png"));
-        } catch (IOException e) {
-            System.out.println("Couldn't load the death texture");
-            System.out.println(e);
-            this.image = null;
-        }
-        //TODO: play the death animation, relocate memory.
     }
 
     /**

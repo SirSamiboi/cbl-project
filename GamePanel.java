@@ -127,7 +127,7 @@ class GamePanel extends JPanel implements MouseListener {
 
             if (enemy.getHp() <= 0) {
                 playerOne.setMoney(playerOne.getMoney() + enemy.getMoney());
-                enemy.die(enemyList);
+                enemy.die(enemyList, animationList);
                 i -= 1;
             }
         }
@@ -169,52 +169,69 @@ class GamePanel extends JPanel implements MouseListener {
             g2d.drawImage(mapImage, 0, 0, getWidth(), getHeight(), this);
         }
 
-        // Draw all enemies
+        // Draw enemies
         for (Enemy enemy : enemyList) {
             g2d.drawImage(enemy.getImage(), enemy.getImageX(), enemy.getImageY(),
                  enemy.getImageWidth(), enemy.getImageHeight(), this);
         }
 
-        // Draw all towers
+        // Draw towers
         for (Tower tower : towerList) {
             g2d.drawImage(tower.getImage(), tower.getImageX(), tower.getImageY(),
                 tower.getImageWidth(), tower.getImageHeight(), this);
         }
 
-        // Draw attack animations
+        // Draw animations
         for (int i = 0; i < animationList.size(); i++) {
             int[] val = animationList.get(i).step();
-
-            // Basic tower attack (see BasicAnimation class for index values)
-            if (animationList.get(i).getId().substring(0, 1).equals("0")) {
-                // Outer beam
-                g2d.setColor(new Color(val[6], val[7], val[8]));
-                g2d.setStroke(new BasicStroke(val[4]));
-                g2d.drawLine(val[0], val[1], val[2], val[3]);
-
-                // Inner beam
-                g2d.setColor(new Color(192 + val[6] / 4, 192 + val[7] / 4, 192 + val[8] / 4));
-                g2d.setStroke(new BasicStroke(val[5]));
-                g2d.drawLine(val[0], val[1], val[2], val[3]);
             
-            // Fireball tower attack (see FireballAnimation class for index values)
-            } else if (animationList.get(i).getId().substring(0, 1).equals("1")) {
-                // Outer beam
-                g2d.setColor(new Color(val[6], val[7], val[8]));
-                g2d.setStroke(new BasicStroke(val[4]));
-                g2d.drawLine(val[0], val[1], val[2], val[3]);
+            switch (animationList.get(i).getId().substring(0, 1)) {
+                // Basic tower attack (see BasicAnimation class for index values)
+                case "0":
+                    // Outer beam
+                    g2d.setColor(new Color(val[6], val[7], val[8]));
+                    g2d.setStroke(new BasicStroke(val[4]));
+                    g2d.drawLine(val[0], val[1], val[2], val[3]);
+                    // Inner beam
+                    g2d.setColor(new Color(192 + val[6] / 4, 192 + val[7] / 4, 192 + val[8] / 4));
+                    g2d.setStroke(new BasicStroke(val[5]));
+                    g2d.drawLine(val[0], val[1], val[2], val[3]);
+                    
+                    break;
 
-                // Explosion circle
-                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
-                g2d.fillOval(val[2] - val[9] / 2, val[3] - val[9] / 2, val[9], val[9]);
-                g2d.fillOval(val[2] - val[9] / 2 + 20, val[3] - val[9] / 2 + 20,
-                    val[9] - 40, val[9] - 40);
-                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+                // Fireball tower attack (see FireballAnimation)
+                case "1":
+                    // Outer beam
+                    g2d.setColor(new Color(val[6], val[7], val[8]));
+                    g2d.setStroke(new BasicStroke(val[4]));
+                    g2d.drawLine(val[0], val[1], val[2], val[3]);
+                    // Explosion circle
+                    g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+                    g2d.fillOval(val[2] - val[9] / 2, val[3] - val[9] / 2, val[9], val[9]);
+                    g2d.fillOval(val[2] - val[9] / 2 + 20, val[3] - val[9] / 2 + 20,
+                            val[9] - 40, val[9] - 40);
+                    g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+                    
+                    // Inner beam (unused)
+                    // g2d.setColor(new Color(val[6] * 7 / 8, val[7] * 7 / 8, val[8] * 7 / 8));
+                    // g2d.setStroke(new BasicStroke(val[5]));
+                    // g2d.drawLine(val[0], val[1], val[2], val[3]);
+                    
+                    break;
+                
+                // Enemy death animation (see DeathAnimation)
+                case "X":
+                    g2d.setColor(new Color(255, 255, 128));
+                    g2d.setFont(new Font("Arial", Font.BOLD, val[3]));
+                    g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+                            (float) val[4] / 100));
+                    g2d.drawString("+" + val[2] + "G", val[0] - val[3], val[1] - val[3]);
+                    g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+                    
+                    break;
 
-                // Inner beam (unused)
-                // g2d.setColor(new Color(val[6] * 7 / 8, val[7] * 7 / 8, val[8] * 7 / 8));
-                // g2d.setStroke(new BasicStroke(val[5]));
-                // g2d.drawLine(val[0], val[1], val[2], val[3]);
+                default:
+                    break;
             }
         }
 
@@ -223,7 +240,8 @@ class GamePanel extends JPanel implements MouseListener {
             g2d.setColor(Color.BLACK);
             int posX = enemy.getPosX();
             int posY = enemy.getPosY();
-            int width = enemy.getMaxHp();
+            // Health bar size increases logarithmically with enemy health
+            int width = (int) Math.pow(6 * enemy.getMaxHp() + 1, 0.6);
             g2d.fillRect(posX - width / 2, posY - enemy.getImageHeight(), width, 10);
             g2d.setColor(Color.RED);
             g2d.fillRect(posX - width / 2 + 2, posY - enemy.getImageHeight() + 2,
@@ -281,7 +299,7 @@ class GamePanel extends JPanel implements MouseListener {
         g2d.setFont(new Font("Arial", Font.BOLD, 20));
         g2d.drawString(String.format("Wave %d / 5", waveNumber), 10, 20);
         g2d.drawString(String.format("Player HP: %d", playerOne.getPlayerHp()), 10, 40);
-        g2d.drawString(String.format("Money™: %d", playerOne.getMoney()), 650, 20);
+        g2d.drawString(String.format("Gold: %d", playerOne.getMoney()), 675, 20);
     }
 
     
@@ -305,7 +323,7 @@ class GamePanel extends JPanel implements MouseListener {
         lastClickX = e.getX();
         lastClickY = e.getY();
         
-        System.out.println("Click registered at: (" + lastClickX + ", " + lastClickY + ")");
+        // System.out.println("Click registered at: (" + lastClickX + ", " + lastClickY + ")");
         
         // Logic for button clicks
         boolean anyButtonClicked = false;
@@ -315,7 +333,7 @@ class GamePanel extends JPanel implements MouseListener {
             UpgradeButton ub = upgradeButtonList[i];
 
             if (ub.isClicked(lastClickX, lastClickY)) {
-                // If block runs when Button is clicked
+                // If block runs when button is clicked
                 if (selectedButton != i) {
                     System.out.println("Button " + i + " has been clicked");
                 }

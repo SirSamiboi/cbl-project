@@ -4,8 +4,9 @@ import java.util.*;
 import javax.imageio.ImageIO;
 
 /**
- * Basic tower type.
+ * Basic tower type, which deals damage to one enemy at a time.
  */
+
 class BasicTower extends Tower {
     private final int[] damageLevel = {5, 7, 10, 15}; // Index 0 holds damage dealt at level 1
     private final int[] rangeLevel = {140, 160, 180, 200};
@@ -13,7 +14,7 @@ class BasicTower extends Tower {
     private final int[] upgradeCostLevel = {50, 120, 300};
     private final int[] imageWidthLevel = {64, 64, 64, 64};
     private final int[] imageHeightLevel = {128, 128, 128, 128};
-    private final int[] imageOffsetXLevel = {2, 2, 2, 2};
+    private final int[] imageOffsetXLevel = {0, 0, 0, 0};
     private final int[] imageOffsetYLevel = {-30, -30, -30, -30};
 
     /**

@@ -1,6 +1,6 @@
 /**
- * Attack animation values for basic towers.
- * The animation consists of a colored border
+ * Attack animation values for fireball towers.
+ * Consists of a solid beam and a circular explosion effect.
  */
 
 public class FireballAnimation extends Animation {
