@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 class FireballTower extends Tower {
     // Note: Level 4 not implemented
     private final int[] damageLevel = {8, 12, 16, 24}; // Index 0 holds damage dealt at level 1
-    private final int[] rangeLevel = {100, 125, 150, 175};
+    private final int[] rangeLevel = {110, 130, 150, 170};
     private final int[] cooldownLevel = {70, 60, 50, 40};
     private final int[] upgradeCostLevel = {125, 200, 400};
     private final int[] imageWidthLevel = {64, 64, 64, 64};
@@ -26,7 +26,7 @@ class FireballTower extends Tower {
         super(posX, posY);
         damage = damageLevel[0]; // Damage dealt per hit
         range = rangeLevel[0]; // Radius of attack area in pixels
-        maxLevel = 2;
+        maxLevel = 3;
         upgradeCost = upgradeCostLevel[0];
         cooldown = cooldownLevel[0]; // Cooldown in ticks (33ms, 30 ticks = 1 second)
         timer = 0;
@@ -67,7 +67,7 @@ class FireballTower extends Tower {
 
         damage = damageLevel[level];
         range = rangeLevel[level];
-        upgradeCost = upgradeCostLevel[level];
+        upgradeCost = upgradeCostLevel[Math.min(level, maxLevel - 1)];
         cooldown = cooldownLevel[level];
         timer -= cooldownLevel[level - 1] - cooldown; // Account for cooldown reduction
         updateImage();
@@ -112,7 +112,7 @@ class FireballTower extends Tower {
 
         timer = cooldown;
         // Create attack animation
-        animationList.add(new BasicAnimation(posX, posY - 52 - level * 6, targetEnemy, level));
+        animationList.add(new FireballAnimation(posX, posY - 52 - level * 6, targetEnemy, level));
 
         // Deal damage to all enemies in area of attack
         for (Enemy enemy : enemyList) {

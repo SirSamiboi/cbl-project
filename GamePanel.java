@@ -158,9 +158,9 @@ class GamePanel extends JPanel implements MouseListener {
 
         Graphics2D g2d = (Graphics2D) g;
 
-        // Rendering hints, if program gets optimised
-        // g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-        //     RenderingHints.VALUE_ANTIALIAS_ON);
+        // Global antialiasing, disable if program underperforms
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+            RenderingHints.VALUE_ANTIALIAS_ON);
         // g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
         //     RenderingHints.VALUE_INTERPOLATION_BICUBIC);
         
@@ -187,22 +187,32 @@ class GamePanel extends JPanel implements MouseListener {
 
             // Basic tower attack (see BasicAnimation class for index values)
             if (animationList.get(i).getId().substring(0, 1).equals("0")) {
+                // Outer beam
                 g2d.setColor(new Color(val[6], val[7], val[8]));
                 g2d.setStroke(new BasicStroke(val[4]));
                 g2d.drawLine(val[0], val[1], val[2], val[3]);
 
+                // Inner beam
                 g2d.setColor(new Color(192 + val[6] / 4, 192 + val[7] / 4, 192 + val[8] / 4));
                 g2d.setStroke(new BasicStroke(val[5]));
                 g2d.drawLine(val[0], val[1], val[2], val[3]);
             
             // Fireball tower attack (see FireballAnimation class for index values)
-            // Currently indentical to basic attack
             } else if (animationList.get(i).getId().substring(0, 1).equals("1")) {
+                // Outer beam
                 g2d.setColor(new Color(val[6], val[7], val[8]));
                 g2d.setStroke(new BasicStroke(val[4]));
                 g2d.drawLine(val[0], val[1], val[2], val[3]);
 
-                g2d.setColor(new Color(192 + val[6] / 4, 192 + val[7] / 4, 192 + val[8] / 4));
+                // Explosion circle
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+                g2d.fillOval(val[2] - val[9] / 2, val[3] - val[9] / 2, val[9], val[9]);
+                g2d.fillOval(val[2] - val[9] / 2 + 20, val[3] - val[9] / 2 + 20,
+                    val[9] - 40, val[9] - 40);
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+
+                // Inner beam
+                g2d.setColor(new Color(128 + val[6] / 2, 128 + val[7] / 2, 128 + val[8] / 2));
                 g2d.setStroke(new BasicStroke(val[5]));
                 g2d.drawLine(val[0], val[1], val[2], val[3]);
             }
@@ -212,8 +222,8 @@ class GamePanel extends JPanel implements MouseListener {
             Tower tower = towerList.get(selectedTower);
 
             // Draw range visual
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_ON);
+            // g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+            //         RenderingHints.VALUE_ANTIALIAS_ON);
             g2d.setColor(Color.GRAY);
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
             g2d.setStroke(new BasicStroke(2));
@@ -221,8 +231,8 @@ class GamePanel extends JPanel implements MouseListener {
             int range = tower.getRange();
             g2d.drawOval(tower.getPosX() - range, tower.getPosY() - range, range * 2, range * 2);
 
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_OFF);
+            // g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+            //         RenderingHints.VALUE_ANTIALIAS_OFF);
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
 
             // Draw buttons

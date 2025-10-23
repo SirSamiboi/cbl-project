@@ -65,7 +65,7 @@ class BasicTower extends Tower {
 
         damage = damageLevel[level];
         range = rangeLevel[level];
-        upgradeCost = upgradeCostLevel[level];
+        upgradeCost = upgradeCostLevel[Math.min(level, maxLevel - 1)];
         cooldown = cooldownLevel[level];
         timer -= cooldownLevel[level - 1] - cooldown; // Account for cooldown reduction
         updateImage();
