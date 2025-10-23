@@ -43,9 +43,9 @@ public class FireballAnimation extends Animation {
     @Override
     int[] step() {
         if (timer < 5) {
-            outerWidth = 6;
+            outerWidth = 5;
         } else {
-            outerWidth = (int) (6 * (1 - Math.pow((double) (timer - 5) / 10, 3)));
+            outerWidth = (int) (5 * (1 - Math.pow((double) (timer - 5) / 10, 3)));
         }
         innerWidth = Math.max(0, outerWidth - 3);
         circleSize = (int) (150 * (1 - Math.pow((double) timer / 15, 3)));
