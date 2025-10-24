@@ -344,10 +344,10 @@ class GamePanel extends JPanel implements MouseListener {
 
         // Draw labels
         g2d.setColor(Color.WHITE);
-        g2d.setFont(new Font("Arial", Font.BOLD, 24));
+        g2d.setFont(new Font("Arial", Font.BOLD, 22));
         g2d.drawString(String.format("Wave %d / 5", waveNumber), 10, 25);
         g2d.drawString(String.format("Player HP: %d", playerOne.getPlayerHp()), 10, 50);
-        g2d.drawString(String.format("Gold: %d", playerOne.getMoney()), 665, 25);
+        g2d.drawString(String.format("Gold: %d", playerOne.getMoney()), 670, 25);
     }
 
     
