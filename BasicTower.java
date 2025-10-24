@@ -5,11 +5,12 @@ import javax.imageio.ImageIO;
 
 /**
  * Basic tower type, which deals damage to one enemy at a time.
+ * These are best suited to take down strong individual enemies, or small groups.
  */
 
 class BasicTower extends Tower {
     private final int[] damageLevel = {5, 7, 10, 15}; // Index 0 holds damage dealt at level 1
-    private final int[] rangeLevel = {140, 160, 180, 200};
+    private final int[] rangeLevel = {160, 180, 200, 220};
     private final int[] cooldownLevel = {30, 20, 15, 12};
     private final int[] upgradeCostLevel = {50, 120, 300};
     private final int[] imageWidthLevel = {64, 64, 64, 64};
@@ -25,8 +26,8 @@ class BasicTower extends Tower {
         this.damage = damageLevel[0]; // Damage dealt per hit
         this.range = rangeLevel[0]; // Radius of attack area in pixels
         this.maxLevel = 3;
+        this.cooldown = cooldownLevel[0]; // Cooldown in ticks
         this.upgradeCost = upgradeCostLevel[0];
-        this.cooldown = cooldownLevel[0]; // Cooldown in ticks (33ms, 30 ticks = 1 second)
         this.timer = 0;
         updateImage();
     }
@@ -36,7 +37,6 @@ class BasicTower extends Tower {
      */
     private void updateImage() {
         try {
-            // The formatting is not necessary since the level starts at 0; just for consistency
             String pathname = String.format("assets/tower0-%d.png", level);
             image = ImageIO.read(new File(pathname));
         
@@ -65,8 +65,8 @@ class BasicTower extends Tower {
 
         damage = damageLevel[level];
         range = rangeLevel[level];
-        upgradeCost = upgradeCostLevel[Math.min(level, maxLevel - 1)];
         cooldown = cooldownLevel[level];
+        upgradeCost = upgradeCostLevel[Math.min(level, maxLevel - 1)];
         timer -= cooldownLevel[level - 1] - cooldown; // Account for cooldown reduction
         updateImage();
     }

@@ -21,10 +21,12 @@ class UpgradeButton {
     private final int[] widthList = {
         56,
         76,
-        88
+        88,
+        76
     };
 
     private final int[] heightList = {
+        32,
         32,
         32,
         32
@@ -33,20 +35,22 @@ class UpgradeButton {
     private final String[] textList = {
         "Upgrade",
         "Basic Tower",
-        "Fireball Tower"
+        "Fireball Tower",
+        "Chill Tower"
     };
 
     private final Color[] colorList = {
         Color.YELLOW,
         Color.LIGHT_GRAY,
-        Color.ORANGE
+        Color.ORANGE,
+        Color.CYAN
     };
 
     // Costs to build each type of tower
     private final int[] buildCostList = {
         25,
         50,
-        75,
+        50
     };
 
     /**
@@ -191,11 +195,11 @@ class UpgradeButton {
             if (tower.getMaxLevel() == 0 && money >= buildCostList[type]) {
                 playerOne.setMoney(money - buildCostList[type]);
 
-                if (type == 0) { // Basic tower
-                    tower.placeBasic(towerList);
-
-                } else if (type == 1) { // Fireball tower
-                    tower.placeFireball(towerList);
+                switch (type) {
+                    case 0 -> tower.placeBasic(towerList);
+                    case 1 -> tower.placeFireball(towerList);
+                    case 2 -> tower.placeChill(towerList);
+                    default -> { }
                 }
             }
         }

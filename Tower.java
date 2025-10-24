@@ -127,6 +127,18 @@ public class Tower {
     }
 
     /**
+     * Places a chill tower on an empty plot.
+     */
+    void placeChill(ArrayList<Tower> towerList) {
+        for (int i = 0; i < towerList.size(); i++) {
+            Tower tower = towerList.get(i);
+            if (tower.getPosX() == posX && tower.getPosY() == posY) {
+                towerList.set(i, new ChillTower(posX, posY));
+            }
+        }
+    }
+
+    /**
      * Checks if the tower has been selected.
      */
     boolean isClicked(int lastClickX, int lastClickY) {

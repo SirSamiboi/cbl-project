@@ -1,7 +1,6 @@
 import java.awt.image.BufferedImage;
 import java.util.*;
 
-
 /**
  * Class that stores all enemies interactions and stores data about the instance enemy.
  */
@@ -10,16 +9,14 @@ public class Enemy {
     protected int posX;
     protected int posY;
     protected byte type; // 0 - standard, 1 - tank etc.
-    protected int hp; // amount of lives the enemy has
-    protected int maxHp; // initial amount of lives
-    protected int damage; // damage dealt by enemy upon reaching end of track
-    protected int speed; // displacement per frame? in pixels?
-    protected int money; // amount of money the enemy awards upon defeat
-    protected int distanceTraveled; // used to determine, how far did the enemy travel
-    // protected boolean ground; 
-    // used to determine if the troop is a ground troop, or a flying troop.
+    protected int hp; // Amount of health points the enemy has
+    protected int maxHp; // Initial amount of health points
+    protected int damage; // Damage dealt by enemy upon reaching end of track
+    protected int speed; // Displacement per tick in pixels
+    protected int money; // Amount of money awarded by enemy upon defeat
+    protected int distanceTraveled; // Stores total distance travelled
 
-    protected BufferedImage image; // Enemy texture.
+    protected BufferedImage image; // Enemy texture
     protected int imageWidth;
     protected int imageHeight;
     protected int imageOffsetX;
@@ -27,6 +24,9 @@ public class Enemy {
 
     protected int timer; // Counts up by 1 every frame
     protected int timerLimit; // Number of frames between each attack
+
+    protected int chillTimer = 0; // Remaining ticks of chill tower's slowing effect
+    protected int chillDuration = 1; // Total ticks of chill tower's slowing effect
 
     
     public BufferedImage getImage() {
@@ -87,10 +87,12 @@ public class Enemy {
         return posY - imageHeight / 2 + imageOffsetY;
     }
 
+    // int getChillTimer() {
+    //     return chillTimer;
+    // }
+
     /**
      * Substracts the tower's damage from the Enemy's HP.
-     * @param damage
-     *     The (positive integer) damage that the enemy must take.
      */
 
     public void dealDamage(int damage) {
@@ -110,6 +112,7 @@ public class Enemy {
     /**
      * Handles the enemy's movement along the path, and updates
      * this.distanceTraveled to store the distance this enemy has travelled.
+     * 
      * We were thinking of replacing the += approach with a = approach instead,
      * which would mean always calculating the final position of the enemy,
      * as this would prevent enemies from being misaligned at high speeds,
@@ -118,52 +121,72 @@ public class Enemy {
      */
 
     public void move() {
+        int normalSpeed = speed;
+
+        // The enemy moves much slower while affected by the chill tower's attack
+        if (chillTimer > 0) {
+            // 1/5th speed at start of chill, then speeds up
+            speed = (int) ((double) normalSpeed / 4 + (double) normalSpeed * 3 / 4
+                * Math.pow((1 - (double) chillTimer / chillDuration), 3));
+        }
+
         if (distanceTraveled <= 640 - 48) { // first horisontal stretch
-            this.posX += this.speed;
+            posX += speed;
 
         } else if (distanceTraveled <= 640 + 48) { // first turn
-            this.posX += this.speed;
-            this.posY += this.speed;
-            this.distanceTraveled += this.speed;
+            posX += speed;
+            posY += speed;
+            distanceTraveled += speed;
 
         } else if (distanceTraveled <= 640 + 192 - 48) { // first vertical stretch
-            this.posY += this.speed;
+            posY += speed;
 
         } else if (distanceTraveled <= 640 + 192 + 48) { // second turn
-            this.posX -= this.speed;
-            this.posY += this.speed;
-            this.distanceTraveled += this.speed;
+            posX -= speed;
+            posY += speed;
+            distanceTraveled += speed;
 
         } else if (distanceTraveled <= 640 + 192 + 480 - 48) {
-            this.posX -= this.speed;
+            posX -= speed;
 
         } else if (distanceTraveled <= 640 + 192 + 480 + 48) { // third turn
-            this.posX -= this.speed;
-            this.posY += this.speed;
-            this.distanceTraveled += this.speed;
+            posX -= speed;
+            posY += speed;
+            distanceTraveled += speed;
 
         } else if (distanceTraveled <= 640 + 192 + 480 + 192 - 48) { // second vertical stretch
-            this.posY += this.speed;
+            posY += speed;
 
         } else if (distanceTraveled <= 640 + 192 + 480 + 192 + 48) { // fourth turn 
-            this.posX += this.speed;
-            this.posY += this.speed;
-            this.distanceTraveled += this.speed;
+            posX += speed;
+            posY += speed;
+            distanceTraveled += speed;
 
         } else { // last horisontal stretch
-            this.posX += this.speed;
+            posX += speed;
         }
-        this.distanceTraveled += this.speed;
+        distanceTraveled += speed;
+
+        // Restore original enemy speed
+        speed = normalSpeed;
     }
 
+    /**
+     * Applies the chill tower's effect on the enemy,
+     * causing it to slow down for a given number of ticks.
+     */
 
+    public void chill(int chillDuration) {
+        this.chillDuration = chillDuration;
+        chillTimer = chillDuration;
+    }
+    
     /**
      * Handles the enemy's actions over the next tick.
-     * @param enemyList
-     *     Global list where all alive enemies are stored.
      */
     public void tick(ArrayList<Enemy> enemyList, Player player) {
         move();
+        chillTimer -= 1;
 
         if (this.posX >= 800) { // if it passed the entire track
             player.setPlayerHp((player.getPlayerHp() - damage)); // Deal 1 damage to the player

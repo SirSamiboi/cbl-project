@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -30,8 +31,9 @@ class GamePanel extends JPanel implements MouseListener {
     public ArrayList<Enemy> enemyList = new ArrayList<>();
     public UpgradeButton[] upgradeButtonList = {
         new UpgradeButton(-1, 0, 56),
-        new UpgradeButton(0, 76, -24),
-        new UpgradeButton(1, 82, 16)
+        new UpgradeButton(0, 0, -48),
+        new UpgradeButton(1, 82, 0),
+        new UpgradeButton(2, -76, 0)
     };
     public ArrayList<Animation> animationList = new ArrayList<>();
 
@@ -85,9 +87,9 @@ class GamePanel extends JPanel implements MouseListener {
         this.setBackground(Color.WHITE);
 
         // Placing towers
-        towerList.add(new Tower(144, 224));
-        towerList.add(new Tower(336, 192));
-        towerList.add(new Tower(528, 224));
+        towerList.add(new ChillTower(144, 224));
+        towerList.add(new ChillTower(336, 192));
+        towerList.add(new ChillTower(528, 224));
         towerList.add(new Tower(720, 160));
         towerList.add(new Tower(272, 416));
         towerList.add(new Tower(80, 576));
@@ -225,6 +227,7 @@ class GamePanel extends JPanel implements MouseListener {
                     g2d.setColor(new Color(val[6], val[7], val[8]));
                     g2d.setStroke(new BasicStroke(val[4]));
                     g2d.drawLine(val[0], val[1], val[2], val[3]);
+
                     // Inner beam
                     g2d.setColor(new Color(192 + val[6] / 4, 192 + val[7] / 4, 192 + val[8] / 4));
                     g2d.setStroke(new BasicStroke(val[5]));
@@ -237,6 +240,7 @@ class GamePanel extends JPanel implements MouseListener {
                     g2d.setColor(new Color(val[6], val[7], val[8]));
                     g2d.setStroke(new BasicStroke(val[4]));
                     g2d.drawLine(val[0], val[1], val[2], val[3]);
+
                     // Explosion circle
                     g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
                     g2d.fillOval(val[2] - val[9] / 2, val[3] - val[9] / 2, val[9], val[9]);
@@ -248,6 +252,30 @@ class GamePanel extends JPanel implements MouseListener {
                     // g2d.setColor(new Color(val[6] * 7 / 8, val[7] * 7 / 8, val[8] * 7 / 8));
                     // g2d.setStroke(new BasicStroke(val[5]));
                     // g2d.drawLine(val[0], val[1], val[2], val[3]);
+                }
+
+                // Chill tower attack (see ChillAnimation)
+                case "2" -> {
+                    // Outer beam
+                    g2d.setColor(new Color(val[6], val[7], val[8]));
+                    g2d.setStroke(new BasicStroke(val[4]));
+                    g2d.drawLine(val[0], val[1], val[2], val[3]);
+
+                    // Chill diamond
+                    g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+
+                    // Store original Graphics2D state to prevent other elements from being rotated
+                    AffineTransform originalTransform = g2d.getTransform();
+                    g2d.translate(val[2], val[3]);
+                    g2d.rotate(Math.PI / 4.0);
+                    
+                    g2d.drawRect(-val[9] / 2, -val[9] / 2, val[9], val[9]);
+                    g2d.fillRect(-val[9] / 2 + 8, -val[9] / 2 + 8, val[9] - 16, val[9] - 16);
+
+                    g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+                
+                    // Restore original Graphics2D state
+                    g2d.setTransform(originalTransform);
                 }
                 
                 // Enemy death animation (see DeathAnimation)
@@ -331,10 +359,10 @@ class GamePanel extends JPanel implements MouseListener {
 
                     if (ub.getType() == -1) { // Upgrade cost
                         g2d.drawString("Cost: " + tower.getUpgradeCost(),
-                            ubX + 4, ubY + ubH / 2 + 12);
+                            ubX + 4, ubY + ubH / 2 + 11);
                     } else { // Build cost
                         g2d.drawString("Cost: " + ub.getBuildCost(),
-                            ubX + 4, ubY + ubH / 2 + 12);
+                            ubX + 4, ubY + ubH / 2 + 11);
                     }
 
                     g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));

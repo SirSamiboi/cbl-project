@@ -4,31 +4,34 @@ import java.util.*;
 import javax.imageio.ImageIO;
 
 /**
- * Fireball tower type, which deals damage to a group of enemies.
- * These are best suited to clear large hordes of enemies.
+ * Chill tower type, which slows a group of enemies.
+ * These are best suited for bunching enemies up, to take advantage of fireball towers.
  */
 
-class FireballTower extends Tower {
-    private final int[] damageLevel = {8, 12, 16, 24}; // Index 0 holds damage dealt at level 1
-    private final int[] rangeLevel = {140, 160, 180, 180};
-    private final int[] cooldownLevel = {70, 60, 50, 40};
-    private final int[] upgradeCostLevel = {125, 250, 450};
+class ChillTower extends Tower {
+    private final int[] damageLevel = {1, 1, 1, 1}; // Index 0 holds damage dealt at level 1
+    private final int[] rangeLevel = {130, 145, 160, 180};
+    private final int[] cooldownLevel = {55, 50, 45, 40};
+    private final int[] chillLevel = {18, 22, 26, 32};
+    private final int[] upgradeCostLevel = {100, 175, 350};
     private final int[] imageWidthLevel = {64, 64, 64, 64};
     private final int[] imageHeightLevel = {128, 128, 128, 128};
     private final int[] imageOffsetXLevel = {0, 0, 0, 0};
     private final int[] imageOffsetYLevel = {-30, -30, -30, -30};
 
-    private final int attackRadius = 80; // Radius of the area in which the attack deals damage
+    private final int attackRadius = 60; // Radius of the area in which the attack deals damage
+    private int chillDuration; // The duration for which enemies are slowed
 
     /**
      * Constructor.
      */
-    public FireballTower(int posX, int posY) {
+    public ChillTower(int posX, int posY) {
         super(posX, posY);
         this.damage = damageLevel[0]; // Damage dealt per hit
         this.range = rangeLevel[0]; // Radius of attack area in pixels
         this.maxLevel = 3;
         this.cooldown = cooldownLevel[0]; // Cooldown in ticks
+        this.chillDuration = chillLevel[0];
         this.upgradeCost = upgradeCostLevel[0];
         this.timer = 0;
         updateImage();
@@ -39,7 +42,7 @@ class FireballTower extends Tower {
      */
     private void updateImage() {
         try {
-            String pathname = String.format("assets/tower1-%d.png", level);
+            String pathname = String.format("assets/tower2-%d.png", level);
             image = ImageIO.read(new File(pathname));
         
         } catch (IOException e) {
@@ -67,6 +70,7 @@ class FireballTower extends Tower {
 
         damage = damageLevel[level];
         range = rangeLevel[level];
+        chillDuration = chillLevel[level];
         cooldown = cooldownLevel[level];
         upgradeCost = upgradeCostLevel[Math.min(level, maxLevel - 1)];
         timer -= cooldownLevel[level - 1] - cooldown; // Account for cooldown reduction
@@ -112,7 +116,8 @@ class FireballTower extends Tower {
 
         timer = cooldown;
         // Create attack animation
-        animationList.add(new FireballAnimation(posX, posY - 64, targetEnemy, level));
+        // TODO: Change animation posY for tower level
+        animationList.add(new ChillAnimation(posX, posY - 64, targetEnemy, level));
 
         // Deal damage to all enemies in area of attack
         for (Enemy enemy : enemyList) {
@@ -121,6 +126,7 @@ class FireballTower extends Tower {
 
             if (inArea(enemyX, enemyY, targetX, targetY)) {
                 enemy.dealDamage(damage);
+                enemy.chill(chillDuration);
             }
         }
     }
