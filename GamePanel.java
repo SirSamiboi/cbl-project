@@ -46,7 +46,7 @@ class GamePanel extends JPanel implements MouseListener {
     // IDs of all enemies that will be spawned each wave
     public byte[][] perWaveEnemyTypes = {
         {},
-        {0, 0},
+        {0, 1, 2, 2, 2, 2},
         {0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -56,7 +56,7 @@ class GamePanel extends JPanel implements MouseListener {
     // Index 0 is usually 0 because the first enemy spawns as soon as the wave begins
     public int[][] perWaveSpawnIntervals = {
         {},
-        {60, 30},
+        {0, 30, 30, 30, 30, 30}, // Change to 60 when all enemies have been added
         {0, 15, 15, 15}, // Here a goblin enemy will spawn at 0, 15, 30, 45 ticks
         {0, 10, 10, 10, 30, 10, 10, 10},
         {0, 24, 22, 20, 18, 16, 14, 12, 10, 8, 6, 4},
@@ -135,10 +135,12 @@ class GamePanel extends JPanel implements MouseListener {
         if (enemySpawnTimes.contains(globalTimer)) {
             // Spawns the enemy with the matching ID
             switch (perWaveEnemyTypes[waveNumber][waveEnemiesSpawned]) {
-
-
                 case (byte) 0 -> enemyList.add(new Goblin(0, 125 + (random.nextInt(11) - 5)));
-
+                case (byte) 1 -> enemyList.add(new Orc(0, 125 + (random.nextInt(11) - 5)));
+                case (byte) 2 -> enemyList.add(new Skeleton(0, 125 + (random.nextInt(11) - 5)));
+                // case (byte) 3 -> enemyList.add(new Golem(0, 125 + (random.nextInt(11) - 5)));
+                // case (byte) 4 -> enemyList.add(new Necromancer(0, 125 + (random.nextInt(11) - 5)));
+                // case (byte) 4 -> enemyList.add(new Fallen(0, 125 + (random.nextInt(11) - 5)));
                 default -> { }
             }
             waveEnemiesSpawned += 1;

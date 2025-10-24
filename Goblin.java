@@ -3,7 +3,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /**
- * Class that saves the data of a goblin.
+ * Class that saves the data of Goblin type enemies.
+ * Goblins are the most basic type of enemy.
  */
 
 public class Goblin extends Enemy {
