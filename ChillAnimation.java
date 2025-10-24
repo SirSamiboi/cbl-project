@@ -25,7 +25,7 @@ public class ChillAnimation extends Animation {
      * Constructor.
      */
     public ChillAnimation(int startX, int startY, Enemy targetEnemy, int level) {
-        this.duration = 15;
+        this.duration = 15 + 4 * level;
         this.id = "2-" + level;
         this.startX = startX;
         this.startY = startY;
@@ -45,10 +45,10 @@ public class ChillAnimation extends Animation {
         if (timer < 5) {
             outerWidth = 5;
         } else {
-            outerWidth = (int) (5 * (1 - Math.pow((double) (timer - 5) / 10, 3)));
+            outerWidth = (int) (5 * (1 - Math.pow((double) (timer - 5) / (duration - 5), 3)));
         }
         innerWidth = Math.max(0, outerWidth - 3);
-        squareSize = (int) (100 * (1 - Math.pow((double) timer / 15, 3)));
+        squareSize = (int) (100 * (1 - Math.pow((double) timer / duration, 3)));
 
         endX = targetEnemy.getPosX();
         endY = targetEnemy.getPosY();

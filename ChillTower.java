@@ -118,7 +118,7 @@ class ChillTower extends Tower {
         timer = cooldown;
         // Create attack animation
         // TODO: Change animation posY for tower level
-        animationList.add(new ChillAnimation(posX, posY - 64, targetEnemy, level));
+        animationList.add(new ChillAnimation(posX, posY - 46 - level * 10, targetEnemy, level));
         // Play attack sound
         playSound(attackClip);
 
