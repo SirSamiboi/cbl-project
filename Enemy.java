@@ -199,6 +199,7 @@ public class Enemy {
         if (this.posX >= 800) { // if it passed the entire track
             player.setPlayerHp((player.getPlayerHp() - damage)); // Deal 1 damage to the player
             this.hp = 0;
+            player.setMoney(player.getMoney() - this.money);
 
             System.out.println("Another one lost to The Zone");
             System.out.println("Player HP: " + player.getPlayerHp());
