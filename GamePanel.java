@@ -5,8 +5,12 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.*;
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 
 /**
@@ -87,9 +91,9 @@ class GamePanel extends JPanel implements MouseListener {
         this.setBackground(Color.WHITE);
 
         // Placing towers
-        towerList.add(new ChillTower(144, 224));
-        towerList.add(new ChillTower(336, 192));
-        towerList.add(new ChillTower(528, 224));
+        towerList.add(new Tower(144, 224));
+        towerList.add(new Tower(336, 192));
+        towerList.add(new Tower(528, 224));
         towerList.add(new Tower(720, 160));
         towerList.add(new Tower(272, 416));
         towerList.add(new Tower(80, 576));
@@ -105,6 +109,7 @@ class GamePanel extends JPanel implements MouseListener {
         if (enemyList.isEmpty() && waveEnemiesSpawned == waveLength) { // if all enemies are dead
             enemySpawnTimes.clear(); // resets the spawn timings for the next wave.
             waveNumber += 1; // moves the wave counter to the next wave
+            playWaveStartJingle();
 
             if (waveNumber > 5) {
                 System.out.println("All waves beat");
@@ -204,8 +209,13 @@ class GamePanel extends JPanel implements MouseListener {
 
         // Draw enemies
         for (Enemy enemy : enemyList) {
-            g2d.drawImage(enemy.getImage(), enemy.getImageX(), enemy.getImageY(),
-                 enemy.getImageWidth(), enemy.getImageHeight(), this);
+            if (enemy.getFacingRight()) {
+                g2d.drawImage(enemy.getImage(), enemy.getImageX(), enemy.getImageY(),
+                    enemy.getImageWidth(), enemy.getImageHeight(), this);
+            } else { // FLip image if enemy is facing left
+                g2d.drawImage(enemy.getImage(), enemy.getImageX() + enemy.getImageWidth(),
+                enemy.getImageY(), -enemy.getImageWidth(), enemy.getImageHeight(), this);
+            }
         }
 
     
@@ -460,13 +470,33 @@ class GamePanel extends JPanel implements MouseListener {
      * Called when the mouse cursor enters the window.
      */
     @Override
-    public void mouseEntered(MouseEvent e) {
-    }
+    public void mouseEntered(MouseEvent e) { }
 
     /**
      * Called when the mouse cursor exits the window.
      */
     @Override
-    public void mouseExited(MouseEvent e) {
+    public void mouseExited(MouseEvent e) { }
+
+    /**
+     * Plays a jingle at the start of each wave.
+     */
+    public static void playWaveStartJingle() {
+        URL url = GamePanel.class.getResource("/sounds/roundStart.wav");
+        if (url == null) {
+            System.err.println("Silent sound file not found, skipping warmup");
+            return;
+        }
+
+        try (InputStream is = url.openStream();
+            var audioStream = AudioSystem.getAudioInputStream(is)) {
+
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.start();
+
+        } catch (Exception e) {
+            System.err.println("Failed to perform silent audio warmup: " + e.getMessage());
+        }
     }
 }

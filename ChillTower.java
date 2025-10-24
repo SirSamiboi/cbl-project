@@ -35,6 +35,7 @@ class ChillTower extends Tower {
         this.upgradeCost = upgradeCostLevel[0];
         this.timer = 0;
         updateImage();
+        attackClip = loadSound("chillAttack.wav");
     }
 
     /**
@@ -118,6 +119,8 @@ class ChillTower extends Tower {
         // Create attack animation
         // TODO: Change animation posY for tower level
         animationList.add(new ChillAnimation(posX, posY - 64, targetEnemy, level));
+        // Play attack sound
+        playSound(attackClip);
 
         // Deal damage to all enemies in area of attack
         for (Enemy enemy : enemyList) {

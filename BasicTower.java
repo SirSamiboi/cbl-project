@@ -30,6 +30,7 @@ class BasicTower extends Tower {
         this.upgradeCost = upgradeCostLevel[0];
         this.timer = 0;
         updateImage();
+        this.attackClip = loadSound("basicAttack.wav");
     }
 
     /**
@@ -51,7 +52,7 @@ class BasicTower extends Tower {
         imageOffsetX = imageOffsetXLevel[level];
         imageOffsetY = imageOffsetYLevel[level];
     }
-
+    
     /**
      * Increases the level of a tower, and updates its statistics and image.
      */
@@ -113,6 +114,8 @@ class BasicTower extends Tower {
 
         // Deal damage to target enemy
         targetEnemy.dealDamage(damage);
+        // Play attack sound
+        playSound(attackClip);
     }
 
     /**

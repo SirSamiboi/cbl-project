@@ -32,6 +32,7 @@ class FireballTower extends Tower {
         this.upgradeCost = upgradeCostLevel[0];
         this.timer = 0;
         updateImage();
+        attackClip = loadSound("fireballAttack.wav");
     }
 
     /**
@@ -113,6 +114,8 @@ class FireballTower extends Tower {
         timer = cooldown;
         // Create attack animation
         animationList.add(new FireballAnimation(posX, posY - 64, targetEnemy, level));
+        // Play attack sound
+        playSound(attackClip);
 
         // Deal damage to all enemies in area of attack
         for (Enemy enemy : enemyList) {

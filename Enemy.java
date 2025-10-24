@@ -22,6 +22,8 @@ public class Enemy {
     protected int imageOffsetX;
     protected int imageOffsetY;
 
+    protected boolean facingRight = true; // Tracks if enemy should be facing right (t) or left (f)
+
     protected int timer; // Counts up by 1 every frame
     protected int timerLimit; // Number of frames between each attack
 
@@ -87,6 +89,10 @@ public class Enemy {
         return posY - imageHeight / 2 + imageOffsetY;
     }
 
+    boolean getFacingRight() {
+        return facingRight;
+    }
+
     // int getChillTimer() {
     //     return chillTimer;
     // }
@@ -145,6 +151,7 @@ public class Enemy {
             posX -= speed;
             posY += speed;
             distanceTraveled += speed;
+            facingRight = false;
 
         } else if (distanceTraveled <= 640 + 192 + 480 - 48) {
             posX -= speed;
@@ -161,6 +168,7 @@ public class Enemy {
             posX += speed;
             posY += speed;
             distanceTraveled += speed;
+            facingRight = true;
 
         } else { // last horisontal stretch
             posX += speed;

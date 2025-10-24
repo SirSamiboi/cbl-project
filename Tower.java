@@ -1,8 +1,14 @@
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  * Class used for handling all tower variables and interactions.
@@ -18,12 +24,15 @@ public class Tower {
     protected int upgradeCost;
     protected int timer;
     protected int cooldown;
-    protected BufferedImage image;
+
+    protected BufferedImage image; // Tower image sprite
     protected int imageWidth;
     protected int imageHeight;
     protected int imageOffsetX;
     protected int imageOffsetY;
 
+    protected Clip attackClip; // Used for attack sound effect
+    
     /**
      * Constructor.
      */
@@ -101,6 +110,46 @@ public class Tower {
     void levelUp() { }
 
     void tick(ArrayList<Enemy> enemyList, ArrayList<Animation> animationList) { }
+
+    /**
+     * Loads the tower's attack sound effect.
+     */
+    protected Clip loadSound(String soundFileName) {
+        try {
+            // Get URL for sound file (sound effects found in assets folder)
+            URL soundUrl = getClass().getResource("/sounds/" + soundFileName);
+
+            if (soundUrl == null) {
+                System.err.println("Sound file not found: " + soundFileName);
+                return null;
+            }
+
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundUrl);
+
+            // Get, open and play clip
+            attackClip = AudioSystem.getClip();
+            attackClip.open(audioStream);
+
+        } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
+            System.out.println("Could not load clip for tower: " + e.getMessage());
+            attackClip = null;
+        }
+
+        return attackClip;
+    }
+
+    /**
+     * Plays a sound effect.
+     */
+    public void playSound(Clip clip) {
+        if (clip != null) {
+            if (clip.isRunning()) {
+                clip.stop();
+            }
+            clip.setFramePosition(0);
+            clip.start();
+        }
+    }
 
     /**
      * Places a basic tower on an empty plot.
