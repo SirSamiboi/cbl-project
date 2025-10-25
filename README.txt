@@ -14,6 +14,9 @@ https://foozlecc.itch.io/spire-tower-pack-4
 craftpix.net - Free Orc, Ogre and Goblin Chibi 2D Game Sprites
 https://craftpix.net/freebies/free-orc-ogre-and-goblin-chibi-2d-game-sprites/?num=1&count=30&sq=goblin&pos=3
 
+craftpix.net - Free Monster Enemy Game Sprites
+https://craftpix.net/freebies/free-monster-enemy-game-sprites/
+
 Sound effects:
 
 jsxfr

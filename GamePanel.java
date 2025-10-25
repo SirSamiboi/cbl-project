@@ -59,10 +59,10 @@ class GamePanel extends JPanel implements MouseListener {
     public byte[][] perWaveEnemyTypes = {
         {},
         {0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+        {0, 1, 0, 1},
+        {2, 0, 0, 0, 1, 1, 1, 1},
+        {0, 2, 2, 0, 0, 0, 1, 1, 1, 1, 1, 1},
+        {2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1}
     };
     // Timestamps of when enemies spawn each wave, relative to the last enemy, in ticks
     // Index 0 is usually 0 because the first enemy spawns as soon as the wave begins
@@ -151,8 +151,20 @@ class GamePanel extends JPanel implements MouseListener {
                         gameState = 4; // go to the game over screen
                         break;
                     }
+
+                if (waveNumber > 5) { // if outside of the wave range
+                        System.out.println("All waves beat");
+                        gameState = 3; // go to the victory screen
+                        break;
+                        // TODO: Victory Screen
+                    }
+
+                
                 //Starting a new wave
                 if (enemyList.isEmpty() && waveEnemiesSpawned == waveLength) { // if all enemies are dead
+
+                    enemySpawnTimes.clear(); // resets the spawn timings for the next wave.
+                    waveNumber += 1; // moves the wave counter to the next wave
 
                     if (waveNumber > 5) { // if outside of the wave range
                         System.out.println("All waves beat");
@@ -160,14 +172,19 @@ class GamePanel extends JPanel implements MouseListener {
                         break;
                         // TODO: Victory Screen
                     }
-
-                    enemySpawnTimes.clear(); // resets the spawn timings for the next wave.
-                    waveNumber += 1; // moves the wave counter to the next wave
                     playWaveStartJingle();
 
                     waveEmptyTime = globalTimer;
                     // Sets the time at which the next wave will start
                     nextWaveTime = waveEmptyTime + waveDelayTime;
+                    
+                    if (waveNumber > 5) { // if outside of the wave range
+                        System.out.println("All waves beat");
+                        gameState = 3; // go to the victory screen
+                        break;
+                        // TODO: Victory Screen
+                    }
+                    
                     waveLength = perWaveEnemyTypes[waveNumber].length;
                     waveEnemiesSpawned = 0;
                     // Setup the spawn times for all enemies of the next wave
@@ -187,7 +204,8 @@ class GamePanel extends JPanel implements MouseListener {
 
 
                         case (byte) 0 -> enemyList.add(new Goblin(0, 125 + (random.nextInt(11) - 5)));
-
+                        case (byte) 1 -> enemyList.add(new FastEnemy(0, 125 + (random.nextInt(21) - 10)));
+                        case (byte) 2 -> enemyList.add(new TankEnemy(0, 125 + (random.nextInt(11) - 5)));
                         default -> { }
                     }
                     waveEnemiesSpawned += 1;
