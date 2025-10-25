@@ -28,7 +28,8 @@ public class Skeleton extends Enemy {
 
         try {
             String fileSeparator = File.separator;
-            this.image = ImageIO.read(new File(String.format("assets%sskeleton.png", fileSeparator)));
+            this.image = ImageIO.read(new File(
+                String.format("assets%sskeleton.png", fileSeparator)));
         } catch (IOException e) {
             System.out.println("Couldn't load the Skeleton texture");
             this.image = null;

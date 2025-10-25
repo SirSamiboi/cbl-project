@@ -47,7 +47,8 @@ public class Fallen extends Enemy {
         if (!transformed && hp < maxHp / 2) {
             try {
                 String fileSeparator = File.separator;
-                this.image = ImageIO.read(new File(String.format("assets%sfallenFast.png", fileSeparator)));
+                this.image = ImageIO.read(new File(String.format(
+                    "assets%sfallenTransformed.png", fileSeparator)));
             } catch (IOException e) {
                 System.out.println("Couldn't load the Fallen texture");
                 this.image = null;

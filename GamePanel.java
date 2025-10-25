@@ -92,7 +92,8 @@ class GamePanel extends JPanel implements MouseListener {
     public GamePanel() {
         // Load map image if possible
         try {
-            this.mapImage = ImageIO.read(new File(String.format("assets%smap1.png", fileSeparator)));
+            this.mapImage = ImageIO.read(new File(String.format(
+                "assets%smap1.png", fileSeparator)));
             
         } catch (IOException e) {
             System.out.println("ERROR: Map image could not be loaded");
