@@ -116,7 +116,7 @@ public class Tower {
      */
     protected Clip loadSound(String soundFileName) {
         try {
-            // Get URL for sound file (sound effects found in assets folder)
+            // Get URL for sound file (sound effects found in sounds folder)
             String fileSeparator = File.separator;
             URL soundUrl = getClass().getResource(String.format("%ssounds%s", fileSeparator, 
                     fileSeparator) + soundFileName);

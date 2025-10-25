@@ -55,7 +55,7 @@ class GamePanel extends JPanel implements MouseListener {
     };
     public ArrayList<Animation> animationList = new ArrayList<>();
 
-    public int waveNumber = 0; // Initialized at 0, changes to 1 upon game start
+    public int waveNumber = 14; // Initialized at 0, changes to 1 upon game start
     public int waveTotal = 15; // Total number of waves
     public int waveLength;
     // IDs of all enemies that will be spawned each wave
@@ -185,6 +185,7 @@ class GamePanel extends JPanel implements MouseListener {
                 if (player.getPlayerHp() <= 0) { // if player is dead
                     System.out.println("All lives lost");
                     playDefeatJingle();
+                    animationList = new ArrayList<>(); // Remove all animations
                     gameState = 4; // Go to defeat screen
                     break;
                 }
@@ -192,6 +193,7 @@ class GamePanel extends JPanel implements MouseListener {
                 if (waveNumber > waveTotal) { // If outside of the wave range
                     System.out.println("All waves beat");
                     playVictoryJingle();
+                    animationList = new ArrayList<>(); // Remove all animations
                     gameState = 3; // Go to victory screen
                     break;
                 }
@@ -206,6 +208,7 @@ class GamePanel extends JPanel implements MouseListener {
                     if (waveNumber > waveTotal) { // If outside of the wave range
                         System.out.println("All waves beat");
                         playVictoryJingle();
+                        animationList = new ArrayList<>(); // Remove all animations
                         gameState = 3; // Go to the victory screen
                         break;
                     }
@@ -218,6 +221,7 @@ class GamePanel extends JPanel implements MouseListener {
                     if (waveNumber > waveTotal) { // If outside of the wave range
                         System.out.println("All waves beat");
                         playVictoryJingle();
+                        animationList = new ArrayList<>(); // Remove all animations
                         gameState = 3; // Go to the victory screen
                         break;
                     }
@@ -692,13 +696,17 @@ class GamePanel extends JPanel implements MouseListener {
      * Plays a jingle at the start of each wave.
      */
     public static void playWaveStartJingle() {
-        URL url = GamePanel.class.getResource("/sounds/waveStart.wav");
-        if (url == null) {
+        // Get URL for sound file (sound effects found in sounds folder)
+        String fileSeparator = File.separator;
+        URL soundUrl = GamePanel.class.getResource(String.format("%ssounds%s", fileSeparator, 
+            fileSeparator) + "waveStart.wav");
+
+        if (soundUrl == null) {
             System.err.println("Wave start sound file not found");
             return;
         }
 
-        try (InputStream is = url.openStream();
+        try (InputStream is = soundUrl.openStream();
             var audioStream = AudioSystem.getAudioInputStream(is)) {
 
             Clip clip = AudioSystem.getClip();
@@ -714,13 +722,17 @@ class GamePanel extends JPanel implements MouseListener {
      * Plays a jingle upon victory.
      */
     public static void playVictoryJingle() {
-        URL url = GamePanel.class.getResource("/sounds/victory.wav");
-        if (url == null) {
+        // Get URL for sound file (sound effects found in sounds folder)
+        String fileSeparator = File.separator;
+        URL soundUrl = GamePanel.class.getResource(String.format("%ssounds%s", fileSeparator, 
+            fileSeparator) + "victory.wav");
+
+        if (soundUrl == null) {
             System.err.println("Victory sound file not found");
             return;
         }
 
-        try (InputStream is = url.openStream();
+        try (InputStream is = soundUrl.openStream();
             var audioStream = AudioSystem.getAudioInputStream(is)) {
 
             Clip clip = AudioSystem.getClip();
@@ -736,13 +748,17 @@ class GamePanel extends JPanel implements MouseListener {
      * Plays a jingle upon defeat.
      */
     public static void playDefeatJingle() {
-        URL url = GamePanel.class.getResource("/sounds/defeat.wav");
-        if (url == null) {
+        // Get URL for sound file (sound effects found in sounds folder)
+        String fileSeparator = File.separator;
+        URL soundUrl = GamePanel.class.getResource(String.format("%ssounds%s", fileSeparator, 
+            fileSeparator) + "defeat.wav");
+
+        if (soundUrl == null) {
             System.err.println("Defeat sound file not found");
             return;
         }
 
-        try (InputStream is = url.openStream();
+        try (InputStream is = soundUrl.openStream();
             var audioStream = AudioSystem.getAudioInputStream(is)) {
 
             Clip clip = AudioSystem.getClip();

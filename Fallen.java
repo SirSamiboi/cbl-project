@@ -1,7 +1,11 @@
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 /**
  * Class that saves the data of Fallen type enemies.
@@ -43,8 +47,14 @@ public class Fallen extends Enemy {
      */
     @Override
     public void tick(ArrayList<Enemy> enemyList, Player player) {
-        // Transform into fast state when half health is reached
+        // Transform to recover health and gain speed when half health is reached
         if (!transformed && hp < maxHp / 2) {
+            maxHp = 1200;
+            hp = maxHp;
+            transformed = true;
+
+            playTransformationSound();
+
             try {
                 String fileSeparator = File.separator;
                 this.image = ImageIO.read(new File(String.format(
@@ -53,10 +63,6 @@ public class Fallen extends Enemy {
                 System.out.println("Couldn't load the Fallen texture");
                 this.image = null;
             }
-
-            maxHp = 1200;
-            hp = maxHp;
-            transformed = true;
         }
 
         if (transformed) {
@@ -73,6 +79,32 @@ public class Fallen extends Enemy {
 
             System.out.println("Another one lost to The Zone");
             System.out.println("Player HP: " + player.getPlayerHp());
+        }
+    }
+
+    /**
+     * Plays a sound upon the Fallen's transformation.
+     */
+    void playTransformationSound() {
+        // Get URL for sound file (sound effects found in sounds folder)
+        String fileSeparator = File.separator;
+        URL soundUrl = getClass().getResource(String.format("%ssounds%s", fileSeparator, 
+            fileSeparator) + "fallenTransformation.wav");
+
+        if (soundUrl == null) {
+            System.err.println("Fallen transformation sound file not found");
+            return;
+        }
+
+        try (InputStream is = soundUrl.openStream();
+            var audioStream = AudioSystem.getAudioInputStream(is)) {
+
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.start();
+
+        } catch (Exception e) {
+            System.err.println("Failed to play fallen transformation sound: " + e.getMessage());
         }
     }
 }

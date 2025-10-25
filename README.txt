@@ -12,6 +12,8 @@ these monsters to protect his empire. To do this, you must construct different t
 towers which will hold back and defeat the enemies in various ways. If you manage to survive the
 attacks, The Fallen has vowed to tear the castle apart by himself. Will you manage to defeat him?
 
+How to run: Run Main.java, then select "Start Game" to start a round.
+
 How to play:
 
 - Enemies arrive in waves; survive the 15th wave and defeat The Fallen to win
@@ -28,6 +30,12 @@ How to play:
 - If you lose all 10 lives before defeating the 15th wave of enemies, the game is lost
 - Try experimenting with different tower placements to find the most efficient setup
 - Once a tower has been placed, it cannot be removed, so don't place basic towers everywhere, and never begin a round with a chill tower!
+
+Testing:
+
+All of the game's functionality is accessed with a game round. The game can be tested by simply
+starting the program and pressing "Start Game" to begin a round. Depending on the player's actions,
+the game will result in either victory or defeat.
 
 Asset sources:
 
@@ -55,6 +63,7 @@ jsxfr
 basicAttack: https://sfxr.me/#34T6PkkDngdb9rNsAUrzatDpFuy4QfMJoZASmmfbtprhJP8zzVTK9nQGyWcruaaXnKjV7vPTWJRtzfT88iqi8gFPtpbBFs3pDGWFE4sWWnfAJawzJKe1EV1od
 fireballAttack: https://sfxr.me/#7BMHBGSTwiL6a6a5Xg9MJEfuE2iBJdC1oEsezx5PRhdJNeo5CqAG16Eb2tjhi5Qn1VJkBFe1Cn7yudwK2KEK8pThEPtGEoBgXJ5c5vVzQbV7gDfkqaeH4ySSb
 chillAttack: https://sfxr.me/#34T6PkmsRpTyJb3fRJjKQ5Cvaq9jzfNoQWYAn3zbrNJvuPzZ9kMs4dn3ZGHDDTcmTknMAyiK2SRTuvYeRmDepwGzgy8NqtT6kGDkf5CGrwFax1T6viNB18uMH
+fallenTransformation: https://sfxr.me/#111114QxxVn1E6HdbAr2KoPMJE6r4fxHaYFxh62jdQGNNDqU3QX8NR3jo53gDUWVdEDGchNP1aFnBvmXXJZPsjvrMcrF48meohC4kYrCLkXMiwx8SEfPmaRm
 
 Clash Royale via 101soundboards.com - Goblin Arena Jingle 01, Scroll Win 02, Scroll Lose 01
 waveStart: https://www.101soundboards.com/sounds/730952-goblin-arena-jingle-01
