@@ -147,21 +147,21 @@ class GamePanel extends JPanel implements MouseListener {
 
             case 1: // the game is going on, standard logic
                 if (playerOne.getPlayerHp() <= 0) { // if player is dead
-                        System.out.println("You spent all your lives");
-                        gameState = 4; // go to the game over screen
-                        break;
+                    System.out.println("You spent all your lives");
+                    gameState = 4; // go to the game over screen
+                    break;
                     }
 
                 if (waveNumber > 5) { // if outside of the wave range
-                        System.out.println("All waves beat");
-                        gameState = 3; // go to the victory screen
-                        break;
-                        // TODO: Victory Screen
+                    System.out.println("All waves beat");
+                    gameState = 3; // go to the victory screen
+                    break;
+                    // TODO: Victory Screen
                     }
 
                 
-                //Starting a new wave
-                if (enemyList.isEmpty() && waveEnemiesSpawned == waveLength) { // if all enemies are dead
+                // Starting a new wave if all enemies have been defeated
+                if (enemyList.isEmpty() && waveEnemiesSpawned == waveLength) {
 
                     enemySpawnTimes.clear(); // resets the spawn timings for the next wave.
                     waveNumber += 1; // moves the wave counter to the next wave
@@ -201,11 +201,12 @@ class GamePanel extends JPanel implements MouseListener {
                 if (enemySpawnTimes.contains(globalTimer)) {
                     // Spawns the enemy with the matching ID
                     switch (perWaveEnemyTypes[waveNumber][waveEnemiesSpawned]) {
-
-
-                        case (byte) 0 -> enemyList.add(new Goblin(0, 125 + (random.nextInt(11) - 5)));
-                        case (byte) 1 -> enemyList.add(new FastEnemy(0, 125 + (random.nextInt(21) - 10)));
-                        case (byte) 2 -> enemyList.add(new TankEnemy(0, 125 + (random.nextInt(11) - 5)));
+                        case (byte) 0 -> enemyList.add(new
+                            Goblin(0, 125 + (random.nextInt(11) - 5)));
+                        case (byte) 1 -> enemyList.add(new
+                            FastEnemy(0, 125 + (random.nextInt(21) - 10)));
+                        case (byte) 2 -> enemyList.add(new
+                            TankEnemy(0, 125 + (random.nextInt(11) - 5)));
                         default -> { }
                     }
                     waveEnemiesSpawned += 1;
@@ -228,9 +229,10 @@ class GamePanel extends JPanel implements MouseListener {
                     }
                 }
 
-                // Remove finished animations
+                // Process ticks for animations
                 for (int i = 0; i < animationList.size(); i++) {
                     Animation animation = animationList.get(i);
+                    animation.tick();
                     
                     if (animation.getTimer() >= animation.getDuration()) {
                         animationList.remove(animation);
@@ -245,13 +247,13 @@ class GamePanel extends JPanel implements MouseListener {
                 menuButtons[0].setVisible(true);
                 menuButtons[1].setVisible(true);
 
-                if (menuButtons[0].getVisible() && 
-                        menuButtons[0].isClicked(lastClickX, lastClickY)) {
+                if (menuButtons[0].getVisible()
+                    && menuButtons[0].isClicked(lastClickX, lastClickY)) {
                     gameState = 1;
                     menuButtons[0].setVisible(false);
                     menuButtons[1].setVisible(false);
-                } else if (menuButtons[1].getVisible() && 
-                        menuButtons[1].isClicked(lastClickX, lastClickY)) {
+                } else if (menuButtons[1].getVisible()
+                    && menuButtons[1].isClicked(lastClickX, lastClickY)) {
                     System.exit(0);
                 }
                 break;
@@ -320,7 +322,7 @@ class GamePanel extends JPanel implements MouseListener {
                     enemy.getImageWidth(), enemy.getImageHeight(), this);
             } else { // FLip image if enemy is facing left
                 g2d.drawImage(enemy.getImage(), enemy.getImageX() + enemy.getImageWidth(),
-                enemy.getImageY(), -enemy.getImageWidth(), enemy.getImageHeight(), this);
+                    enemy.getImageY(), -enemy.getImageWidth(), enemy.getImageHeight(), this);
             }
         }
 
@@ -334,7 +336,7 @@ class GamePanel extends JPanel implements MouseListener {
 
         // Draw animations
         for (int i = 0; i < animationList.size(); i++) {
-            int[] val = animationList.get(i).step();
+            int[] val = animationList.get(i).getValues();
             
             switch (animationList.get(i).getId().substring(0, 1)) {
                 // Basic tower attack (see BasicAnimation class for index values)
@@ -399,7 +401,7 @@ class GamePanel extends JPanel implements MouseListener {
                     g2d.setColor(new Color(255, 255, 128));
                     g2d.setFont(new Font("Arial", Font.BOLD, val[3]));
                     g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-                            (float) val[4] / 100));
+                        (float) val[4] / 100));
                     g2d.drawString("+" + val[2] + "G", val[0] - val[3], val[1] - val[3]);
                     g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
                 }

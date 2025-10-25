@@ -28,8 +28,14 @@ public class Animation {
     /**
      * Updates the animation to the next frame.
      */
-    int[] step() {
+    void tick() {
         timer += 1;
+    }
+
+    /**
+     * Returns the animation's current values.
+     */
+    int[] getValues() {
         return new int[] {};
     }
 }

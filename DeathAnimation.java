@@ -25,11 +25,14 @@ public class DeathAnimation extends Animation {
      * Updates the animation to the next frame.
      */
     @Override
-    int[] step() {
+    void tick() {
         size = (int) (7 + Math.log(money) * 2);
         opacity = (int) 100 - 2 * timer;
         timer += 1;
+    }
 
+    @Override
+    int[] getValues() {
         return new int[] {posX, posY, money, size, opacity};
     }
 }

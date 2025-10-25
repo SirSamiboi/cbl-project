@@ -41,7 +41,7 @@ public class ChillAnimation extends Animation {
      * Updates the animation to the next frame.
      */
     @Override
-    int[] step() {
+    void tick() {
         if (timer < 5) {
             outerWidth = 5;
         } else {
@@ -54,6 +54,10 @@ public class ChillAnimation extends Animation {
         endY = targetEnemy.getPosY();
 
         timer += 1;
+    }
+
+    @Override
+    int[] getValues() {
         return new int[] {startX, startY, endX, endY, outerWidth, innerWidth,
             outerR, outerG, outerB, squareSize};
     }

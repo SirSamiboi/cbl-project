@@ -40,7 +40,7 @@ public class BasicAnimation extends Animation {
      * Updates the animation to the next frame.
      */
     @Override
-    int[] step() {
+    void tick() {
         if (timer < 5) {
             outerWidth = 10;
         } else {
@@ -52,6 +52,10 @@ public class BasicAnimation extends Animation {
         endY = targetEnemy.getPosY();
 
         timer += 1;
+    }
+
+    @Override
+    int[] getValues() {
         return new int[] {startX, startY, endX, endY, outerWidth, innerWidth,
             outerR, outerG, outerB};
     }
