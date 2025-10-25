@@ -29,37 +29,9 @@ class Main {
         int delay = 1000 / 33;
 
         Timer gameTimer = new Timer(delay, new ActionListener() {
-            public int gameState = 1; // 0 for not started, 1 for playing, 2 for win, 3 for loss
-
             @Override
             public void actionPerformed(ActionEvent e) {
-                switch (gameState) {
-                    // draw the starting screen
-                    case 0 -> {
-
-                    }
-
-                    //draw the game frame
-                    case 1 -> {  
-                        panel.updateGame();
-                    }
-
-                    // draw the victory screen
-                    case 2 -> {
-
-                    }
-
-                    //draw the loss screen
-                    case 3 -> {
-
-                    }
-
-                    default -> {
-                        System.out.println("Womp Womp");
-                        System.out.println("Game State is not game stating");
-                    }
-                }
-                
+                panel.updateGame();
             }
         });
 

@@ -18,6 +18,9 @@ https://craftpix.net/freebies/free-golems-chibi-2d-game-sprites/
 https://craftpix.net/freebies/free-fallen-angel-chibi-2d-game-sprites/
 https://craftpix.net/freebies/free-chibi-necromancer-of-the-shadow-character-sprites/
 
+craftpix.net - Free Monster Enemy Game Sprites
+https://craftpix.net/freebies/free-monster-enemy-game-sprites/
+
 Sound effects:
 
 jsxfr
