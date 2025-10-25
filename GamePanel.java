@@ -55,7 +55,7 @@ class GamePanel extends JPanel implements MouseListener {
     };
     public ArrayList<Animation> animationList = new ArrayList<>();
 
-    public int waveNumber = 14; // Initialized at 0, changes to 1 upon game start
+    public int waveNumber = 0; // Initialized at 0, changes to 1 upon game start
     public int waveTotal = 15; // Total number of waves
     public int waveLength;
     // IDs of all enemies that will be spawned each wave

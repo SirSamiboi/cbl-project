@@ -4,7 +4,7 @@
 
 public class Player {
     private int playerHp = 10;
-    private int money = 5000;
+    private int money = 50;
 
     public int getMoney() {
         return money;
