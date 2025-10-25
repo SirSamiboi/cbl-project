@@ -19,6 +19,8 @@ import javax.swing.*;
  */
 
 class GamePanel extends JPanel implements MouseListener {
+    public String fileSeparator = File.separator;
+
     Random random = new Random();
     Player player = new Player(); // Used to store player statistics
 
@@ -90,7 +92,7 @@ class GamePanel extends JPanel implements MouseListener {
     public GamePanel() {
         // Load map image if possible
         try {
-            this.mapImage = ImageIO.read(new File("assets/map1.png"));
+            this.mapImage = ImageIO.read(new File(String.format("assets%smap1.png", fileSeparator)));
             
         } catch (IOException e) {
             System.out.println("ERROR: Map image could not be loaded");

@@ -38,8 +38,10 @@ class BasicTower extends Tower {
      */
     private void updateImage() {
         try {
-            String pathname = String.format("assets/tower0-%d.png", level);
+            String fileSeparator = File.separator;
+            String pathname = String.format("assets%stower0-%d.png", fileSeparator, level);
             image = ImageIO.read(new File(pathname));
+            System.out.println("tower level " + level + "loaded");
         
         } catch (IOException e) {
             System.out.println("ERROR: Level " + level + " tower image could not be loaded");

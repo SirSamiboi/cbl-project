@@ -31,7 +31,8 @@ public class Necromancer extends Enemy {
         this.summonTimer = summonCooldown;
 
         try {
-            this.image = ImageIO.read(new File("assets/necromancer.png"));
+            String fileSeparator = File.separator;
+            this.image = ImageIO.read(new File(String.format("assets%snecromancer.png", fileSeparator)));
         } catch (IOException e) {
             System.out.println("Couldn't load the Necromancer texture");
             this.image = null;

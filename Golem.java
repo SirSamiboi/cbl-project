@@ -27,7 +27,8 @@ public class Golem extends Enemy {
         this.distanceTraveled = 0;
 
         try {
-            this.image = ImageIO.read(new File("assets/golem.png"));
+            String fileSeparator = File.separator;
+            this.image = ImageIO.read(new File(String.format("assets%sgolem.png", fileSeparator)));
         } catch (IOException e) {
             System.out.println("Couldn't load the Golem texture");
             this.image = null;

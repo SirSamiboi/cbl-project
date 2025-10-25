@@ -27,7 +27,8 @@ public class Skeleton extends Enemy {
         this.distanceTraveled = 0;
 
         try {
-            this.image = ImageIO.read(new File("assets/skeleton.png"));
+            String fileSeparator = File.separator;
+            this.image = ImageIO.read(new File(String.format("assets%sskeleton.png", fileSeparator)));
         } catch (IOException e) {
             System.out.println("Couldn't load the Skeleton texture");
             this.image = null;

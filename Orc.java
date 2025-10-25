@@ -27,7 +27,8 @@ public class Orc extends Enemy {
         this.distanceTraveled = 0;
 
         try {
-            this.image = ImageIO.read(new File("assets/orc.png"));
+            String fileSeparator = File.separator;
+            this.image = ImageIO.read(new File(String.format("assets%sorc.png", fileSeparator)));
         } catch (IOException e) {
             System.out.println("Couldn't load the Orc texture");
             this.image = null;

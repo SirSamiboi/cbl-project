@@ -40,7 +40,8 @@ class FireballTower extends Tower {
      */
     private void updateImage() {
         try {
-            String pathname = String.format("assets/tower1-%d.png", level);
+            String fileSeparator = File.separator;
+            String pathname = String.format("assets%stower1-%d.png", fileSeparator, level);
             image = ImageIO.read(new File(pathname));
         
         } catch (IOException e) {

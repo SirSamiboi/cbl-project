@@ -27,7 +27,8 @@ public class Goblin extends Enemy {
         this.distanceTraveled = 0;
 
         try {
-            this.image = ImageIO.read(new File("assets/goblin.png"));
+            String fileSeparator = File.separator;
+            this.image = ImageIO.read(new File(String.format("assets%sgoblin.png", fileSeparator)));
         } catch (IOException e) {
             System.out.println("Couldn't load the Goblin texture");
             this.image = null;

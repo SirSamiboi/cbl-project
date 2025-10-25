@@ -30,7 +30,8 @@ public class Fallen extends Enemy {
         this.transformed = false;
 
         try {
-            this.image = ImageIO.read(new File("assets/fallen.png"));
+            String fileSeparator = File.separator;
+            this.image = ImageIO.read(new File(String.format("assets%sfallen.png", fileSeparator)));
         } catch (IOException e) {
             System.out.println("Couldn't load the Fallen texture");
             this.image = null;
@@ -45,7 +46,8 @@ public class Fallen extends Enemy {
         // Transform into fast state when half health is reached
         if (!transformed && hp < maxHp / 2) {
             try {
-                this.image = ImageIO.read(new File("assets/fallenFast.png"));
+                String fileSeparator = File.separator;
+                this.image = ImageIO.read(new File(String.format("assets%sfallenFast.png", fileSeparator)));
             } catch (IOException e) {
                 System.out.println("Couldn't load the Fallen texture");
                 this.image = null;
