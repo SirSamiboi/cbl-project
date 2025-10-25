@@ -33,7 +33,7 @@ class GamePanel extends JPanel implements MouseListener {
      */
     public int gameState = 0;
 
-    public Button[] menuButtons = {new PlayButton(300, 260), new QuitButton(300, 330)};
+    public Button[] menuButtons = {new PlayButton(300, 330), new QuitButton(300, 400)};
     public PauseButton pauseButton = new PauseButton(385, 10);
 
     private BufferedImage mapImage;
@@ -55,7 +55,7 @@ class GamePanel extends JPanel implements MouseListener {
     };
     public ArrayList<Animation> animationList = new ArrayList<>();
 
-    public int waveNumber = 0;
+    public int waveNumber = 0; // Initialized at 0, changes to 1 upon game start
     public int waveTotal = 15; // Total number of waves
     public int waveLength;
     // IDs of all enemies that will be spawned each wave
@@ -516,12 +516,23 @@ class GamePanel extends JPanel implements MouseListener {
             }
         }
 
-        // Draw labels
-        g2d.setColor(Color.WHITE);
         g2d.setFont(new Font("Arial", Font.BOLD, 22));
-        g2d.drawString(String.format("Wave %d / %d", waveNumber, waveTotal), 10, 25);
-        g2d.drawString(String.format("Player HP: %d", player.getPlayerHp()), 10, 50);
-        g2d.drawString(String.format("Gold: %d", player.getMoney()), 670, 25);
+
+        // Draw labels while round is ongoing
+        if (gameState == 1 || gameState == 2) {
+            g2d.setColor(Color.WHITE);
+            g2d.drawString(String.format("Wave %d / %d", waveNumber, waveTotal), 10, 25);
+            g2d.drawString(String.format("Player HP: %d", player.getPlayerHp()), 10, 50);
+            g2d.drawString(String.format("Gold: %d", player.getMoney()), 670, 25);
+        }
+
+        // Dim background while gameplay is not ongoing
+        if (gameState != 1) {
+            g2d.setColor(Color.BLACK);
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+            g2d.fillRect(0, 0, 800, 640);
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+        }
 
         // Draw menu buttons, if visible
         g2d.setStroke(new BasicStroke(2));
@@ -537,24 +548,40 @@ class GamePanel extends JPanel implements MouseListener {
             }
         }
 
-        // Draw victory/loss text, if applicable
+        // Draw menu text while gameplay is not ongoing
         switch (gameState) {
+            case 0 -> {
+                g2d.setColor(Color.WHITE);
+                g2d.setFont(new Font("Arial", Font.BOLD, 44));
+                g2d.drawString("Magic Defender", 235, 220);
+            }
+
+            case 2 -> {
+                g2d.setColor(Color.WHITE);
+                g2d.setFont(new Font("Arial", Font.BOLD, 44));
+                g2d.drawString("Game Paused", 251, 220);
+            }
+
             case 3 -> {
                 g2d.setColor(Color.GREEN);
-                g2d.setFont(new Font("Arial", Font.BOLD, 44));
-                g2d.drawString("YOU WIN!!!", 285, 200);
+                g2d.setFont(new Font("Arial", Font.BOLD, 60));
+                g2d.drawString("VICTORY!", 250, 220);
+                g2d.setFont(new Font("Arial", Font.BOLD, 22));
+                g2d.drawString("The castle was defended. Your King is pleased!", 145, 270);
             }
                 
             case 4 -> {
                 g2d.setColor(Color.RED);
-                g2d.setFont(new Font("Arial", Font.BOLD, 44));
-                g2d.drawString("YOU LOSE!!!", 275, 200);
+                g2d.setFont(new Font("Arial", Font.BOLD, 60));
+                g2d.drawString("DEFEAT...", 255, 220);
+                g2d.setFont(new Font("Arial", Font.BOLD, 22));
+                g2d.drawString("The castle was invaded by the monsters.", 180, 270);
             }
 
             default -> { }
         }
 
-        // Draw pause button (only during gameplay)
+        // Draw pause button while gameplay is ongoing
         if (gameState == 1) {
             g2d.setColor(Color.WHITE);
             g2d.fillRect(pauseButton.getPosX(), pauseButton.getPosY(),

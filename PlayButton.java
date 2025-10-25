@@ -14,6 +14,6 @@ public class PlayButton extends Button {
         this.posX = posX;
         this.posY = posY;
         
-        this.text = "Start the Game";
+        this.text = "Start Game";
     }
 }
