@@ -111,7 +111,9 @@ public class Enemy {
 
     public void die(ArrayList<Enemy> enemyList, ArrayList<Animation> animationList) {
         this.speed = 0;
-        animationList.add(new DeathAnimation(posX, posY, money));
+        if (posX < 800) {
+            animationList.add(new DeathAnimation(posX, posY, money));
+        }
         enemyList.remove(this);
     }
 
@@ -198,9 +200,9 @@ public class Enemy {
         move();
         chillTimer -= 1;
 
-        if (this.posX >= 800) { // if it passed the entire track
+        if (posX >= 800) { // if it passed the entire track
             player.setPlayerHp((player.getPlayerHp() - damage)); // Deal 1 damage to the player
-            this.hp = 0;
+            hp = 0;
             player.setMoney(player.getMoney() - this.money);
 
             System.out.println("Another one lost to The Zone");

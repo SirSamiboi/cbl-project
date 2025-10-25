@@ -20,7 +20,7 @@ import javax.swing.*;
 
 class GamePanel extends JPanel implements MouseListener {
     Random random = new Random();
-    Player playerOne = new Player(); // Used to store player statistics
+    Player player = new Player(); // Used to store player statistics
 
     /*
      * 0 - game has not started yet
@@ -32,7 +32,7 @@ class GamePanel extends JPanel implements MouseListener {
     public int gameState = 0;
 
     public Button[] menuButtons = {new PlayButton(300, 260), new QuitButton(300, 330)};
-    public PauseButton pauseButton = new PauseButton(385, 0);
+    public PauseButton pauseButton = new PauseButton(385, 10);
 
     private BufferedImage mapImage;
 
@@ -54,6 +54,7 @@ class GamePanel extends JPanel implements MouseListener {
     public ArrayList<Animation> animationList = new ArrayList<>();
 
     public int waveNumber = 0;
+    public int waveTotal = 5; // Total number of waves
     public int waveLength;
     // IDs of all enemies that will be spawned each wave
     public byte[][] perWaveEnemyTypes = {
@@ -148,13 +149,13 @@ class GamePanel extends JPanel implements MouseListener {
                 break;
 
             case 1: // The game is going on, standard logic
-                if (playerOne.getPlayerHp() <= 0) { // if player is dead
+                if (player.getPlayerHp() <= 0) { // if player is dead
                     System.out.println("You spent all your lives");
                     gameState = 4; // go to the game over screen
                     break;
                 }
 
-                if (waveNumber > 5) { // If outside of the wave range
+                if (waveNumber > waveTotal) { // If outside of the wave range
                     System.out.println("All waves beat");
                     gameState = 3; // go to the victory screen
                     break;
@@ -168,7 +169,7 @@ class GamePanel extends JPanel implements MouseListener {
                     enemySpawnTimes.clear(); // Resets the spawn timings for the next wave.
                     waveNumber += 1; // Moves the wave counter to the next wave
 
-                    if (waveNumber > 5) { // If outside of the wave range
+                    if (waveNumber > waveTotal) { // If outside of the wave range
                         System.out.println("All waves beat");
                         gameState = 3; // Go to the victory screen
                         break;
@@ -180,7 +181,7 @@ class GamePanel extends JPanel implements MouseListener {
                     // Sets the time at which the next wave will start
                     nextWaveTime = waveEmptyTime + waveDelayTime;
                     
-                    if (waveNumber > 5) { // If outside of the wave range
+                    if (waveNumber > waveTotal) { // If outside of the wave range
                         System.out.println("All waves beat");
                         gameState = 3; // Go to the victory screen
                         break;
@@ -224,10 +225,10 @@ class GamePanel extends JPanel implements MouseListener {
                 // Process ticks for enemies
                 for (int i = 0; i < enemyList.size(); i++) {
                     Enemy enemy = enemyList.get(i);
-                    enemy.tick(enemyList, playerOne);
+                    enemy.tick(enemyList, player);
 
                     if (enemy.getHp() <= 0) {
-                        playerOne.setMoney(playerOne.getMoney() + enemy.getMoney());
+                        player.setMoney(player.getMoney() + enemy.getMoney());
                         enemy.die(enemyList, animationList);
                         i -= 1;
                     }
@@ -444,13 +445,13 @@ class GamePanel extends JPanel implements MouseListener {
 
                     // Button will be transparent if tower cannot be built
                     if (ub.getType() != -1
-                        && playerOne.getMoney() < ub.getBuildCost()) {
+                        && player.getMoney() < ub.getBuildCost()) {
                         g2d.setColor(ub.getColor());
                         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
                             0.5f));
 
                     // Button will be transparent and grayed out if upgrade cannot be bought
-                    } else if (playerOne.getMoney() < tower.getUpgradeCost()) {
+                    } else if (player.getMoney() < tower.getUpgradeCost()) {
                         g2d.setColor(Color.GRAY);
                         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
                             0.5f));
@@ -484,19 +485,21 @@ class GamePanel extends JPanel implements MouseListener {
         // Draw labels
         g2d.setColor(Color.WHITE);
         g2d.setFont(new Font("Arial", Font.BOLD, 22));
-        g2d.drawString(String.format("Wave %d / 5", waveNumber), 10, 25);
-        g2d.drawString(String.format("Player HP: %d", playerOne.getPlayerHp()), 10, 50);
-        g2d.drawString(String.format("Gold: %d", playerOne.getMoney()), 670, 25);
-
+        g2d.drawString(String.format("Wave %d / %d", waveNumber, waveTotal), 10, 25);
+        g2d.drawString(String.format("Player HP: %d", player.getPlayerHp()), 10, 50);
+        g2d.drawString(String.format("Gold: %d", player.getMoney()), 670, 25);
 
         // Draw menu buttons, if visible
-
-        g2d.setColor(Color.BLACK);
+        g2d.setStroke(new BasicStroke(2));
         for (Button button : menuButtons) {
             if (button.getVisible()) {
+                g2d.setColor(Color.WHITE);
+                g2d.fillRect(button.getPosX(), button.getPosY(),
+                    button.getWidth(), button.getHeight());
+                g2d.setColor(Color.BLACK);
                 g2d.drawRect(button.getPosX(), button.getPosY(),
                     button.getWidth(), button.getHeight());
-                g2d.drawString(button.getText(), button.getPosX(), button.getPosY() + 30);
+                g2d.drawString(button.getText(), button.getPosX() + 16, button.getPosY() + 32);
             }
         }
 
@@ -518,11 +521,14 @@ class GamePanel extends JPanel implements MouseListener {
         }
 
         // Draw pause button
+        g2d.setColor(Color.WHITE);
+        g2d.fillRect(pauseButton.getPosX(), pauseButton.getPosY(),
+            pauseButton.getWidth(), pauseButton.getHeight());
         g2d.setColor(Color.BLACK);
         g2d.drawRect(pauseButton.getPosX(), pauseButton.getPosY(),
             pauseButton.getWidth(), pauseButton.getHeight());
         g2d.setFont(new Font("Arial", Font.BOLD, 30));
-        g2d.drawString(pauseButton.getText(), 392, 25);
+        g2d.drawString(pauseButton.getText(), 391, 36);
         
     }
 
@@ -563,7 +569,7 @@ class GamePanel extends JPanel implements MouseListener {
                 }
 
                 anyButtonClicked = true;
-                ub.click(towerList, playerOne);
+                ub.click(towerList, player);
             }
 
             i += 1;

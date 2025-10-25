@@ -1,3 +1,7 @@
+/**
+ * Class used for UI buttons.
+ */
+
 public class Button {
     protected String text;
     protected boolean visible = true;
@@ -6,6 +10,9 @@ public class Button {
     protected int width = 200;
     protected int height = 50;
 
+    /**
+     * Checks if the button has been clicked.
+     */
     boolean isClicked(int lastClickX, int lastClickY) {
         return lastClickX >= this.posX && lastClickX <= this.posX + width
             && lastClickY >= this.posY && lastClickY <= this.posY + height;

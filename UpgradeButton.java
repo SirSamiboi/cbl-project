@@ -180,20 +180,20 @@ class UpgradeButton {
     /**
      * Runs when the button is clicked.
      */
-    void click(ArrayList<Tower> towerList, Player playerOne) {
-        int money = playerOne.getMoney();
+    void click(ArrayList<Tower> towerList, Player player) {
+        int money = player.getMoney();
 
         // Upgrade tower
         if (type == -1) {
             if (tower.getLevel() < tower.getMaxLevel() && money >= tower.getUpgradeCost()) {
-                playerOne.setMoney(money - tower.getUpgradeCost());
+                player.setMoney(money - tower.getUpgradeCost());
                 tower.levelUp();
             }
         
         // Build tower
         } else {
             if (tower.getMaxLevel() == 0 && money >= buildCostList[type]) {
-                playerOne.setMoney(money - buildCostList[type]);
+                player.setMoney(money - buildCostList[type]);
 
                 switch (type) {
                     case 0 -> tower.placeBasic(towerList);
