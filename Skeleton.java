@@ -4,7 +4,7 @@ import javax.imageio.ImageIO;
 
 /**
  * Class that saves the data of Skeleton type enemies.
- * Skeletons move faster than goblins, and often come in groups.
+ * Skeletons are stronger and faster than goblins.
  */
 
 public class Skeleton extends Enemy {
@@ -18,8 +18,8 @@ public class Skeleton extends Enemy {
         this.imageWidth = 34;
         this.imageHeight = 44;
         this.imageOffsetX = 0;
-        this.imageOffsetY = 0;
-        this.maxHp = 15;
+        this.imageOffsetY = 1;
+        this.maxHp = 30;
         this.hp = maxHp;
         this.damage = 1;
         this.speed = 6;
@@ -32,5 +32,16 @@ public class Skeleton extends Enemy {
             System.out.println("Couldn't load the Skeleton texture");
             this.image = null;
         }
+    }
+
+    /**
+     * Method used by Necromancer to spawn Skeleton at her position.
+     */
+    @Override
+    public void summon(int posX, int posY, int distanceTraveled, boolean facingRight) {
+        this.posX = posX;
+        this.posY = posY;
+        this.distanceTraveled = distanceTraveled;
+        this.facingRight = facingRight;
     }
 }

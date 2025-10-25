@@ -14,8 +14,7 @@ public class FireballAnimation extends Animation {
     private int endX;
     private int endY;
     private final Enemy targetEnemy;
-    private int outerWidth;
-    private int innerWidth;
+    private int width;
     private final int outerR;
     private final int outerG;
     private final int outerB;
@@ -43,11 +42,10 @@ public class FireballAnimation extends Animation {
     @Override
     void tick() {
         if (timer < 5) {
-            outerWidth = 5;
+            width = 5;
         } else {
-            outerWidth = (int) (5 * (1 - Math.pow((double) (timer - 5) / 10, 3)));
+            width = (int) (5 * (1 - Math.pow((double) (timer - 5) / 10, 3)));
         }
-        innerWidth = Math.max(0, outerWidth - 3);
         circleSize = (int) (150 * (1 - Math.pow((double) timer / 15, 3)));
 
         endX = targetEnemy.getPosX();
@@ -58,7 +56,7 @@ public class FireballAnimation extends Animation {
 
     @Override
     int[] getValues() {
-        return new int[] {startX, startY, endX, endY, outerWidth, innerWidth,
+        return new int[] {startX, startY, endX, endY, width,
             outerR, outerG, outerB, circleSize};
     }
 }

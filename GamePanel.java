@@ -58,12 +58,13 @@ class GamePanel extends JPanel implements MouseListener {
     // IDs of all enemies that will be spawned each wave
     public byte[][] perWaveEnemyTypes = {
         {},
-        {0, 1, 2, 2, 2, 2},
+        {0, 1, 2, 3, 4, 5},
         {0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
     };
+
     // Timestamps of when enemies spawn each wave, relative to the last enemy, in ticks
     // Index 0 is usually 0 because the first enemy spawns as soon as the wave begins
     public int[][] perWaveSpawnIntervals = {
@@ -74,6 +75,7 @@ class GamePanel extends JPanel implements MouseListener {
         {0, 24, 22, 20, 18, 16, 14, 12, 10, 8, 6, 4},
         {0, 15, 15, 15, 15, 15, 15, 15, 15, 15, 30, 10, 10, 10, 10, 10, 10, 10, 10, 10}
     };
+
     private int waveEmptyTime; // Timestamp of when a wave ended
     private int waveDelayTime = 120; // 4 second delay before the next wave starts
     private int nextWaveTime; // Timestamp of when the next wave should start
@@ -197,16 +199,18 @@ class GamePanel extends JPanel implements MouseListener {
                 }
 
                 // If block runs when an enemy is to be spawned
-                // Does not support multiple enemies spawning at once
+                // Does not support multiple enemies spawning on same tick
                 if (enemySpawnTimes.contains(globalTimer)) {
+                    // Generate a randomized spawn height
+                    int spawnY = 125 + random.nextInt(11) - 5;
                     // Spawns the enemy with the matching ID
                     switch (perWaveEnemyTypes[waveNumber][waveEnemiesSpawned]) {
-                        case (byte) 0 -> enemyList.add(new
-                            Goblin(0, 125 + (random.nextInt(11) - 5)));
-                        case (byte) 1 -> enemyList.add(new
-                            FastEnemy(0, 125 + (random.nextInt(21) - 10)));
-                        case (byte) 2 -> enemyList.add(new
-                            TankEnemy(0, 125 + (random.nextInt(11) - 5)));
+                        case (byte) 0 -> enemyList.add(new Goblin(0, spawnY));
+                        case (byte) 1 -> enemyList.add(new Orc(0, spawnY));
+                        case (byte) 2 -> enemyList.add(new Skeleton(0, spawnY));
+                        case (byte) 3 -> enemyList.add(new Golem(0, spawnY));
+                        case (byte) 4 -> enemyList.add(new Necromancer(0, spawnY));
+                        case (byte) 5 -> enemyList.add(new Fallen(0, spawnY));
                         default -> { }
                     }
                     waveEnemiesSpawned += 1;
@@ -289,8 +293,6 @@ class GamePanel extends JPanel implements MouseListener {
      */
     @Override
     protected void paintComponent(Graphics g) {
-        // super.paintComponent(g);
-
         Graphics2D g2d = (Graphics2D) g;
 
         // Rendering hints
@@ -302,9 +304,7 @@ class GamePanel extends JPanel implements MouseListener {
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
             RenderingHints.VALUE_RENDER_SPEED);
 
-        // Smoothen the pixel art, since the program does not truly run in 800x640 in practice
-        // This was discovered late into development, so to be completely honest,
-        // we did not consider it worth fixing
+        // Smoothen the pixel art
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
             RenderingHints.VALUE_INTERPOLATION_BILINEAR);     
 
@@ -353,27 +353,22 @@ class GamePanel extends JPanel implements MouseListener {
                 // Fireball tower attack (see FireballAnimation)
                 case "1" -> {
                     // Outer beam
-                    g2d.setColor(new Color(val[6], val[7], val[8]));
+                    g2d.setColor(new Color(val[5], val[6], val[7]));
                     g2d.setStroke(new BasicStroke(val[4]));
                     g2d.drawLine(val[0], val[1], val[2], val[3]);
 
                     // Explosion circle
                     g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
-                    g2d.fillOval(val[2] - val[9] / 2, val[3] - val[9] / 2, val[9], val[9]);
-                    g2d.fillOval(val[2] - val[9] / 2 + 20, val[3] - val[9] / 2 + 20,
-                            val[9] - 40, val[9] - 40);
+                    g2d.fillOval(val[2] - val[8] / 2, val[3] - val[8] / 2, val[8], val[8]);
+                    g2d.fillOval(val[2] - val[8] / 2 + 20, val[3] - val[8] / 2 + 20,
+                            val[8] - 40, val[8] - 40);
                     g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
-                    
-                    // Inner beam (unused)
-                    // g2d.setColor(new Color(val[6] * 7 / 8, val[7] * 7 / 8, val[8] * 7 / 8));
-                    // g2d.setStroke(new BasicStroke(val[5]));
-                    // g2d.drawLine(val[0], val[1], val[2], val[3]);
                 }
 
                 // Chill tower attack (see ChillAnimation)
                 case "2" -> {
                     // Outer beam
-                    g2d.setColor(new Color(val[6], val[7], val[8]));
+                    g2d.setColor(new Color(val[5], val[6], val[7]));
                     g2d.setStroke(new BasicStroke(val[4]));
                     g2d.drawLine(val[0], val[1], val[2], val[3]);
 
@@ -385,8 +380,8 @@ class GamePanel extends JPanel implements MouseListener {
                     g2d.translate(val[2], val[3]);
                     g2d.rotate(Math.PI / 4.0);
                     
-                    g2d.drawRect(-val[9] / 2, -val[9] / 2, val[9], val[9]);
-                    g2d.fillRect(-val[9] / 2 + 8, -val[9] / 2 + 8, val[9] - 16, val[9] - 16);
+                    g2d.drawRect(-val[8] / 2, -val[8] / 2, val[8], val[8]);
+                    g2d.fillRect(-val[8] / 2 + 8, -val[8] / 2 + 8, val[8] - 16, val[8] - 16);
 
                     g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
                 

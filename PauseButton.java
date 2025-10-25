@@ -1,3 +1,7 @@
+/**
+ * Button used to pause the game.
+ */
+
 public class PauseButton extends Button {
     /**
      * Constructor.

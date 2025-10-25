@@ -22,7 +22,7 @@ public class Goblin extends Enemy {
         this.maxHp = 20;
         this.hp = maxHp;
         this.damage = 1;
-        this.speed = 6;
+        this.speed = 4;
         this.money = 10;
         this.distanceTraveled = 0;
 

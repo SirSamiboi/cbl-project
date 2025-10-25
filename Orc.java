@@ -18,11 +18,11 @@ public class Orc extends Enemy {
         this.imageWidth = 39;
         this.imageHeight = 58;
         this.imageOffsetX = 0;
-        this.imageOffsetY = -2;
-        this.maxHp = 50;
+        this.imageOffsetY = -6;
+        this.maxHp = 80;
         this.hp = maxHp;
         this.damage = 2;
-        this.speed = 2;
+        this.speed = 3;
         this.money = 25;
         this.distanceTraveled = 0;
 

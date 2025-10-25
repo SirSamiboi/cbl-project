@@ -1,4 +1,8 @@
-public class PlayButton extends Button{
+/**
+ * Button used to begin playing the game.
+ */
+
+public class PlayButton extends Button {
     /**
      * Constructor.
      * @param posX 

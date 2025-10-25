@@ -183,11 +183,13 @@ public class Enemy {
      * Applies the chill tower's effect on the enemy,
      * causing it to slow down for a given number of ticks.
      */
-
     public void chill(int chillDuration) {
         this.chillDuration = chillDuration;
         chillTimer = chillDuration;
     }
+
+    // Used by summoner enemies to modify the enemy's initial position
+    public void summon(int posX, int posY, int distanceTraveled, boolean facingRight) { }
     
     /**
      * Handles the enemy's actions over the next tick.
