@@ -27,9 +27,10 @@ public class Ogre extends Enemy {
         this.distanceTraveled = 0;
 
         try {
-            this.image = ImageIO.read(new File("assets/ogre.png"));
+            String fileSeparator = File.separator;
+            this.image = ImageIO.read(new File(String.format("assets%sogre.png", fileSeparator)));
         } catch (IOException e) {
-            System.out.println("Couldn't load the Ogre texture");
+            System.out.println("Couldn't load the Orc texture");
             this.image = null;
         }
     }

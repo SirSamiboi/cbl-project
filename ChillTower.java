@@ -10,9 +10,9 @@ import javax.imageio.ImageIO;
 
 class ChillTower extends Tower {
     private final int[] damageLevel = {1, 1, 1, 1}; // Index 0 holds damage dealt at level 1
-    private final int[] rangeLevel = {130, 145, 160, 180};
+    private final int[] rangeLevel = {150, 165, 180, 200};
     private final int[] cooldownLevel = {55, 50, 45, 40};
-    private final int[] chillLevel = {18, 22, 26, 32};
+    private final int[] chillLevel = {20, 24, 28, 32};
     private final int[] upgradeCostLevel = {100, 200, 400};
     private final int[] imageWidthLevel = {64, 64, 64, 64};
     private final int[] imageHeightLevel = {128, 128, 128, 128};

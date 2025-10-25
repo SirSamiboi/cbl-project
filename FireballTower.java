@@ -9,8 +9,8 @@ import javax.imageio.ImageIO;
  */
 
 class FireballTower extends Tower {
-    private final int[] damageLevel = {8, 12, 16, 24}; // Index 0 holds damage dealt at level 1
-    private final int[] rangeLevel = {140, 160, 180, 180};
+    private final int[] damageLevel = {8, 12, 18, 24}; // Index 0 holds damage dealt at level 1
+    private final int[] rangeLevel = {150, 160, 170, 180};
     private final int[] cooldownLevel = {60, 50, 40, 30};
     private final int[] upgradeCostLevel = {150, 250, 500};
     private final int[] imageWidthLevel = {64, 64, 64, 64};

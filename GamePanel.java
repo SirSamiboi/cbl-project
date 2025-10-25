@@ -55,7 +55,7 @@ class GamePanel extends JPanel implements MouseListener {
     };
     public ArrayList<Animation> animationList = new ArrayList<>();
 
-    public int waveNumber = 0;
+    public int waveNumber = 14;
     public int waveTotal = 15; // Total number of waves
     public int waveLength;
     // IDs of all enemies that will be spawned each wave
@@ -79,7 +79,7 @@ class GamePanel extends JPanel implements MouseListener {
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, // 2990
         {4, 2, 2, 2, 2, 4, 3, 3, 3, 4, 5, 5, 5}, // 3750
         {3, 4, 3, 3, 3, 4, 3, 3, 6,
-            3, 5, 5, 5, 3, 5, 5, 5} // 4680
+            3, 3, 5, 5, 5, 5, 5, 3, 3, 5, 5, 5, 5, 5} // 4680
         
         // Enemy money: 0 = 10, 1 = 25, 2 = 15, 3 = 50, 4 = 200, 5 = 40
     };
@@ -89,7 +89,7 @@ class GamePanel extends JPanel implements MouseListener {
     public int[][] perWaveSpawnIntervals = {
         {},
         {60, 30, 30},
-        {0, 30, 30, 30, 30}, // Here a goblin enemy will spawn at 0, 15, 30, 45 ticks
+        {0, 30, 30, 30, 30}, // Here a goblin enemy will spawn at 0, 30, 60, 90, 120 ticks
         {0, 15, 15, 15, 60, 15, 15, 15},
         {0, 15, 15, 60, 60, 15, 15},
         {0, 15, 15, 15, 60, 15, 15, 15, 60, 15},
@@ -105,8 +105,8 @@ class GamePanel extends JPanel implements MouseListener {
             15, 15, 15, 15, 7, 8, 15, 15, 15, 15, 15, 15, 15,
             15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15},
         {0, 60, 15, 15, 15, 120, 60, 30, 30, 120, 60, 30, 30},
-        {0, 30, 30, 30, 240, 30, 30, 30, 240, 300,
-            15, 15, 15, 300, 15, 15, 15}
+        {0, 30, 30, 30, 240, 30, 30, 30, 240,
+            300, 15, 15, 30, 30, 30, 30, 300, 15, 15, 30, 30, 30, 30}
     };
 
     private int waveEmptyTime; // Timestamp of when a wave ended
@@ -554,15 +554,17 @@ class GamePanel extends JPanel implements MouseListener {
             default -> { }
         }
 
-        // Draw pause button
-        g2d.setColor(Color.WHITE);
-        g2d.fillRect(pauseButton.getPosX(), pauseButton.getPosY(),
-            pauseButton.getWidth(), pauseButton.getHeight());
-        g2d.setColor(Color.BLACK);
-        g2d.drawRect(pauseButton.getPosX(), pauseButton.getPosY(),
-            pauseButton.getWidth(), pauseButton.getHeight());
-        g2d.setFont(new Font("Arial", Font.BOLD, 30));
-        g2d.drawString(pauseButton.getText(), 391, 36);
+        // Draw pause button (only during gameplay)
+        if (gameState == 1) {
+            g2d.setColor(Color.WHITE);
+            g2d.fillRect(pauseButton.getPosX(), pauseButton.getPosY(),
+                pauseButton.getWidth(), pauseButton.getHeight());
+            g2d.setColor(Color.BLACK);
+            g2d.drawRect(pauseButton.getPosX(), pauseButton.getPosY(),
+                pauseButton.getWidth(), pauseButton.getHeight());
+            g2d.setFont(new Font("Arial", Font.BOLD, 30));
+            g2d.drawString(pauseButton.getText(), 391, 36);
+        }
         
     }
 
@@ -581,17 +583,21 @@ class GamePanel extends JPanel implements MouseListener {
 
     /**
      * Called when a mouse button is released.
+     * Allows for interaction with upgrade buttons and towers.
      */
     @Override
     public void mouseReleased(MouseEvent e) {
         lastClickX = e.getX();
         lastClickY = e.getY();
         
-        // System.out.println("Click registered at: (" + lastClickX + ", " + lastClickY + ")");
-        
-        // Logic for button clicks
+        // Logic for tower button clicks
         boolean anyButtonClicked = false;
         int i = 0;
+
+        // Prevent tower interaction while not playing
+        if (gameState != 1) {
+            return;
+        }
 
         do {
             UpgradeButton ub = upgradeButtonList[i];
