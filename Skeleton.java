@@ -23,7 +23,7 @@ public class Skeleton extends Enemy {
         this.hp = maxHp;
         this.damage = 1;
         this.speed = 6;
-        this.money = 10;
+        this.money = 20;
         this.distanceTraveled = 0;
 
         try {
@@ -43,5 +43,6 @@ public class Skeleton extends Enemy {
         this.posY = posY;
         this.distanceTraveled = distanceTraveled;
         this.facingRight = facingRight;
+        this.money = 5; // Summoned skeletons give less gold upon defeat
     }
 }

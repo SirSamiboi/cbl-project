@@ -26,7 +26,7 @@ public class Necromancer extends Enemy {
         this.hp = maxHp;
         this.damage = 1;
         this.speed = 2;
-        this.money = 10;
+        this.money = 50;
         this.distanceTraveled = 0;
         this.summonTimer = summonCooldown;
 
