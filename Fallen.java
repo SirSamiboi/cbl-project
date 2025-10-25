@@ -5,7 +5,7 @@ import javax.imageio.ImageIO;
 
 /**
  * Class that saves the data of Fallen type enemies.
- * The Fallen are very powerful enemies that gain speed when near death.
+ * The Fallen are very powerful enemies that gain a health and speed boost when near death.
  */
 
 public class Fallen extends Enemy {
@@ -25,7 +25,7 @@ public class Fallen extends Enemy {
         this.hp = maxHp;
         this.damage = 10;
         this.speed = 1;
-        this.money = 10;
+        this.money = 1000;
         this.distanceTraveled = 0;
         this.transformed = false;
 
@@ -54,11 +54,13 @@ public class Fallen extends Enemy {
                 this.image = null;
             }
 
+            maxHp = 1200;
+            hp = maxHp;
             transformed = true;
         }
 
         if (transformed) {
-            speed = (int) (2 + 3 * (1 - (double) (hp / ((double) maxHp / 2))));
+            speed = (int) (2 + 2 * Math.pow(1 - (double) hp / maxHp, 2));
         }
 
         move();

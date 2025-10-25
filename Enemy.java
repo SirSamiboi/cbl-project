@@ -190,8 +190,16 @@ public class Enemy {
         chillTimer = chillDuration;
     }
 
-    // Used by summoner enemies to modify the enemy's initial position
-    public void summon(int posX, int posY, int distanceTraveled, boolean facingRight) { }
+    /**
+     * Used by summoner enemies to modify the enemy's initial position.
+     */
+    public void summon(int posX, int posY, int distanceTraveled, boolean facingRight) {
+        this.posX = posX;
+        this.posY = posY;
+        this.distanceTraveled = distanceTraveled;
+        this.facingRight = facingRight;
+        this.money = 5; // Summoned enemies award little money when defeated
+    }
     
     /**
      * Handles the enemy's actions over the next tick.

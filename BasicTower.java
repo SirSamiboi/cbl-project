@@ -12,7 +12,7 @@ class BasicTower extends Tower {
     private final int[] damageLevel = {5, 7, 10, 15}; // Index 0 holds damage dealt at level 1
     private final int[] rangeLevel = {160, 180, 200, 220};
     private final int[] cooldownLevel = {30, 20, 15, 12};
-    private final int[] upgradeCostLevel = {50, 120, 300};
+    private final int[] upgradeCostLevel = {75, 200, 450};
     private final int[] imageWidthLevel = {64, 64, 64, 64};
     private final int[] imageHeightLevel = {128, 128, 128, 128};
     private final int[] imageOffsetXLevel = {0, 0, 0, 0};

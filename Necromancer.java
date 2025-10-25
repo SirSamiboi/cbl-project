@@ -22,11 +22,11 @@ public class Necromancer extends Enemy {
         this.imageHeight = 50;
         this.imageOffsetX = 0;
         this.imageOffsetY = -2;
-        this.maxHp = 50;
+        this.maxHp = 80;
         this.hp = maxHp;
         this.damage = 1;
         this.speed = 2;
-        this.money = 50;
+        this.money = 40;
         this.distanceTraveled = 0;
         this.summonTimer = summonCooldown;
 

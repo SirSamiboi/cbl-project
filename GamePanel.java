@@ -25,11 +25,11 @@ class GamePanel extends JPanel implements MouseListener {
     Player player = new Player(); // Used to store player statistics
 
     /*
-     * 0 - game has not started yet
-     * 1 - game is in progress
-     * 2 - game is paused
-     * 3 - player has won
-     * 4 - player has lost
+     * 0 - Game has not started yet
+     * 1 - Game is in progress
+     * 2 - Game is paused
+     * 3 - Player has won
+     * 4 - Player has lost
      */
     public int gameState = 0;
 
@@ -56,27 +56,57 @@ class GamePanel extends JPanel implements MouseListener {
     public ArrayList<Animation> animationList = new ArrayList<>();
 
     public int waveNumber = 0;
-    public int waveTotal = 5; // Total number of waves
+    public int waveTotal = 15; // Total number of waves
     public int waveLength;
     // IDs of all enemies that will be spawned each wave
     public byte[][] perWaveEnemyTypes = {
-        {},
-        {0, 1, 2, 3, 4, 5},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+        {}, // Comments state expected money at the start of a wave, for the purpose of testing
+        {0, 0, 0}, // 50
+        {0, 0, 0, 0, 0}, // 80
+        {0, 0, 0, 0, 0, 0, 0, 0}, // 130
+        {0, 0, 0, 1, 0, 0, 0}, // 210
+        {1, 0, 0, 0, 1, 0, 0, 0, 1, 1}, // 295
+        {2, 1, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, // 455
+        {2, 2, 2, 3, 0, 0, 0, 0}, // 650
+        {0, 0, 0, 1, 3, 1, 0, 0, 0, 1, 3, 1}, // 785
+        {2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+            2, 2, 2, 2, 2, 2, 2, 2, 2, 2}, // 1045
+        {0, 0, 0, 3, 0, 0, 0, 3, 1, 1, 1, 4, 2, 2, 2}, // 1345
+        {2, 1, 2, 3, 2, 1, 2, 4, 2, 1, 2, 3, 2, 1, 2}, // 1825
+        {3, 3, 5, 1, 1, 1, 1, 1, 4, 3, 1, 5, 1, 5}, // 2345
+        {0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, // 2990
+        {4, 2, 2, 2, 2, 4, 3, 3, 3, 4, 5, 5, 5}, // 3750
+        {3, 4, 3, 3, 3, 4, 3, 3, 6,
+            3, 5, 5, 5, 3, 5, 5, 5} // 4680
+        
+        // Enemy money: 0 = 10, 1 = 25, 2 = 15, 3 = 50, 4 = 200, 5 = 40
     };
 
     // Timestamps of when enemies spawn each wave, relative to the last enemy, in ticks
     // Index 0 is usually 0 because the first enemy spawns as soon as the wave begins
     public int[][] perWaveSpawnIntervals = {
         {},
-        {0, 30, 30, 30, 30, 30}, // Change to 60 when all enemies have been added
-        {0, 15, 15, 15}, // Here a goblin enemy will spawn at 0, 15, 30, 45 ticks
-        {0, 10, 10, 10, 30, 10, 10, 10},
-        {0, 24, 22, 20, 18, 16, 14, 12, 10, 8, 6, 4},
-        {0, 15, 15, 15, 15, 15, 15, 15, 15, 15, 30, 10, 10, 10, 10, 10, 10, 10, 10, 10}
+        {60, 30, 30},
+        {0, 30, 30, 30, 30}, // Here a goblin enemy will spawn at 0, 15, 30, 45 ticks
+        {0, 15, 15, 15, 60, 15, 15, 15},
+        {0, 15, 15, 60, 60, 15, 15},
+        {0, 15, 15, 15, 60, 15, 15, 15, 60, 15},
+        {0, 60, 30, 30, 60, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10},
+        {0, 15, 15, 60, 30, 15, 15, 15},
+        {0, 10, 10, 60, 60, 60, 90, 10, 10, 60, 60, 60},
+        {0, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+            90, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+        {0, 15, 15, 15, 90, 15, 15, 15, 90, 30, 30, 120, 180, 30, 30},
+        {0, 30, 30, 60, 60, 30, 30, 60, 60, 30, 30, 60, 60, 30, 30},
+        {0, 30, 30, 90, 15, 15, 15, 15, 120, 15, 60, 60, 60, 60},
+        {0, 15, 15, 15, 7, 8, 15, 15, 15, 15, 15, 15, 15,
+            15, 15, 15, 15, 7, 8, 15, 15, 15, 15, 15, 15, 15,
+            15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15},
+        {0, 60, 15, 15, 15, 120, 60, 30, 30, 120, 60, 30, 30},
+        {0, 30, 30, 30, 240, 30, 30, 30, 240, 300,
+            15, 15, 15, 300, 15, 15, 15}
     };
 
     private int waveEmptyTime; // Timestamp of when a wave ended
@@ -210,11 +240,12 @@ class GamePanel extends JPanel implements MouseListener {
                     // Spawns the enemy with the matching ID
                     switch (perWaveEnemyTypes[waveNumber][waveEnemiesSpawned]) {
                         case (byte) 0 -> enemyList.add(new Goblin(0, spawnY));
-                        case (byte) 1 -> enemyList.add(new Orc(0, spawnY));
+                        case (byte) 1 -> enemyList.add(new Ogre(0, spawnY));
                         case (byte) 2 -> enemyList.add(new Skeleton(0, spawnY));
-                        case (byte) 3 -> enemyList.add(new Golem(0, spawnY));
-                        case (byte) 4 -> enemyList.add(new Necromancer(0, spawnY));
-                        case (byte) 5 -> enemyList.add(new Fallen(0, spawnY));
+                        case (byte) 3 -> enemyList.add(new Orc(0, spawnY));
+                        case (byte) 4 -> enemyList.add(new Golem(0, spawnY));
+                        case (byte) 5 -> enemyList.add(new Necromancer(0, spawnY));
+                        case (byte) 6 -> enemyList.add(new Fallen(0, spawnY));
                         default -> { }
                     }
                     waveEnemiesSpawned += 1;

@@ -1,18 +1,13 @@
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 
-/**
- * Class that saves the data of Goblin type enemies.
- * Goblins are the most basic type of enemy.
- */
-
-public class Goblin extends Enemy {
-
+public class FastEnemy extends Enemy {
     /**
      * Constructor for the Goblin class at the starting position.
      */
-    public Goblin(int posX, int posY) {
+    public FastEnemy(int posX, int posY) {
         this.posX = posX;
         this.posY = posY;
         this.imageWidth = 36;
@@ -22,15 +17,14 @@ public class Goblin extends Enemy {
         this.maxHp = 15;
         this.hp = maxHp;
         this.damage = 1;
-        this.speed = 4;
+        this.speed = 15;
         this.money = 10;
         this.distanceTraveled = 0;
 
         try {
-            String fileSeparator = File.separator;
-            this.image = ImageIO.read(new File(String.format("assets%sgoblin.png", fileSeparator)));
+            this.image = ImageIO.read(new File("assets/fast.png"));
         } catch (IOException e) {
-            System.out.println("Couldn't load the Goblin texture");
+            System.out.println("Couldn't load the Fast Enemy texture");
             this.image = null;
         }
     }

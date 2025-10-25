@@ -23,7 +23,7 @@ public class Skeleton extends Enemy {
         this.hp = maxHp;
         this.damage = 1;
         this.speed = 6;
-        this.money = 20;
+        this.money = 15;
         this.distanceTraveled = 0;
 
         try {
@@ -34,17 +34,5 @@ public class Skeleton extends Enemy {
             System.out.println("Couldn't load the Skeleton texture");
             this.image = null;
         }
-    }
-
-    /**
-     * Method used by Necromancer to spawn Skeleton at her position.
-     */
-    @Override
-    public void summon(int posX, int posY, int distanceTraveled, boolean facingRight) {
-        this.posX = posX;
-        this.posY = posY;
-        this.distanceTraveled = distanceTraveled;
-        this.facingRight = facingRight;
-        this.money = 5; // Summoned skeletons give less gold upon defeat
     }
 }

@@ -4,7 +4,7 @@ import javax.imageio.ImageIO;
 
 /**
  * Class that saves the data of Orc type enemies.
- * Orcs are a stronger, slower version of goblins.
+ * Orcs are a more powerful variant of ogres.
  */
 
 public class Orc extends Enemy {
@@ -15,15 +15,15 @@ public class Orc extends Enemy {
     public Orc(int posX, int posY) {
         this.posX = posX;
         this.posY = posY;
-        this.imageWidth = 39;
-        this.imageHeight = 58;
+        this.imageWidth = 40;
+        this.imageHeight = 60;
         this.imageOffsetX = 0;
-        this.imageOffsetY = -6;
-        this.maxHp = 80;
+        this.imageOffsetY = -7;
+        this.maxHp = 200;
         this.hp = maxHp;
-        this.damage = 2;
+        this.damage = 3;
         this.speed = 3;
-        this.money = 25;
+        this.money = 50;
         this.distanceTraveled = 0;
 
         try {

@@ -19,11 +19,11 @@ public class Golem extends Enemy {
         this.imageHeight = 60;
         this.imageOffsetX = 0;
         this.imageOffsetY = -6;
-        this.maxHp = 400;
+        this.maxHp = 500;
         this.hp = maxHp;
         this.damage = 5;
         this.speed = 2;
-        this.money = 100;
+        this.money = 200;
         this.distanceTraveled = 0;
 
         try {
