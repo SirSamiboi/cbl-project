@@ -212,9 +212,6 @@ public class Enemy {
             player.setPlayerHp((player.getPlayerHp() - damage)); // Deal 1 damage to the player
             hp = 0;
             player.setMoney(player.getMoney() - this.money);
-
-            System.out.println("Another one lost to The Zone");
-            System.out.println("Player HP: " + player.getPlayerHp());
         }
     }
 }
