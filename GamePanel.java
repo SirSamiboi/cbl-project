@@ -183,16 +183,17 @@ class GamePanel extends JPanel implements MouseListener {
 
             case 1: // The game is going on, standard logic
                 if (player.getPlayerHp() <= 0) { // if player is dead
-                    System.out.println("You spent all your lives");
-                    gameState = 4; // go to the game over screen
+                    System.out.println("All lives lost");
+                    playDefeatJingle();
+                    gameState = 4; // Go to defeat screen
                     break;
                 }
 
                 if (waveNumber > waveTotal) { // If outside of the wave range
                     System.out.println("All waves beat");
-                    gameState = 3; // go to the victory screen
+                    playVictoryJingle();
+                    gameState = 3; // Go to victory screen
                     break;
-                    // TODO: Victory Screen
                 }
 
                 
@@ -204,9 +205,9 @@ class GamePanel extends JPanel implements MouseListener {
 
                     if (waveNumber > waveTotal) { // If outside of the wave range
                         System.out.println("All waves beat");
+                        playVictoryJingle();
                         gameState = 3; // Go to the victory screen
                         break;
-                        // TODO: Victory Screen
                     }
                     playWaveStartJingle();
 
@@ -216,9 +217,9 @@ class GamePanel extends JPanel implements MouseListener {
                     
                     if (waveNumber > waveTotal) { // If outside of the wave range
                         System.out.println("All waves beat");
+                        playVictoryJingle();
                         gameState = 3; // Go to the victory screen
                         break;
-                        // TODO: Victory Screen
                     }
                     
                     waveLength = perWaveEnemyTypes[waveNumber].length;
@@ -297,8 +298,7 @@ class GamePanel extends JPanel implements MouseListener {
                 }
                 break;
 
-            case 3: // Win
-                // TODO: Play victory jingle.
+            case 3: // Victory
                 menuButtons[1].setVisible(true);
                 if (menuButtons[1].getVisible()
                     && menuButtons[1].isClicked(lastClickX, lastClickY)) {
@@ -306,8 +306,7 @@ class GamePanel extends JPanel implements MouseListener {
                 }
                 break;
 
-            case 4: // Loss
-                // TODO: Play loss jingle.
+            case 4: // Defeat
                 menuButtons[1].setVisible(true);
                 if (menuButtons[1].getVisible()
                     && menuButtons[1].isClicked(lastClickX, lastClickY)) {
@@ -316,7 +315,7 @@ class GamePanel extends JPanel implements MouseListener {
                 break;
             
             default:
-                System.out.println("Game State is not correct");
+                System.out.println("Invalid game state");
         }
 
         // Render next frame
@@ -522,7 +521,7 @@ class GamePanel extends JPanel implements MouseListener {
         if (gameState == 1 || gameState == 2) {
             g2d.setColor(Color.WHITE);
             g2d.drawString(String.format("Wave %d / %d", waveNumber, waveTotal), 10, 25);
-            g2d.drawString(String.format("Player HP: %d", player.getPlayerHp()), 10, 50);
+            g2d.drawString(String.format("Lives: %d", player.getPlayerHp()), 10, 50);
             g2d.drawString(String.format("Gold: %d", player.getMoney()), 670, 25);
         }
 
@@ -565,17 +564,17 @@ class GamePanel extends JPanel implements MouseListener {
             case 3 -> {
                 g2d.setColor(Color.GREEN);
                 g2d.setFont(new Font("Arial", Font.BOLD, 60));
-                g2d.drawString("VICTORY!", 250, 220);
+                g2d.drawString("VICTORY!", 250, 270);
                 g2d.setFont(new Font("Arial", Font.BOLD, 22));
-                g2d.drawString("The castle was defended. Your King is pleased!", 145, 270);
+                g2d.drawString("The castle was defended. Your King is pleased!", 145, 320);
             }
                 
             case 4 -> {
                 g2d.setColor(Color.RED);
                 g2d.setFont(new Font("Arial", Font.BOLD, 60));
-                g2d.drawString("DEFEAT...", 255, 220);
+                g2d.drawString("DEFEAT", 278, 270);
                 g2d.setFont(new Font("Arial", Font.BOLD, 22));
-                g2d.drawString("The castle was invaded by the monsters.", 180, 270);
+                g2d.drawString("The castle was invaded by the monsters.", 180, 320);
             }
 
             default -> { }
@@ -693,9 +692,9 @@ class GamePanel extends JPanel implements MouseListener {
      * Plays a jingle at the start of each wave.
      */
     public static void playWaveStartJingle() {
-        URL url = GamePanel.class.getResource("/sounds/roundStart.wav");
+        URL url = GamePanel.class.getResource("/sounds/waveStart.wav");
         if (url == null) {
-            System.err.println("Silent sound file not found, skipping warmup");
+            System.err.println("Wave start sound file not found");
             return;
         }
 
@@ -707,7 +706,51 @@ class GamePanel extends JPanel implements MouseListener {
             clip.start();
 
         } catch (Exception e) {
-            System.err.println("Failed to perform silent audio warmup: " + e.getMessage());
+            System.err.println("Failed to play wave start jingle: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Plays a jingle upon victory.
+     */
+    public static void playVictoryJingle() {
+        URL url = GamePanel.class.getResource("/sounds/victory.wav");
+        if (url == null) {
+            System.err.println("Victory sound file not found");
+            return;
+        }
+
+        try (InputStream is = url.openStream();
+            var audioStream = AudioSystem.getAudioInputStream(is)) {
+
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.start();
+
+        } catch (Exception e) {
+            System.err.println("Failed to play victory jingle: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Plays a jingle upon defeat.
+     */
+    public static void playDefeatJingle() {
+        URL url = GamePanel.class.getResource("/sounds/defeat.wav");
+        if (url == null) {
+            System.err.println("Defeat sound file not found");
+            return;
+        }
+
+        try (InputStream is = url.openStream();
+            var audioStream = AudioSystem.getAudioInputStream(is)) {
+
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.start();
+
+        } catch (Exception e) {
+            System.err.println("Failed to play defeat jingle: " + e.getMessage());
         }
     }
 }
