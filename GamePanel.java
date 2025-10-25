@@ -22,6 +22,18 @@ class GamePanel extends JPanel implements MouseListener {
     Random random = new Random();
     Player playerOne = new Player(); // Used to store player statistics
 
+    /*
+     * 0 - game has not started yet
+     * 1 - game is in progress
+     * 2 - game is paused
+     * 3 - you won
+     * 4 - you lost
+     */
+    public int gameState = 0;
+
+    public Button[] menuButtons = {new PlayButton(300, 260), new QuitButton(300, 330)};
+    public PauseButton pauseButton = new PauseButton(385, 0);
+
     private BufferedImage mapImage;
 
     private int lastClickX = -1;
@@ -105,77 +117,153 @@ class GamePanel extends JPanel implements MouseListener {
      * Game update logic, called by Timer.
      */
     public void updateGame() {
-        //Starting a new wave
-        if (enemyList.isEmpty() && waveEnemiesSpawned == waveLength) { // if all enemies are dead
-            enemySpawnTimes.clear(); // resets the spawn timings for the next wave.
-            waveNumber += 1; // moves the wave counter to the next wave
-            playWaveStartJingle();
+        if (gameState == 1 && pauseButton.isClicked(lastClickX, lastClickY)) {
+            gameState = 2;
+            lastClickX = -1;
+            lastClickY = -1;
+        } else if (gameState == 2 && pauseButton.isClicked(lastClickX, lastClickY)) {
+            gameState = 1;
+            lastClickX = -1;
+            lastClickY = -1;
 
-            if (waveNumber > 5) {
-                System.out.println("All waves beat");
-                // TODO: Victory Screen
-            }
-
-            waveEmptyTime = globalTimer;
-            // Sets the time at which the next wave will start
-            nextWaveTime = waveEmptyTime + waveDelayTime;
-            waveLength = perWaveEnemyTypes[waveNumber].length;
-            waveEnemiesSpawned = 0;
-            // Setup the spawn times for all enemies of the next wave
-            int enemySpawnTime = nextWaveTime;
-
-            for (int enemySpawnDelay : perWaveSpawnIntervals[waveNumber]) {
-                enemySpawnTime += enemySpawnDelay;
-                enemySpawnTimes.add(enemySpawnTime);
+            for (Button button : menuButtons) {
+                button.setVisible(false);
             }
         }
 
-        // If block runs when an enemy is to be spawned
-        // Does not support multiple enemies spawning at once
-        if (enemySpawnTimes.contains(globalTimer)) {
-            // Spawns the enemy with the matching ID
-            switch (perWaveEnemyTypes[waveNumber][waveEnemiesSpawned]) {
+        switch (gameState) {
+            case 0: // if the game has not started yet 
+                if (menuButtons[0].getVisible() && 
+                        menuButtons[0].isClicked(lastClickX, lastClickY)) {
+                    gameState = 1;
+                    menuButtons[0].setVisible(false);
+                    menuButtons[1].setVisible(false);
+                } else if (menuButtons[1].getVisible() && 
+                        menuButtons[1].isClicked(lastClickX, lastClickY)) {
+                    System.exit(0);
+                }
+
+                break;
+
+            case 1: // the game is going on, standard logic
+                if (playerOne.getPlayerHp() <= 0) { // if player is dead
+                        System.out.println("You spent all your lives");
+                        gameState = 4; // go to the game over screen
+                        break;
+                    }
+                //Starting a new wave
+                if (enemyList.isEmpty() && waveEnemiesSpawned == waveLength) { // if all enemies are dead
+
+                    if (waveNumber > 5) { // if outside of the wave range
+                        System.out.println("All waves beat");
+                        gameState = 3; // go to the victory screen
+                        break;
+                        // TODO: Victory Screen
+                    }
+
+                    enemySpawnTimes.clear(); // resets the spawn timings for the next wave.
+                    waveNumber += 1; // moves the wave counter to the next wave
+                    playWaveStartJingle();
+
+                    waveEmptyTime = globalTimer;
+                    // Sets the time at which the next wave will start
+                    nextWaveTime = waveEmptyTime + waveDelayTime;
+                    waveLength = perWaveEnemyTypes[waveNumber].length;
+                    waveEnemiesSpawned = 0;
+                    // Setup the spawn times for all enemies of the next wave
+                    int enemySpawnTime = nextWaveTime;
+
+                    for (int enemySpawnDelay : perWaveSpawnIntervals[waveNumber]) {
+                        enemySpawnTime += enemySpawnDelay;
+                        enemySpawnTimes.add(enemySpawnTime);
+                    }
+                }
+
+                // If block runs when an enemy is to be spawned
+                // Does not support multiple enemies spawning at once
+                if (enemySpawnTimes.contains(globalTimer)) {
+                    // Spawns the enemy with the matching ID
+                    switch (perWaveEnemyTypes[waveNumber][waveEnemiesSpawned]) {
 
 
-                case (byte) 0 -> enemyList.add(new Goblin(0, 125 + (random.nextInt(11) - 5)));
+                        case (byte) 0 -> enemyList.add(new Goblin(0, 125 + (random.nextInt(11) - 5)));
 
-                default -> { }
-            }
-            waveEnemiesSpawned += 1;
-        }
+                        default -> { }
+                    }
+                    waveEnemiesSpawned += 1;
+                }
 
-        // Process ticks for towers
-        for (Tower tower : towerList) {
-            tower.tick(enemyList, animationList);
-        }
+                // Process ticks for towers
+                for (Tower tower : towerList) {
+                    tower.tick(enemyList, animationList);
+                }
 
-        // Process ticks for enemies
-        for (int i = 0; i < enemyList.size(); i++) {
-            Enemy enemy = enemyList.get(i);
-            enemy.tick(enemyList, playerOne);
+                // Process ticks for enemies
+                for (int i = 0; i < enemyList.size(); i++) {
+                    Enemy enemy = enemyList.get(i);
+                    enemy.tick(enemyList, playerOne);
 
-            if (enemy.getHp() <= 0) {
-                playerOne.setMoney(playerOne.getMoney() + enemy.getMoney());
-                enemy.die(enemyList, animationList);
-                i -= 1;
-            }
-        }
+                    if (enemy.getHp() <= 0) {
+                        playerOne.setMoney(playerOne.getMoney() + enemy.getMoney());
+                        enemy.die(enemyList, animationList);
+                        i -= 1;
+                    }
+                }
 
-        // Remove finished animations
-        for (int i = 0; i < animationList.size(); i++) {
-            Animation animation = animationList.get(i);
+                // Remove finished animations
+                for (int i = 0; i < animationList.size(); i++) {
+                    Animation animation = animationList.get(i);
+                    
+                    if (animation.getTimer() >= animation.getDuration()) {
+                        animationList.remove(animation);
+                        i -= 1;
+                    }
+                }
+                // Increment global timer by 1
+                globalTimer++;
+                break;
+
+            case 2: //game paused
+                menuButtons[0].setVisible(true);
+                menuButtons[1].setVisible(true);
+
+                if (menuButtons[0].getVisible() && 
+                        menuButtons[0].isClicked(lastClickX, lastClickY)) {
+                    gameState = 1;
+                    menuButtons[0].setVisible(false);
+                    menuButtons[1].setVisible(false);
+                } else if (menuButtons[1].getVisible() && 
+                        menuButtons[1].isClicked(lastClickX, lastClickY)) {
+                    System.exit(0);
+                }
+                break;
+
+            case 3: // win
+                // TODO: Play victory jingle.
+                menuButtons[1].setVisible(true);
+                if (menuButtons[1].getVisible() && 
+                        menuButtons[1].isClicked(lastClickX, lastClickY)) {
+                    System.exit(0);
+                }
+                break;
+
+            case 4: // lose
+                // TODO: Play loss jingle.
+                menuButtons[1].setVisible(true);
+                if (menuButtons[1].getVisible() && 
+                        menuButtons[1].isClicked(lastClickX, lastClickY)) {
+                    System.exit(0);
+                }
+                break;
             
-            if (animation.getTimer() >= animation.getDuration()) {
-                animationList.remove(animation);
-                i -= 1;
-            }
+            default:
+                System.out.println("Game State is not correct");
         }
+
+
 
         // Render next frame
-        repaint();
-
-        // Increment global timer by 1
-        globalTimer++;
+            repaint();
     }
 
     /**
@@ -386,6 +474,39 @@ class GamePanel extends JPanel implements MouseListener {
         g2d.drawString(String.format("Wave %d / 5", waveNumber), 10, 25);
         g2d.drawString(String.format("Player HP: %d", playerOne.getPlayerHp()), 10, 50);
         g2d.drawString(String.format("Gold: %d", playerOne.getMoney()), 670, 25);
+
+
+        // Draw menu buttons, if visible
+
+        g2d.setColor(Color.BLACK);
+        for (Button button : menuButtons) {
+            if (button.getVisible()) {
+                g2d.drawRect(button.getPosX(), button.getPosY(), button.getWidth(), button.getHeight());
+                g2d.drawString(button.getText(), button.getPosX(), button.getPosY() + 30);
+            }
+        }
+
+        // Draw Victory/loss text, if applicable
+        switch (gameState) {
+            case 3:
+                g2d.setColor(Color.GREEN);
+                g2d.setFont(new Font("Arial", Font.BOLD, 44));
+                g2d.drawString("YOU WIN!!!", 285, 200);
+                break;
+            case 4:
+                g2d.setColor(Color.RED);
+                g2d.setFont(new Font("Arial", Font.BOLD, 44));
+                g2d.drawString("YOU LOSE!!!", 275, 200);
+                break;
+
+        }
+
+        // Draw pause button
+        g2d.setColor(Color.BLACK);
+        g2d.drawRect(pauseButton.getPosX(), pauseButton.getPosY(), pauseButton.getWidth(), pauseButton.getHeight());
+        g2d.setFont(new Font ("Arial", Font.BOLD, 30));
+        g2d.drawString(pauseButton.getText(), 392, 25);
+        
     }
 
     
