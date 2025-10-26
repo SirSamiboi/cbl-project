@@ -72,8 +72,8 @@ public class Fallen extends Enemy {
         move();
         chillTimer -= 1;
 
-        if (this.posX >= 800) { // if it passed the entire track
-            player.setPlayerHp((player.getPlayerHp() - damage)); // Deal 1 damage to the player
+        if (this.posX >= 800) { // If the enemy has passed the end of the track
+            player.setPlayerHp((player.getPlayerHp() - damage)); // Deal damage to the player
             this.hp = 0;
             player.setMoney(player.getMoney() - this.money);
 

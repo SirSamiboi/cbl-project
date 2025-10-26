@@ -13,8 +13,4 @@ public class QuitButton extends Button {
 
         this.text = "Quit";
     }
-
-    //  void click() {
-        
-    //  }
 }

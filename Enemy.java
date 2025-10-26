@@ -22,7 +22,7 @@ public class Enemy {
     protected int imageOffsetX;
     protected int imageOffsetY;
 
-    protected boolean facingRight = true; // Tracks if enemy should be facing right (t) or left (f)
+    protected boolean facingRight = true; // If enemy should be facing right (trur) or left (false)
 
     protected int timer; // Counts up by 1 every frame
     protected int timerLimit; // Number of frames between each attack
@@ -92,10 +92,6 @@ public class Enemy {
     boolean getFacingRight() {
         return facingRight;
     }
-
-    // int getChillTimer() {
-    //     return chillTimer;
-    // }
 
     /**
      * Substracts the tower's damage from the Enemy's HP.
@@ -208,8 +204,8 @@ public class Enemy {
         move();
         chillTimer -= 1;
 
-        if (posX >= 800) { // if it passed the entire track
-            player.setPlayerHp((player.getPlayerHp() - damage)); // Deal 1 damage to the player
+        if (posX >= 800) { // If the enemy has passed the end of the track
+            player.setPlayerHp((player.getPlayerHp() - damage)); // Deal damage to the player
             hp = 0;
             player.setMoney(player.getMoney() - this.money);
         }

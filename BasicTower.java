@@ -116,7 +116,7 @@ class BasicTower extends Tower {
         // Deal damage to target enemy
         targetEnemy.dealDamage(damage);
         // Play attack sound
-        playSound(attackClip);
+        playAttackSound();
     }
 
     /**

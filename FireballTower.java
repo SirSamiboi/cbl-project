@@ -116,7 +116,7 @@ class FireballTower extends Tower {
         // Create attack animation
         animationList.add(new FireballAnimation(posX, posY - 64, targetEnemy, level));
         // Play attack sound
-        playSound(attackClip);
+        playAttackSound();
 
         // Deal damage to all enemies in area of attack
         for (Enemy enemy : enemyList) {

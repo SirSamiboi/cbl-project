@@ -25,6 +25,8 @@ class GamePanel extends JPanel implements MouseListener {
     Player player = new Player(); // Used to store player statistics
 
     /*
+     * gameState's value represents the current state of the program.
+     * The possible gameState values are:
      * 0 - Game has not started yet
      * 1 - Game is in progress
      * 2 - Game is paused
@@ -33,13 +35,16 @@ class GamePanel extends JPanel implements MouseListener {
      */
     public int gameState = 0;
 
-    public Button[] menuButtons = {new PlayButton(300, 330), new QuitButton(300, 400)};
-    public PauseButton pauseButton = new PauseButton(385, 10);
+    public Button[] menuButtonList = {
+        new PlayButton(300, 330),
+        new QuitButton(300, 400)
+    };
+    public PauseButton pauseButton = new PauseButton(385, 8);
 
     private BufferedImage mapImage;
 
-    private int lastClickX = -1;
-    private int lastClickY = -1;
+    private int lastClickX = -1; // x coordinate of last mouse click by player
+    private int lastClickY = -1; // y coordinate of last mouse click by player
 
     private int selectedTower = -1; // -1 when nothing selected, otherwise index of tower in list
     private int selectedButton = -1;
@@ -81,14 +86,14 @@ class GamePanel extends JPanel implements MouseListener {
         {3, 4, 3, 3, 3, 4, 3, 3, 6,
             3, 3, 5, 5, 5, 5, 5, 3, 3, 5, 5, 5, 5, 5} // 4680
         
-        // Enemy money: 0 = 10, 1 = 25, 2 = 15, 3 = 50, 4 = 200, 5 = 40
+        // Enemy money: 0 = 10G, 1 = 25G, 2 = 15G, 3 = 50G, 4 = 200G, 5 = 40G
     };
 
     // Timestamps of when enemies spawn each wave, relative to the last enemy, in ticks
     // Index 0 is usually 0 because the first enemy spawns as soon as the wave begins
     public int[][] perWaveSpawnIntervals = {
         {},
-        {60, 30, 30},
+        {60, 30, 30}, // Index 0 is 60 to give the player more time to prepare their first defenses
         {0, 30, 30, 30, 30}, // Here a goblin enemy will spawn at 0, 30, 60, 90, 120 ticks
         {0, 15, 15, 15, 60, 15, 15, 15},
         {0, 15, 15, 60, 60, 15, 15},
@@ -109,11 +114,12 @@ class GamePanel extends JPanel implements MouseListener {
             300, 15, 15, 30, 30, 30, 30, 300, 15, 15, 30, 30, 30, 30}
     };
 
-    private int waveEmptyTime; // Timestamp of when a wave ended
+    private int waveEmptyTime; // Timestamp of when the previous wave ended
     private int waveDelayTime = 120; // 4 second delay before the next wave starts
     private int nextWaveTime; // Timestamp of when the next wave should start
+    // Spawn times of all enemies in the current wave, relative to the global timer
     private ArrayList<Integer> enemySpawnTimes = new ArrayList<>();
-    private int waveEnemiesSpawned;
+    private int waveEnemiesSpawned; // Number of enemies that have been spawned in current wave
 
     /**
      * The panel element which contains all game elements shown on-screen.
@@ -151,8 +157,11 @@ class GamePanel extends JPanel implements MouseListener {
 
     /**
      * Game update logic, called by Timer.
+     * This method calculates the complete game state at the current tick,
+     * and then calls repaint() to update the display.
      */
     public void updateGame() {
+        // Logic for pausing and unpausing
         if (gameState == 1 && pauseButton.isClicked(lastClickX, lastClickY)) {
             gameState = 2;
             lastClickX = -1;
@@ -162,20 +171,20 @@ class GamePanel extends JPanel implements MouseListener {
             lastClickX = -1;
             lastClickY = -1;
 
-            for (Button button : menuButtons) {
+            for (Button button : menuButtonList) {
                 button.setVisible(false);
             }
         }
-
+        
         switch (gameState) {
             case 0: // If the game has not started yet 
-                if (menuButtons[0].getVisible()
-                    && menuButtons[0].isClicked(lastClickX, lastClickY)) {
+                if (menuButtonList[0].getVisible()
+                    && menuButtonList[0].isClicked(lastClickX, lastClickY)) {
                     gameState = 1;
-                    menuButtons[0].setVisible(false);
-                    menuButtons[1].setVisible(false);
-                } else if (menuButtons[1].getVisible()
-                    && menuButtons[1].isClicked(lastClickX, lastClickY)) {
+                    menuButtonList[0].setVisible(false);
+                    menuButtonList[1].setVisible(false);
+                } else if (menuButtonList[1].getVisible()
+                    && menuButtonList[1].isClicked(lastClickX, lastClickY)) {
                     System.exit(0);
                 }
 
@@ -288,32 +297,32 @@ class GamePanel extends JPanel implements MouseListener {
                 break;
 
             case 2: // Game paused
-                menuButtons[0].setVisible(true);
-                menuButtons[1].setVisible(true);
+                menuButtonList[0].setVisible(true);
+                menuButtonList[1].setVisible(true);
 
-                if (menuButtons[0].getVisible()
-                    && menuButtons[0].isClicked(lastClickX, lastClickY)) {
+                if (menuButtonList[0].getVisible()
+                    && menuButtonList[0].isClicked(lastClickX, lastClickY)) {
                     gameState = 1;
-                    menuButtons[0].setVisible(false);
-                    menuButtons[1].setVisible(false);
-                } else if (menuButtons[1].getVisible()
-                    && menuButtons[1].isClicked(lastClickX, lastClickY)) {
+                    menuButtonList[0].setVisible(false);
+                    menuButtonList[1].setVisible(false);
+                } else if (menuButtonList[1].getVisible()
+                    && menuButtonList[1].isClicked(lastClickX, lastClickY)) {
                     System.exit(0);
                 }
                 break;
 
-            case 3: // Victory
-                menuButtons[1].setVisible(true);
-                if (menuButtons[1].getVisible()
-                    && menuButtons[1].isClicked(lastClickX, lastClickY)) {
+            case 3: // Player victory
+                menuButtonList[1].setVisible(true);
+                if (menuButtonList[1].getVisible()
+                    && menuButtonList[1].isClicked(lastClickX, lastClickY)) {
                     System.exit(0);
                 }
                 break;
 
-            case 4: // Defeat
-                menuButtons[1].setVisible(true);
-                if (menuButtons[1].getVisible()
-                    && menuButtons[1].isClicked(lastClickX, lastClickY)) {
+            case 4: // Player defeat
+                menuButtonList[1].setVisible(true);
+                if (menuButtonList[1].getVisible()
+                    && menuButtonList[1].isClicked(lastClickX, lastClickY)) {
                     System.exit(0);
                 }
                 break;
@@ -327,7 +336,7 @@ class GamePanel extends JPanel implements MouseListener {
     }
 
     /**
-     * Handles all drawing. Called via repaint().
+     * Handles the drawing of all visual elements. Called via repaint().
      */
     @Override
     protected void paintComponent(Graphics g) {
@@ -346,10 +355,12 @@ class GamePanel extends JPanel implements MouseListener {
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
             RenderingHints.VALUE_INTERPOLATION_BILINEAR);     
 
+
         // Draw map image
         if (mapImage != null) {
             g2d.drawImage(mapImage, 0, 0, getWidth(), getHeight(), this);
         }
+
 
         // Draw enemies
         for (Enemy enemy : enemyList) {
@@ -441,6 +452,7 @@ class GamePanel extends JPanel implements MouseListener {
             }
         }
 
+
         // Draw health bars
         for (Enemy enemy : enemyList) {
             g2d.setColor(Color.BLACK);
@@ -453,6 +465,7 @@ class GamePanel extends JPanel implements MouseListener {
             g2d.fillRect(posX - width / 2 + 2, posY - enemy.getImageHeight() + 2,
                 (width - 4) * enemy.getHp() / enemy.getMaxHp(), 6);
         }
+
 
         // These are drawn while a tower is selected
         if (selectedTower != -1) {
@@ -519,6 +532,7 @@ class GamePanel extends JPanel implements MouseListener {
             }
         }
 
+
         g2d.setFont(new Font("Arial", Font.BOLD, 22));
 
         // Draw labels while round is ongoing
@@ -529,6 +543,7 @@ class GamePanel extends JPanel implements MouseListener {
             g2d.drawString(String.format("Gold: %d", player.getMoney()), 670, 25);
         }
 
+
         // Dim background while gameplay is not ongoing
         if (gameState != 1) {
             g2d.setColor(Color.BLACK);
@@ -537,9 +552,10 @@ class GamePanel extends JPanel implements MouseListener {
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
         }
 
+
         // Draw menu buttons, if visible
         g2d.setStroke(new BasicStroke(2));
-        for (Button button : menuButtons) {
+        for (Button button : menuButtonList) {
             if (button.getVisible()) {
                 g2d.setColor(Color.WHITE);
                 g2d.fillRect(button.getPosX(), button.getPosY(),
@@ -550,6 +566,7 @@ class GamePanel extends JPanel implements MouseListener {
                 g2d.drawString(button.getText(), button.getPosX() + 16, button.getPosY() + 32);
             }
         }
+
 
         // Draw menu text while gameplay is not ongoing
         switch (gameState) {
@@ -584,6 +601,7 @@ class GamePanel extends JPanel implements MouseListener {
             default -> { }
         }
 
+
         // Draw pause button while gameplay is ongoing
         if (gameState == 1) {
             g2d.setColor(Color.WHITE);
@@ -593,23 +611,36 @@ class GamePanel extends JPanel implements MouseListener {
             g2d.drawRect(pauseButton.getPosX(), pauseButton.getPosY(),
                 pauseButton.getWidth(), pauseButton.getHeight());
             g2d.setFont(new Font("Arial", Font.BOLD, 30));
-            g2d.drawString(pauseButton.getText(), 391, 36);
+            g2d.drawString(pauseButton.getText(), pauseButton.getPosX() + 6,
+                pauseButton.getPosY() + 26);
         }
         
     }
 
     
     /**
-     * Called when the mouse button is pressed and released at the same location.
+     * (Unused) Called when the mouse button is pressed and released at the same location.
      */
     @Override
     public void mouseClicked(MouseEvent e) { }
 
     /**
-     * Called when a mouse button is pressed.
+     * (Unused) Called when a mouse button is pressed.
      */
     @Override
     public void mousePressed(MouseEvent e) { }
+
+    /**
+     * (Unused) Called when the mouse cursor enters the window.
+     */
+    @Override
+    public void mouseEntered(MouseEvent e) { }
+
+    /**
+     * (Unused) Called when the mouse cursor exits the window.
+     */
+    @Override
+    public void mouseExited(MouseEvent e) { }
 
     /**
      * Called when a mouse button is released.
@@ -679,18 +710,6 @@ class GamePanel extends JPanel implements MouseListener {
             ub.assign(towerList, selectedTower);
         }
     }
-
-    /**
-     * Called when the mouse cursor enters the window.
-     */
-    @Override
-    public void mouseEntered(MouseEvent e) { }
-
-    /**
-     * Called when the mouse cursor exits the window.
-     */
-    @Override
-    public void mouseExited(MouseEvent e) { }
 
     /**
      * Plays a jingle at the start of each wave.

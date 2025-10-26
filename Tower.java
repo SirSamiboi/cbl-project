@@ -11,7 +11,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
- * Class used for handling all tower variables and interactions.
+ * Class used for handling all tower variables and actions.
  */
 
 public class Tower {
@@ -22,8 +22,8 @@ public class Tower {
     protected int level;
     protected int maxLevel;
     protected int upgradeCost;
-    protected int timer;
-    protected int cooldown;
+    protected int timer; // Ticks remaining until next attack
+    protected int cooldown; // Number of ticks between each attack
 
     protected BufferedImage image; // Tower image sprite
     protected int imageWidth;
@@ -47,7 +47,8 @@ public class Tower {
         this.imageOffsetY = 2;
 
         try {
-            this.image = ImageIO.read(new File("assets/tower0.png"));
+            String fileSeparator = File.separator;
+            this.image = ImageIO.read(new File(String.format("assets%stower0.png", fileSeparator)));
         
         } catch (IOException e) {
             System.out.println("ERROR: Empty plot image could not be loaded");
@@ -64,10 +65,6 @@ public class Tower {
     int getPosY() {
         return posY;
     }
-
-    // int getDamage() {
-    //     return damage;
-    // }
 
     int getRange() {
         return range;
@@ -128,7 +125,7 @@ public class Tower {
 
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundUrl);
 
-            // Get, open and play clip
+            // Get and open attack sound clip
             attackClip = AudioSystem.getClip();
             attackClip.open(audioStream);
 
@@ -141,15 +138,15 @@ public class Tower {
     }
 
     /**
-     * Plays a sound effect.
+     * Plays the tower's attack sound.
      */
-    public void playSound(Clip clip) {
-        if (clip != null) {
-            if (clip.isRunning()) {
-                clip.stop();
+    public void playAttackSound() {
+        if (attackClip != null) {
+            if (attackClip.isRunning()) {
+                attackClip.stop();
             }
-            clip.setFramePosition(0);
-            clip.start();
+            attackClip.setFramePosition(0);
+            attackClip.start();
         }
     }
 

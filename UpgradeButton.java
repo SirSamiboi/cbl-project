@@ -13,8 +13,8 @@ class UpgradeButton {
     private int towerIndex = -1; // Index of currently selected tower
     private Tower tower; // Currently selected tower
     private final int type; // -1 for upgrades, otherwise tower type
-    private final int width;
-    private final int height;
+    private final int width; // Button width
+    private final int height; // Button height
     private final int offsetX; // x position relative to selected tower
     private final int offsetY; // y position relative to selected tower
     
@@ -63,22 +63,6 @@ class UpgradeButton {
         this.width = widthList[type + 1];
         this.height = heightList[type + 1];
     }
-    
-    // int getPosX() {
-    //     return posX;
-    // }
-
-    // int getPosY() {
-    //     return posY;
-    // }
-
-    // int getTowerIndex() {
-    //     return towerIndex;
-    // }
-
-    // Tower getTower() {
-    //     return tower;
-    // }
 
     int getType() {
         return type;
@@ -178,7 +162,7 @@ class UpgradeButton {
     }
 
     /**
-     * Runs when the button is clicked.
+     * Called when the button is clicked.
      */
     void click(ArrayList<Tower> towerList, Player player) {
         int money = player.getMoney();

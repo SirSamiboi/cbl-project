@@ -6,7 +6,6 @@ import javax.imageio.ImageIO;
  * Class that saves the data of Ogre type enemies.
  * Ogres are a stronger, slower version of goblins.
  */
-// TODO: Use new file loading approach
 public class Ogre extends Enemy {
 
     /**

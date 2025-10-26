@@ -1,6 +1,6 @@
 AUTHORS:
 Sam Maurer (2268000)
-Stas Luzgin ()
+Stas Luzgin (2277921)
 
 Welcome to Magic Defender!
 
@@ -12,7 +12,11 @@ these monsters to protect his empire. To do this, you must construct different t
 towers which will hold back and defeat the enemies in various ways. If you manage to survive the
 attacks, The Fallen has vowed to tear the castle apart by himself. Will you manage to defeat him?
 
-How to run: Run Main.java, then select "Start Game" to start a round.
+How to run:
+
+- Open the MagicDefender folder
+- Run Main.java
+- Once the game is open, select "Start Game" to start a round, and enjoy :)
 
 How to play:
 

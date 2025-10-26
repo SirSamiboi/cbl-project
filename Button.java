@@ -1,5 +1,5 @@
 /**
- * Class used for UI buttons.
+ * Class used for menu buttons.
  */
 
 public class Button {
