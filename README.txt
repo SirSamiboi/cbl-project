@@ -14,7 +14,7 @@ attacks, The Fallen has vowed to tear the castle apart by himself. Will you mana
 
 How to run:
 
-- Open the MagicDefender folder
+- Open the MagicDefender folder with a program that can run Java files, such as Visual Studio Code
 - Run Main.java
 - Once the game is open, select "Start Game" to start a round, and enjoy :)
 
