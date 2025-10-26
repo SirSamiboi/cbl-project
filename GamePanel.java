@@ -111,7 +111,7 @@ class GamePanel extends JPanel implements MouseListener {
             15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15},
         {0, 60, 15, 15, 15, 120, 60, 30, 30, 120, 60, 30, 30},
         {0, 30, 30, 30, 240, 30, 30, 30, 240,
-            300, 15, 15, 30, 30, 30, 30, 300, 15, 15, 30, 30, 30, 30}
+            300, 15, 15, 30, 30, 30, 30, 240, 15, 15, 30, 30, 30, 30}
     };
 
     private int waveEmptyTime; // Timestamp of when the previous wave ended

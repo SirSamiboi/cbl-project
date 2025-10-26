@@ -75,7 +75,7 @@ jsxfr
 basicAttack: https://sfxr.me/#34T6PkkDngdb9rNsAUrzatDpFuy4QfMJoZASmmfbtprhJP8zzVTK9nQGyWcruaaXnKjV7vPTWJRtzfT88iqi8gFPtpbBFs3pDGWFE4sWWnfAJawzJKe1EV1od
 fireballAttack: https://sfxr.me/#7BMHBGSTwiL6a6a5Xg9MJEfuE2iBJdC1oEsezx5PRhdJNeo5CqAG16Eb2tjhi5Qn1VJkBFe1Cn7yudwK2KEK8pThEPtGEoBgXJ5c5vVzQbV7gDfkqaeH4ySSb
 chillAttack: https://sfxr.me/#34T6PkmsRpTyJb3fRJjKQ5Cvaq9jzfNoQWYAn3zbrNJvuPzZ9kMs4dn3ZGHDDTcmTknMAyiK2SRTuvYeRmDepwGzgy8NqtT6kGDkf5CGrwFax1T6viNB18uMH
-fallenTransformation: https://sfxr.me/#111114QxxVn1E6HdbAr2KoPMJE6r4fxHaYFxh62jdQGNNDqU3QX8NR3jo53gDUWVdEDGchNP1aFnBvmXXJZPsjvrMcrF48meohC4kYrCLkXMiwx8SEfPmaRm
+fallenTransformation: https://sfxr.me/#1111191C7ofVgHtkHb577aHvfuV7fiQ1xyFG8Q6ZbNctGSa4p4tMif6GF8byAWESgn5oH6WD6A5Sg2ZjWZWUKkpMnK8knMCVUPovN1cnqiyMJynFGkTMpUTy
 
 Clash Royale via 101soundboards.com - Goblin Arena Jingle 01, Scroll Win 02, Scroll Lose 01
 waveStart: https://www.101soundboards.com/sounds/730952-goblin-arena-jingle-01
