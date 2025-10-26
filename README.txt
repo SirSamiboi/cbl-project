@@ -1,6 +1,9 @@
+CBL Project for 2IP90 Programming course
+
 AUTHORS:
 Sam Maurer (2268000)
 Stas Luzgin (2277921)
+
 
 Welcome to Magic Defender!
 
@@ -12,11 +15,13 @@ these monsters to protect his empire. To do this, you must construct different t
 towers which will hold back and defeat the enemies in various ways. If you manage to survive the
 attacks, The Fallen has vowed to tear the castle apart by himself. Will you manage to defeat him?
 
+
 How to run:
 
 - Open the MagicDefender folder with a program that can run Java files, such as Visual Studio Code
 - Run Main.java
 - Once the game is open, select "Start Game" to start a round, and enjoy :)
+
 
 How to play:
 
@@ -35,11 +40,13 @@ How to play:
 - Try experimenting with different tower placements to find the most efficient setup
 - Once a tower has been placed, it cannot be removed, so don't place basic towers everywhere, and never begin a round with a chill tower!
 
+
 Testing:
 
 All of the game's functionality is accessed with a game round. The game can be tested by simply
 starting the program and pressing "Start Game" to begin a round. Depending on the player's actions,
 the game will result in either victory or defeat.
+
 
 Asset sources:
 
@@ -60,6 +67,7 @@ https://craftpix.net/freebies/free-chibi-necromancer-of-the-shadow-character-spr
 
 craftpix.net - Free Monster Enemy Game Sprites
 https://craftpix.net/freebies/free-monster-enemy-game-sprites/
+
 
 Sound effects:
 
