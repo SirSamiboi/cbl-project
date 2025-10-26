@@ -48,7 +48,29 @@ starting the program and pressing "Start Game" to begin a round. Depending on th
 the game will result in either victory or defeat.
 
 
-Asset sources:
+Sources:
+
+Our main inspirations for the game were the "Bloons Tower Defense" and "Kingdom Rush" game series.
+We both have varying amounts of experience with both game series, so since early in development,
+we had a clear vision of how the game should play out.
+
+For game design, we implemented features similar to the above games that are common in the tower
+defense game genre, such as health bars, enemy waves, tower placement spots and the enemy path.
+We performed extensive testing to improve game balance, i.e. adjusting the game's difficulty to be
+a challenge but also forgiving and flexible, so the player can explore a variety of tower setups.
+We also balanced enemy waves and tower upgrades to give the player a sense of progression as they
+survive through waves and improve their defenses, aiming to make the game as fun as possible.
+
+For the use of a timer for game state updates, we researched the Java.util.Timer class on
+geeksforgeeks.org. By using a global timer variable that increments on every "tick" (the game's
+time unit, ~33ms), we have been able to control all events and animations in the game.
+
+For more specific questions, such as how to flip images, we also used geeksforgeeks.org to do
+research and devise a solution, or we searched Stack Exchange to find answers, and then adapted
+the relevant answers to fit the program.
+
+
+Assets:
 
 craftpix.net via itch.io - 2D Tileset Pixel Art for TD Free Pack
 https://free-game-assets.itch.io/free-fields-tileset-pixel-art-for-tower-defense
@@ -67,6 +89,8 @@ https://craftpix.net/freebies/free-chibi-necromancer-of-the-shadow-character-spr
 
 craftpix.net - Free Monster Enemy Game Sprites
 https://craftpix.net/freebies/free-monster-enemy-game-sprites/
+
+Many of these assets have been combined or modified in order to create the final assets used in the program.
 
 
 Sound effects:
